@@ -38,21 +38,21 @@
             padding: 20px;
         }
         
-        /* KHUNG CHÍNH - ĐÃ CHỈNH SỬA */
+        /* KHUNG CHÍNH - ĐÃ CHỈNH SỬA KÍCH THƯỚC */
         .container {
             text-align: center;
-            padding: 50px 40px;
+            padding: 40px 30px;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(20px);
-            max-width: 900px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            max-width: 90%;
             width: 100%;
             position: relative;
             z-index: 10;
             animation: fadeIn 1s ease-out;
-            border: 8px solid rgba(255, 255, 255, 0.6);
-            overflow: visible; /* QUAN TRỌNG: Cho phép nội dung hiển thị ra ngoài */
+            border: 6px solid rgba(255, 255, 255, 0.6);
+            overflow: visible;
         }
         
         /* VIỀN TRANG TRÍ CHO KHUNG */
@@ -62,11 +62,12 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 12px;
+            height: 10px;
             background: linear-gradient(90deg, 
                 #ff4d87, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee, #ff4d87);
             background-size: 400% 100%;
             animation: rainbowBorder 3s linear infinite;
+            border-radius: 25px 25px 0 0;
         }
         
         @keyframes rainbowBorder {
@@ -81,31 +82,31 @@
         
         /* TIÊU ĐỀ - CHỈNH SỬA KÍCH THƯỚC VÀ CÂN ĐỐI */
         h1 {
-            font-size: 3.2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 5px 15px rgba(138, 28, 90, 0.2);
             line-height: 1.2;
-            padding: 0 20px;
+            padding: 0 15px;
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
         
         /* CÂU HỎI - CHỈNH SỬA ĐỂ ĐẸP HƠN */
         .question {
-            font-size: 2.2rem;
-            margin: 30px 0 40px;
+            font-size: 1.8rem;
+            margin: 25px 0 35px;
             color: var(--secondary);
             font-weight: 600;
             animation: pulse 2s infinite;
-            padding: 15px 30px;
+            padding: 12px 25px;
             background: rgba(255, 255, 255, 0.7);
-            border-radius: 20px;
+            border-radius: 18px;
             display: inline-block;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             border: 3px solid rgba(255, 77, 135, 0.2);
             max-width: 90%;
             word-wrap: break-word;
@@ -113,7 +114,7 @@
         
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
             100% { transform: scale(1); }
         }
         
@@ -121,32 +122,32 @@
         .buttons-container {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin: 40px 0 30px;
+            gap: 30px;
+            margin: 35px 0 25px;
             flex-wrap: wrap;
-            padding: 20px;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.5);
-            border-radius: 25px;
+            border-radius: 20px;
             border: 3px dashed rgba(255, 77, 135, 0.3);
             position: relative;
-            min-height: 120px;
-            overflow: visible; /* QUAN TRỌNG: Cho phép nút hiển thị ra ngoài */
+            min-height: 100px;
+            overflow: visible;
         }
         
         /* NÚT BẤM - CHỈNH SỬA KÍCH THƯỚC VÀ HIỆU ỨNG */
         .btn {
-            padding: 18px 45px;
-            border-radius: 60px;
-            font-size: 1.8rem;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.6rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.4s ease;
             border: none;
             position: relative;
             overflow: hidden;
-            min-width: 160px;
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-            border: 4px solid transparent;
+            min-width: 140px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            border: 3px solid transparent;
         }
         
         .btn::before {
@@ -172,14 +173,14 @@
         }
         
         .btn-yes:hover {
-            transform: translateY(-8px) scale(1.1);
-            box-shadow: 0 20px 35px rgba(76, 175, 80, 0.5);
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 15px 25px rgba(76, 175, 80, 0.4);
         }
         
         /* NÚT KHÔNG - QUAN TRỌNG: Sửa để luôn hiển thị */
         .btn-no-container {
             position: relative;
-            z-index: 9999; /* Đảm bảo luôn trên cùng */
+            z-index: 9999;
         }
         
         .btn-no {
@@ -189,18 +190,18 @@
             cursor: pointer;
             transition: transform 0.3s ease-out;
             border-color: rgba(255, 255, 255, 0.5);
-            z-index: 9999; /* Đảm bảo luôn hiển thị */
+            z-index: 9999;
         }
         
         /* THÊM CHÂN CHO NÚT KHÔNG */
         .btn-no::before, .btn-no::after {
             content: '';
             position: absolute;
-            width: 15px;
-            height: 25px;
+            width: 12px;
+            height: 20px;
             background: #C62828;
             border-radius: 50% 50% 0 0;
-            bottom: -20px;
+            bottom: -18px;
             animation: legMove 0.5s ease-in-out infinite alternate;
         }
         
@@ -222,20 +223,20 @@
         /* CẢNH BÁO - CHỈNH SỬA VỊ TRÍ VÀ KIỂU DÁNG */
         .warning {
             position: fixed;
-            top: 30px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(45deg, #ff4444, #cc0000);
             color: white;
-            padding: 15px 30px;
-            border-radius: 15px;
+            padding: 12px 25px;
+            border-radius: 12px;
             font-weight: 600;
             z-index: 1000;
             opacity: 0;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
-            font-size: 1.1rem;
-            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 15px rgba(255, 0, 0, 0.3);
+            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);
             text-align: center;
             max-width: 90%;
@@ -250,14 +251,14 @@
         /* ĐẾM SỐ LẦN THỬ - CHỈNH SỬA VỊ TRÍ */
         .attempt-counter {
             position: fixed;
-            top: 100px;
+            top: 80px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             z-index: 1000;
             display: none;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -280,7 +281,7 @@
         
         .heart {
             position: absolute;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--primary);
             opacity: 0;
             animation: floatUp 5s linear infinite;
@@ -305,18 +306,18 @@
         
         /* THÔNG BÁO - CHỈNH SỬA KIỂU DÁNG */
         .message {
-            margin: 30px 0 20px;
-            font-size: 1.5rem;
+            margin: 25px 0 15px;
+            font-size: 1.3rem;
             color: var(--secondary);
             font-weight: 500;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
-            padding: 15px 25px;
+            padding: 12px 20px;
             background: rgba(255, 255, 255, 0.7);
-            border-radius: 15px;
+            border-radius: 12px;
             display: inline-block;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: 2px solid rgba(255, 77, 135, 0.3);
             max-width: 90%;
             word-wrap: break-word;
@@ -329,36 +330,37 @@
         
         /* NÚT QUAY LẠI - CHỈNH SỬA */
         .back-btn {
-            margin-top: 25px;
-            padding: 12px 30px;
+            margin-top: 20px;
+            padding: 10px 25px;
             background: rgba(255, 255, 255, 0.8);
-            border: 3px solid var(--primary);
-            border-radius: 50px;
+            border: 2px solid var(--primary);
+            border-radius: 40px;
             color: var(--primary);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            
         }
         
         .back-btn:hover {
             background: var(--primary);
             color: white;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 77, 135, 0.3);
+            box-shadow: 0 6px 15px rgba(255, 77, 135, 0.3);
         }
         
         /* FLOATING KIM ELEMENTS - CHỈNH SỬA */
         .floating-kim {
             position: fixed;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             color: rgba(255, 77, 135, 0.7);
             z-index: 1;
             user-select: none;
             pointer-events: none;
-            text-shadow: 0 0 10px rgba(255, 77, 135, 0.5);
+            text-shadow: 0 0 8px rgba(255, 77, 135, 0.5);
             animation: floatKim 15s linear infinite;
         }
         
@@ -392,37 +394,37 @@
         /* DECORATIVE ELEMENTS - THÊM TRANG TRÍ */
         .corner-decoration {
             position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             z-index: 5;
         }
         
         .corner-top-left {
-            top: 15px;
-            left: 15px;
-            border-top: 4px solid var(--primary);
-            border-left: 4px solid var(--primary);
+            top: 10px;
+            left: 10px;
+            border-top: 3px solid var(--primary);
+            border-left: 3px solid var(--primary);
         }
         
         .corner-top-right {
-            top: 15px;
-            right: 15px;
-            border-top: 4px solid var(--primary);
-            border-right: 4px solid var(--primary);
+            top: 10px;
+            right: 10px;
+            border-top: 3px solid var(--primary);
+            border-right: 3px solid var(--primary);
         }
         
         .corner-bottom-left {
-            bottom: 15px;
-            left: 15px;
-            border-bottom: 4px solid var(--primary);
-            border-left: 4px solid var(--primary);
+            bottom: 10px;
+            left: 10px;
+            border-bottom: 3px solid var(--primary);
+            border-left: 3px solid var(--primary);
         }
         
         .corner-bottom-right {
-            bottom: 15px;
-            right: 15px;
-            border-bottom: 4px solid var(--primary);
-            border-right: 4px solid var(--primary);
+            bottom: 10px;
+            right: 10px;
+            border-bottom: 3px solid var(--primary);
+            border-right: 3px solid var(--primary);
         }
         
         /* RESPONSIVE - CHỈNH SỬA LẠI CHO ĐẸP */
@@ -432,48 +434,9 @@
             }
             
             .container {
-                padding: 40px 25px;
-                border-radius: 25px;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-                margin-bottom: 25px;
-            }
-            
-            .question {
-                font-size: 1.8rem;
-                margin: 25px 0 35px;
-                padding: 12px 25px;
-            }
-            
-            .btn {
-                padding: 15px 35px;
-                font-size: 1.6rem;
-                min-width: 140px;
-            }
-            
-            .buttons-container {
-                gap: 25px;
-                padding: 15px;
-            }
-            
-            .warning {
-                top: 20px;
-                padding: 12px 25px;
-                font-size: 1rem;
-            }
-            
-            .attempt-counter {
-                top: 80px;
-                padding: 10px 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
                 padding: 30px 20px;
                 border-radius: 20px;
+                max-width: 95%;
             }
             
             h1 {
@@ -488,29 +451,72 @@
             }
             
             .btn {
-                padding: 12px 30px;
+                padding: 12px 25px;
                 font-size: 1.4rem;
                 min-width: 120px;
             }
             
             .buttons-container {
                 gap: 20px;
-                padding: 15px 10px;
+                padding: 12px;
+            }
+            
+            .warning {
+                top: 15px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .attempt-counter {
+                top: 70px;
+                padding: 8px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+                border-radius: 18px;
+                max-width: 98%;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+                margin-bottom: 15px;
+            }
+            
+            .question {
+                font-size: 1.3rem;
+                margin: 15px 0 25px;
+                padding: 8px 15px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 1.2rem;
+                min-width: 100px;
+            }
+            
+            .buttons-container {
+                gap: 15px;
+                padding: 10px;
+                flex-direction: column;
+                align-items: center;
             }
             
             .message {
-                font-size: 1.3rem;
-                padding: 12px 20px;
+                font-size: 1.1rem;
+                padding: 10px 15px;
             }
             
             .back-btn {
-                padding: 10px 25px;
-                font-size: 1.1rem;
+                padding: 8px 20px;
+                font-size: 1rem;
             }
             
             .corner-decoration {
-                width: 50px;
-                height: 50px;
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
@@ -569,7 +575,7 @@
             particlesJS('particles-js', {
                 particles: {
                     number: {
-                        value: 80,
+                        value: 60,
                         density: {
                             enable: true,
                             value_area: 800
@@ -596,7 +602,7 @@
                         }
                     },
                     size: {
-                        value: 8,
+                        value: 7,
                         random: true,
                         anim: {
                             enable: true,
@@ -607,14 +613,14 @@
                     },
                     line_linked: {
                         enable: true,
-                        distance: 150,
+                        distance: 120,
                         color: '#ff4d87',
                         opacity: 0.4,
                         width: 1
                     },
                     move: {
                         enable: true,
-                        speed: 3,
+                        speed: 2.5,
                         direction: 'none',
                         random: true,
                         straight: false,
@@ -646,7 +652,7 @@
             // Create floating hearts
             function createHearts() {
                 const container = document.getElementById('heartsContainer');
-                const heartCount = 15;
+                const heartCount = 12;
                 
                 for (let i = 0; i < heartCount; i++) {
                     const heart = document.createElement('div');
@@ -662,7 +668,7 @@
                     heart.style.animationDelay = `${delay}s`;
                     
                     // Random size
-                    const size = Math.random() * 1 + 1.5;
+                    const size = Math.random() * 0.8 + 1.2;
                     heart.style.fontSize = `${size}rem`;
                     
                     container.appendChild(heart);
@@ -672,7 +678,7 @@
             // Create floating KIM text
             function createFloatingKim() {
                 const container = document.body;
-                const kimCount = 8;
+                const kimCount = 6;
                 
                 for (let i = 0; i < kimCount; i++) {
                     const kim = document.createElement('div');
@@ -688,7 +694,7 @@
                     kim.style.animationDelay = `${delay}s`;
                     
                     // Random size variation
-                    const size = Math.random() * 1 + 1.5;
+                    const size = Math.random() * 0.8 + 1.2;
                     kim.style.fontSize = `${size}rem`;
                     
                     container.appendChild(kim);
@@ -716,8 +722,8 @@
             let mouseY = 0;
             let noBtnX = 0;
             let noBtnY = 0;
-            let repulsionDistance = 300; // Giảm khoảng cách bắt đầu né
-            let repulsionForce = 3; // Tăng lực đẩy
+            let repulsionDistance = 250; // Giảm khoảng cách bắt đầu né
+            let repulsionForce = 2.5; // Tăng lực đẩy
             
             // Giới hạn di chuyển trong toàn bộ màn hình
             let maxX = window.innerWidth - noBtn.offsetWidth - 10;
@@ -743,7 +749,7 @@
             
             // Kiểm tra nếu nút bị kẹt trong góc
             function isStuckInCorner(x, y) {
-                const margin = 100;
+                const margin = 80;
                 return (
                     (x <= minX + margin && y <= minY + margin) || // Góc trên trái
                     (x >= maxX - margin && y <= minY + margin) || // Góc trên phải
@@ -759,7 +765,7 @@
                 
                 // Tính hướng di chuyển về trung tâm
                 const angle = Math.atan2(centerY - currentY, centerX - currentX);
-                const escapeDistance = 200; // Khoảng cách thoát
+                const escapeDistance = 150; // Khoảng cách thoát
                 
                 return {
                     x: Math.cos(angle) * escapeDistance,
@@ -930,7 +936,7 @@
                 const container = document.getElementById('heartsContainer');
                 
                 // Create more hearts
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 15; i++) {
                     const heart = document.createElement('div');
                     heart.classList.add('heart');
                     heart.innerHTML = '💖';
@@ -940,10 +946,10 @@
                     heart.style.left = `${left}%`;
                     
                     // Faster animation for celebration
-                    heart.style.animation = `floatUp 3s linear ${i * 0.1}s`;
+                    heart.style.animation = `floatUp 2.5s linear ${i * 0.1}s`;
                     
                     // Random size
-                    const size = Math.random() * 1 + 2;
+                    const size = Math.random() * 0.8 + 1.5;
                     heart.style.fontSize = `${size}rem`;
                     
                     container.appendChild(heart);
@@ -951,7 +957,7 @@
                     // Remove heart after animation
                     setTimeout(() => {
                         heart.remove();
-                    }, 3000);
+                    }, 2500);
                 }
                 
                 // Add confetti effect
@@ -963,7 +969,7 @@
                 const container = document.getElementById('heartsContainer');
                 
                 // Tạo nhiều trái tim hơn
-                for (let i = 0; i < 30; i++) {
+                for (let i = 0; i < 20; i++) {
                     const heart = document.createElement('div');
                     heart.classList.add('heart');
                     heart.innerHTML = '🎉';
@@ -974,10 +980,10 @@
                     heart.style.left = `${left}%`;
                     
                     // Faster animation
-                    heart.style.animation = `floatUp 2s linear ${i * 0.05}s`;
+                    heart.style.animation = `floatUp 1.8s linear ${i * 0.05}s`;
                     
                     // Random size
-                    const size = Math.random() * 1 + 2;
+                    const size = Math.random() * 0.8 + 1.5;
                     heart.style.fontSize = `${size}rem`;
                     
                     container.appendChild(heart);
@@ -985,7 +991,7 @@
                     // Remove after animation
                     setTimeout(() => {
                         heart.remove();
-                    }, 2000);
+                    }, 1800);
                 }
                 
                 createConfetti();
@@ -996,27 +1002,27 @@
                 const colors = ['#ff4d87', '#8a1c5a', '#ff9a9e', '#4CAF50', '#2196F3', '#FFC107'];
                 const container = document.body;
                 
-                for (let i = 0; i < 50; i++) {
+                for (let i = 0; i < 30; i++) {
                     const confetti = document.createElement('div');
                     confetti.style.position = 'fixed';
-                    confetti.style.width = '10px';
-                    confetti.style.height = '10px';
+                    confetti.style.width = '8px';
+                    confetti.style.height = '8px';
                     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                     confetti.style.borderRadius = '50%';
                     confetti.style.left = `${Math.random() * 100}%`;
-                    confetti.style.top = '-10px';
+                    confetti.style.top = '-8px';
                     confetti.style.zIndex = '1';
                     confetti.style.opacity = '0.8';
                     
                     // Animation
-                    confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.animation = `confettiFall ${Math.random() * 2 + 1.5}s linear forwards`;
                     
                     container.appendChild(confetti);
                     
                     // Remove confetti after animation
                     setTimeout(() => {
                         confetti.remove();
-                    }, 5000);
+                    }, 3500);
                 }
                 
                 // Add keyframes for animation
