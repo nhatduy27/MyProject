@@ -35,44 +35,80 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            padding: 20px;
         }
         
+        /* KHUNG CHÍNH - ĐÃ CHỈNH SỬA */
         .container {
             text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 25px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(15px);
-            max-width: 800px;
-            width: 90%;
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(20px);
+            max-width: 900px;
+            width: 100%;
             position: relative;
             z-index: 10;
             animation: fadeIn 1s ease-out;
+            border: 8px solid rgba(255, 255, 255, 0.6);
+            overflow: visible; /* QUAN TRỌNG: Cho phép nội dung hiển thị ra ngoài */
+        }
+        
+        /* VIỀN TRANG TRÍ CHO KHUNG */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: linear-gradient(90deg, 
+                #ff4d87, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee, #ff4d87);
+            background-size: 400% 100%;
+            animation: rainbowBorder 3s linear infinite;
+        }
+        
+        @keyframes rainbowBorder {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
+        /* TIÊU ĐỀ - CHỈNH SỬA KÍCH THƯỚC VÀ CÂN ĐỐI */
         h1 {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 700;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 5px 15px rgba(138, 28, 90, 0.2);
             line-height: 1.2;
+            padding: 0 20px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
+        /* CÂU HỎI - CHỈNH SỬA ĐỂ ĐẸP HƠN */
         .question {
-            font-size: 2.5rem;
-            margin-bottom: 50px;
+            font-size: 2.2rem;
+            margin: 30px 0 40px;
             color: var(--secondary);
             font-weight: 600;
             animation: pulse 2s infinite;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(255, 77, 135, 0.2);
+            max-width: 90%;
+            word-wrap: break-word;
         }
         
         @keyframes pulse {
@@ -81,26 +117,36 @@
             100% { transform: scale(1); }
         }
         
+        /* KHUNG NÚT BẤM - CHỈNH SỬA LẠI */
         .buttons-container {
             display: flex;
             justify-content: center;
             gap: 40px;
-            margin-top: 30px;
+            margin: 40px 0 30px;
             flex-wrap: wrap;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 25px;
+            border: 3px dashed rgba(255, 77, 135, 0.3);
+            position: relative;
+            min-height: 120px;
+            overflow: visible; /* QUAN TRỌNG: Cho phép nút hiển thị ra ngoài */
         }
         
+        /* NÚT BẤM - CHỈNH SỬA KÍCH THƯỚC VÀ HIỆU ỨNG */
         .btn {
-            padding: 20px 50px;
+            padding: 18px 45px;
             border-radius: 60px;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.4s ease;
             border: none;
             position: relative;
             overflow: hidden;
-            min-width: 180px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            border: 4px solid transparent;
         }
         
         .btn::before {
@@ -122,17 +168,18 @@
             background: linear-gradient(45deg, var(--yes-color), #2E7D32);
             color: white;
             z-index: 100;
+            border-color: rgba(255, 255, 255, 0.5);
         }
         
         .btn-yes:hover {
             transform: translateY(-8px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 20px 35px rgba(76, 175, 80, 0.5);
         }
         
-        /* Nút Không với hiệu ứng né chuột */
+        /* NÚT KHÔNG - QUAN TRỌNG: Sửa để luôn hiển thị */
         .btn-no-container {
             position: relative;
-            z-index: 50;
+            z-index: 9999; /* Đảm bảo luôn trên cùng */
         }
         
         .btn-no {
@@ -141,9 +188,11 @@
             position: relative;
             cursor: pointer;
             transition: transform 0.3s ease-out;
+            border-color: rgba(255, 255, 255, 0.5);
+            z-index: 9999; /* Đảm bảo luôn hiển thị */
         }
         
-        /* Thêm chân cho nút Không */
+        /* THÊM CHÂN CHO NÚT KHÔNG */
         .btn-no::before, .btn-no::after {
             content: '';
             position: absolute;
@@ -170,41 +219,55 @@
             100% { transform: rotate(-10deg); }
         }
         
-        /* Cảnh báo khi cố tình lia vào */
+        /* CẢNH BÁO - CHỈNH SỬA VỊ TRÍ VÀ KIỂU DÁNG */
         .warning {
             position: fixed;
-            top: 20px;
+            top: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 0, 0, 0.9);
+            background: linear-gradient(45deg, #ff4444, #cc0000);
             color: white;
             padding: 15px 30px;
-            border-radius: 10px;
+            border-radius: 15px;
             font-weight: 600;
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
             font-size: 1.1rem;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            max-width: 90%;
+            word-wrap: break-word;
         }
         
         .warning.show {
             opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
         
+        /* ĐẾM SỐ LẦN THỬ - CHỈNH SỬA VỊ TRÍ */
         .attempt-counter {
             position: fixed;
-            top: 80px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 25px;
+            border-radius: 25px;
             font-size: 1rem;
             z-index: 1000;
+            display: none;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            max-width: 90%;
+            word-wrap: break-word;
         }
         
+        /* KHUNG TRÁI TIM BAY - CHỈNH SỬA */
         .hearts-container {
             position: absolute;
             top: 0;
@@ -240,14 +303,23 @@
             }
         }
         
+        /* THÔNG BÁO - CHỈNH SỬA KIỂU DÁNG */
         .message {
-            margin-top: 40px;
+            margin: 30px 0 20px;
             font-size: 1.5rem;
             color: var(--secondary);
             font-weight: 500;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 77, 135, 0.3);
+            max-width: 90%;
+            word-wrap: break-word;
         }
         
         .message.show {
@@ -255,26 +327,29 @@
             transform: translateY(0);
         }
         
+        /* NÚT QUAY LẠI - CHỈNH SỬA */
         .back-btn {
-            margin-top: 30px;
+            margin-top: 25px;
             padding: 12px 30px;
             background: rgba(255, 255, 255, 0.8);
-            border: 2px solid var(--primary);
+            border: 3px solid var(--primary);
             border-radius: 50px;
             color: var(--primary);
             font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .back-btn:hover {
             background: var(--primary);
             color: white;
             transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 77, 135, 0.3);
         }
         
-        /* Floating KIM elements */
+        /* FLOATING KIM ELEMENTS - CHỈNH SỬA */
         .floating-kim {
             position: fixed;
             font-size: 2.5rem;
@@ -304,7 +379,7 @@
             }
         }
         
-        /* Particle background */
+        /* PARTICLE BACKGROUND */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -314,44 +389,128 @@
             z-index: 0;
         }
         
-        /* Responsive */
+        /* DECORATIVE ELEMENTS - THÊM TRANG TRÍ */
+        .corner-decoration {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 5;
+        }
+        
+        .corner-top-left {
+            top: 15px;
+            left: 15px;
+            border-top: 4px solid var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .corner-top-right {
+            top: 15px;
+            right: 15px;
+            border-top: 4px solid var(--primary);
+            border-right: 4px solid var(--primary);
+        }
+        
+        .corner-bottom-left {
+            bottom: 15px;
+            left: 15px;
+            border-bottom: 4px solid var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .corner-bottom-right {
+            bottom: 15px;
+            right: 15px;
+            border-bottom: 4px solid var(--primary);
+            border-right: 4px solid var(--primary);
+        }
+        
+        /* RESPONSIVE - CHỈNH SỬA LẠI CHO ĐẸP */
         @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
             .container {
-                padding: 30px 20px;
+                padding: 40px 25px;
+                border-radius: 25px;
             }
             
             h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
+                margin-bottom: 25px;
             }
             
             .question {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                margin: 25px 0 35px;
+                padding: 12px 25px;
             }
             
             .btn {
-                padding: 15px 30px;
-                font-size: 1.7rem;
+                padding: 15px 35px;
+                font-size: 1.6rem;
                 min-width: 140px;
             }
             
             .buttons-container {
-                gap: 20px;
+                gap: 25px;
+                padding: 15px;
+            }
+            
+            .warning {
+                top: 20px;
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .attempt-counter {
+                top: 80px;
+                padding: 10px 20px;
             }
         }
         
         @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            
             h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
+                margin-bottom: 20px;
             }
             
             .question {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
+                margin: 20px 0 30px;
+                padding: 10px 20px;
             }
             
             .btn {
-                padding: 12px 25px;
-                font-size: 1.5rem;
+                padding: 12px 30px;
+                font-size: 1.4rem;
                 min-width: 120px;
+            }
+            
+            .buttons-container {
+                gap: 20px;
+                padding: 15px 10px;
+            }
+            
+            .message {
+                font-size: 1.3rem;
+                padding: 12px 20px;
+            }
+            
+            .back-btn {
+                padding: 10px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .corner-decoration {
+                width: 50px;
+                height: 50px;
             }
         }
     </style>
@@ -374,6 +533,12 @@
     
     <!-- Main Content -->
     <div class="container">
+        <!-- Trang trí góc -->
+        <div class="corner-decoration corner-top-left"></div>
+        <div class="corner-decoration corner-top-right"></div>
+        <div class="corner-decoration corner-bottom-left"></div>
+        <div class="corner-decoration corner-bottom-right"></div>
+        
         <h1>Trần Ngọc Thiên Kim</h1>
         <div class="question">Em có xinh không? 💖</div>
         
@@ -544,28 +709,65 @@
             
             let attempts = 0;
             let isChasing = false;
+            let escapeMode = false;
             
-            // Hiệu ứng né chuột như nam châm cùng cực
+            // Hiệu ứng né chuột như nam châm cùng cực - CẢI THIỆN
             let mouseX = 0;
             let mouseY = 0;
             let noBtnX = 0;
             let noBtnY = 0;
-            let repulsionDistance = 500; // Khoảng cách bắt đầu né
-            let repulsionForce = 2; // Lực đẩy
+            let repulsionDistance = 300; // Giảm khoảng cách bắt đầu né
+            let repulsionForce = 3; // Tăng lực đẩy
             
-            // Giới hạn di chuyển trong màn hình
-            let maxX = window.innerWidth - noBtn.offsetWidth - 20;
-            let maxY = window.innerHeight - noBtn.offsetHeight - 20;
-            let minX = 20;
-            let minY = 20;
+            // Giới hạn di chuyển trong toàn bộ màn hình
+            let maxX = window.innerWidth - noBtn.offsetWidth - 10;
+            let maxY = window.innerHeight - noBtn.offsetHeight - 10;
+            let minX = 10;
+            let minY = 10;
+            
+            // Vị trí ban đầu của nút Không
+            let originalPosition = { x: 0, y: 0 };
             
             // Cập nhật kích thước màn hình khi resize
             window.addEventListener('resize', function() {
-                maxX = window.innerWidth - noBtn.offsetWidth - 20;
-                maxY = window.innerHeight - noBtn.offsetHeight - 20;
+                maxX = window.innerWidth - noBtn.offsetWidth - 10;
+                maxY = window.innerHeight - noBtn.offsetHeight - 10;
+                resetNoButtonPosition();
             });
             
-            // Theo dõi vị trí chuột
+            // Reset vị trí nút Không
+            function resetNoButtonPosition() {
+                noBtn.style.transform = 'translate(0, 0)';
+                originalPosition = { x: 0, y: 0 };
+            }
+            
+            // Kiểm tra nếu nút bị kẹt trong góc
+            function isStuckInCorner(x, y) {
+                const margin = 100;
+                return (
+                    (x <= minX + margin && y <= minY + margin) || // Góc trên trái
+                    (x >= maxX - margin && y <= minY + margin) || // Góc trên phải
+                    (x <= minX + margin && y >= maxY - margin) || // Góc dưới trái
+                    (x >= maxX - margin && y >= maxY - margin)    // Góc dưới phải
+                );
+            }
+            
+            // Tìm đường thoát khỏi góc
+            function findEscapeRoute(currentX, currentY) {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                // Tính hướng di chuyển về trung tâm
+                const angle = Math.atan2(centerY - currentY, centerX - currentX);
+                const escapeDistance = 200; // Khoảng cách thoát
+                
+                return {
+                    x: Math.cos(angle) * escapeDistance,
+                    y: Math.sin(angle) * escapeDistance
+                };
+            }
+            
+            // Theo dõi vị trí chuột - CẢI THIỆN THUẬT TOÁN
             document.addEventListener('mousemove', function(e) {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
@@ -581,8 +783,40 @@
                     Math.pow(mouseY - noBtnY, 2)
                 );
                 
+                // Lấy vị trí transform hiện tại
+                const currentTransform = window.getComputedStyle(noBtn).transform;
+                let currentTranslateX = 0;
+                let currentTranslateY = 0;
+                
+                if (currentTransform !== 'none') {
+                    const matrix = currentTransform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    currentTranslateX = parseFloat(matrix[4]) || 0;
+                    currentTranslateY = parseFloat(matrix[5]) || 0;
+                }
+                
+                // Tính vị trí thực tế
+                const actualX = noBtnRect.left;
+                const actualY = noBtnRect.top;
+                
+                // Kiểm tra nếu bị kẹt trong góc
+                if (isStuckInCorner(actualX, actualY) && !escapeMode) {
+                    escapeMode = true;
+                    const escapeVector = findEscapeRoute(actualX, actualY);
+                    
+                    // Di chuyển thoát khỏi góc
+                    noBtn.style.transform = `translate(${currentTranslateX + escapeVector.x}px, ${currentTranslateY + escapeVector.y}px)`;
+                    
+                    // Hiển thị thông báo đặc biệt
+                    showSpecialWarning("Haha, thoát được rồi!");
+                    
+                    setTimeout(() => {
+                        escapeMode = false;
+                    }, 1000);
+                    return;
+                }
+                
                 // Nếu chuột đến gần, đẩy nút ra xa
-                if (distance < repulsionDistance && !isChasing) {
+                if (distance < repulsionDistance && !isChasing && !escapeMode) {
                     isChasing = true;
                     attempts++;
                     attemptCount.textContent = attempts;
@@ -596,22 +830,11 @@
                     const moveX = Math.cos(angle) * moveDistance;
                     const moveY = Math.sin(angle) * moveDistance;
                     
-                    // Lấy vị trí hiện tại
-                    const currentTransform = window.getComputedStyle(noBtn).transform;
-                    let currentTranslateX = 0;
-                    let currentTranslateY = 0;
-                    
-                    if (currentTransform !== 'none') {
-                        const matrix = currentTransform.match(/matrix.*\((.+)\)/)[1].split(', ');
-                        currentTranslateX = parseFloat(matrix[4]) || 0;
-                        currentTranslateY = parseFloat(matrix[5]) || 0;
-                    }
-                    
                     // Tính vị trí mới với giới hạn
                     let newX = currentTranslateX + moveX;
                     let newY = currentTranslateY + moveY;
                     
-                    // Giới hạn trong màn hình
+                    // Giới hạn trong toàn bộ màn hình
                     const noBtnRectAfterMove = {
                         left: noBtnRect.left + moveX,
                         top: noBtnRect.top + moveY,
@@ -639,7 +862,7 @@
                     // Reset trạng thái sau khi di chuyển
                     setTimeout(() => {
                         isChasing = false;
-                    }, 300);
+                    }, 200);
                     
                     // Hiển thị counter nếu đã thử nhiều lần
                     if (attempts >= 3) {
@@ -656,8 +879,6 @@
                 // Create celebration effect
                 createCelebration();
             });
-            
-            // No button click functionality - rất khó để click được
             
             // Hiển thị cảnh báo
             function showWarning() {
@@ -678,6 +899,18 @@
                 setTimeout(() => {
                     warning.classList.remove('show');
                 }, 2000);
+            }
+            
+            // Hiển thị cảnh báo đặc biệt khi thoát khỏi góc
+            function showSpecialWarning(text) {
+                warning.innerHTML = `<i class="fas fa-rocket"></i> ${text}`;
+                warning.style.background = 'linear-gradient(45deg, #4CAF50, #2E7D32)';
+                warning.classList.add('show');
+                
+                setTimeout(() => {
+                    warning.classList.remove('show');
+                    warning.style.background = 'linear-gradient(45deg, #ff4444, #cc0000)';
+                }, 1500);
             }
             
             // Back button functionality
@@ -802,6 +1035,9 @@
                 `;
                 document.head.appendChild(style);
             }
+            
+            // Reset vị trí nút khi trang load
+            resetNoButtonPosition();
         });
     </script>
 </body>

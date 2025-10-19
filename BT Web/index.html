@@ -2,13 +2,14 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1z.0">
-    <title>Web Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project TNTK</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght=200;300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* RESET VÀ BASE STYLES - PHÓNG TO */
         * {
             margin: 0;
             padding: 0;
@@ -21,6 +22,17 @@
             --accent: #ff9a9e;
             --light: #fff5f7;
             --dark: #4a0e2a;
+            --font-size-base: 20px;
+            --font-size-body: 1.2rem;
+            --font-size-h1: 4.5rem;
+            --font-size-h2: 2.8rem;
+            --font-size-h3: 2rem;
+            --font-size-nav: 1.3rem;
+            --font-size-btn: 1.3rem;
+        }
+        
+        html {
+            font-size: var(--font-size-base);
         }
         
         body {
@@ -29,15 +41,25 @@
             background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
             color: var(--dark);
             line-height: 1.6;
-            font-size: 18px; /* Tăng kích thước chữ */
+            font-size: var(--font-size-body);
         }
         
-        /* Navigation */
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* NAVIGATION - PHÓNG TO */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 25px 60px; /* Tăng padding */
+            padding: 1.5rem 4rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -45,29 +67,60 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(15px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
         
         .logo {
-            font-size: 2.2rem; /* Tăng kích thước */
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 0.8rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
         .nav-links {
             display: flex;
-            gap: 40px; /* Tăng khoảng cách */
+            gap: 3rem;
         }
         
         .nav-links a {
             text-decoration: none;
             color: var(--dark);
             font-weight: 600;
-            font-size: 1.2rem; /* Tăng kích thước */
+            font-size: var(--font-size-nav);
             transition: all 0.3s ease;
             position: relative;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .nav-links a:hover {
@@ -81,7 +134,7 @@
             bottom: -8px;
             left: 0;
             width: 0;
-            height: 3px;
+            height: 4px;
             background: var(--primary);
             transition: width 0.3s ease;
         }
@@ -90,113 +143,175 @@
             width: 100%;
         }
         
-        /* Hero Section */
+        /* HERO SECTION - PHÓNG TO RẤT LỚN */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 120px 60px 80px; /* Tăng padding */
+            padding: 8rem 3rem 3rem;
             position: relative;
             overflow: hidden;
         }
         
         .hero-content {
             text-align: center;
-            max-width: 1200px; /* Tăng max-width */
-            margin-top: 20px;
+            max-width: 1200px;
             z-index: 5;
+            animation: heroAppear 1.2s ease-out 0.5s both;
+        }
+        
+        @keyframes heroAppear {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
         
         .hero h1 {
-            font-size: 5.5rem; /* Tăng đáng kể */
+            font-size: var(--font-size-h1);
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 8px 20px rgba(138, 28, 90, 0.3);
             line-height: 1.1;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from {
+                text-shadow: 0 8px 20px rgba(138, 28, 90, 0.3);
+            }
+            to {
+                text-shadow: 0 8px 30px rgba(138, 28, 90, 0.6), 0 0 20px rgba(255, 77, 135, 0.4);
+            }
         }
         
         .hero h2 {
-            font-size: 2.8rem; /* Tăng kích thước */
+            font-size: var(--font-size-h2);
             font-weight: 500;
-            margin-bottom: 40px;
+            margin-bottom: 3rem;
             color: var(--secondary);
+            animation: slideInLeft 1s ease-out 0.8s both;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         .hero p {
-            font-size: 1.6rem; /* Tăng kích thước */
-            margin-bottom: 50px;
+            font-size: 1.8rem;
+            margin-bottom: 3rem;
             color: var(--dark);
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.8;
+            line-height: 1.7;
+            animation: slideInRight 1s ease-out 1s both;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         .hero-btns {
             display: flex;
-            gap: 30px;
+            gap: 2rem;
             justify-content: center;
-            margin-top: 50px;
+            margin-top: 3rem;
             flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .btn {
-            padding: 20px 45px; /* Tăng padding */
+            padding: 1.2rem 2.5rem;
             border-radius: 60px;
-            font-size: 1.3rem; /* Tăng kích thước */
-            font-weight: 700;
+            font-size: var(--font-size-btn);
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             border: none;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 1rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
         }
         
         .btn-primary {
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
-            box-shadow: 0 8px 20px rgba(138, 28, 90, 0.5);
+            box-shadow: 0 6px 20px rgba(138, 28, 90, 0.4);
         }
         
         .btn-primary:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(138, 28, 90, 0.7);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(138, 28, 90, 0.6);
         }
         
         .btn-secondary {
             background: rgba(255, 255, 255, 0.9);
             color: var(--primary);
             border: 3px solid var(--primary);
-            font-weight: 600;
         }
         
         .btn-secondary:hover {
             background: var(--primary);
             color: white;
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.05);
         }
 
-        /* Nút mới - Nhấn vào đây! Anh hỏi bé Kim tí */
         .btn-special {
             background: linear-gradient(45deg, #FFD700, #FFA500);
             color: #8B4513;
             border: 3px solid #FF8C00;
             font-weight: 700;
-            animation: bounce 2s infinite;
-            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.4);
-        }
-        
-        .btn-special:hover {
-            background: linear-gradient(45deg, #FFA500, #FF8C00);
-            color: white;
-            transform: translateY(-8px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(255, 140, 0, 0.6);
-            animation: none;
+            animation: bounce 2s infinite, colorShift 3s infinite alternate;
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
         }
         
         @keyframes bounce {
@@ -204,49 +319,71 @@
             50% { transform: translateY(-10px); }
         }
         
-        /* About Section */
+        @keyframes colorShift {
+            0% { background: linear-gradient(45deg, #FFD700, #FFA500); }
+            50% { background: linear-gradient(45deg, #FFA500, #FF8C00); }
+            100% { background: linear-gradient(45deg, #FF8C00, #FF6347); }
+        }
+        
+        .btn-special:hover {
+            background: linear-gradient(45deg, #FFA500, #FF8C00);
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 12px 30px rgba(255, 140, 0, 0.6);
+            animation: none;
+        }
+        
+        /* ABOUT SECTION - PHÓNG TO */
         .about {
-            padding: 120px 60px; /* Tăng padding */
+            padding: 6rem 3rem;
             background: rgba(255, 255, 255, 0.8);
         }
         
         .section-title {
             text-align: center;
-            font-size: 3.2rem; /* Tăng kích thước */
-            margin-bottom: 80px;
+            font-size: 3.5rem;
+            margin-bottom: 4rem;
             color: var(--secondary);
             position: relative;
             font-weight: 700;
+            animation: fadeIn 1s ease-out both;
         }
         
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -20px;
+            bottom: -1.5rem;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
+            width: 80px;
             height: 6px;
             background: var(--primary);
             border-radius: 3px;
+            animation: expandWidth 1s ease-out 0.5s both;
+        }
+        
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 80px; }
         }
         
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px; /* Tăng gap */
+            gap: 4rem;
             align-items: center;
-            max-width: 1300px; /* Tăng max-width */
+            max-width: 1300px;
             margin: 0 auto;
         }
         
         .about-img {
             position: relative;
-            border-radius: 25px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
             transform: perspective(1000px) rotateY(-5deg);
-            transition: transform 0.5s ease;
+            transition: all 0.5s ease;
+            animation: slideInLeft 1s ease-out both;
         }
         
         .about-img:hover {
@@ -265,33 +402,34 @@
         }
         
         .about-text {
-            padding: 30px;
+            padding: 2rem;
+            animation: slideInRight 1s ease-out 0.3s both;
         }
         
         .about-text h3 {
-            font-size: 2.5rem; /* Tăng kích thước */
-            margin-bottom: 30px;
+            font-size: var(--font-size-h3);
+            margin-bottom: 1.5rem;
             color: var(--secondary);
             font-weight: 600;
         }
         
         .about-text p {
-            margin-bottom: 25px;
-            font-size: 1.3rem; /* Tăng kích thước */
-            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            line-height: 1.7;
         }
         
-        /* Gallery Section */
+        /* GALLERY SECTION - PHÓNG TO */
         .gallery {
-            padding: 120px 60px; /* Tăng padding */
+            padding: 6rem 3rem;
             background: rgba(255, 255, 255, 0.6);
         }
         
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Tăng min-width */
-            gap: 40px; /* Tăng gap */
-            max-width: 1300px; /* Tăng max-width */
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            max-width: 1300px;
             margin: 0 auto;
         }
         
@@ -299,11 +437,27 @@
             position: relative;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-            height: 300px; /* Tăng chiều cao */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            height: 320px;
             cursor: pointer;
-            transition: transform 0.4s ease;
+            transition: all 0.4s ease;
+            animation: zoomIn 0.8s ease-out both;
         }
+        
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
         
         .gallery-item:hover {
             transform: translateY(-10px) scale(1.03);
@@ -326,7 +480,7 @@
             left: 0;
             right: 0;
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            padding: 25px;
+            padding: 1.5rem;
             color: white;
             transform: translateY(100%);
             transition: transform 0.4s ease;
@@ -337,31 +491,42 @@
         }
         
         .gallery-overlay h3 {
-            font-size: 1.5rem; /* Tăng kích thước */
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
         }
         
-        /* Message Section */
+        .gallery-overlay p {
+            font-size: 1.1rem;
+        }
+        
+        /* MESSAGE SECTION - PHÓNG TO */
         .message-section {
-            padding: 120px 60px; /* Tăng padding */
+            padding: 6rem 3rem;
             background: rgba(255, 255, 255, 0.8);
         }
         
         .message-container {
-            max-width: 900px; /* Tăng max-width */
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
-            border-radius: 25px;
-            padding: 60px; /* Tăng padding */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             position: relative;
             overflow: hidden;
             transform: perspective(1000px) rotateX(2deg);
             transition: transform 0.5s ease;
+            animation: messageFloat 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes messageFloat {
+            0% { transform: perspective(1000px) rotateX(2deg) translateY(0); }
+            100% { transform: perspective(1000px) rotateX(2deg) translateY(-10px); }
         }
         
         .message-container:hover {
             transform: perspective(1000px) rotateX(0deg) scale(1.02);
+            animation: none;
         }
         
         .message-container::before {
@@ -372,11 +537,20 @@
             width: 100%;
             height: 8px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
+            animation: rainbow 3s linear infinite;
+        }
+        
+        @keyframes rainbow {
+            0% { background: linear-gradient(90deg, #ff4d87, #8a1c5a); }
+            25% { background: linear-gradient(90deg, #8a1c5a, #ff9a9e); }
+            50% { background: linear-gradient(90deg, #ff9a9e, #fad0c4); }
+            75% { background: linear-gradient(90deg, #fad0c4, #ff4d87); }
+            100% { background: linear-gradient(90deg, #ff4d87, #8a1c5a); }
         }
         
         .message-text {
-            font-size: 1.4rem; /* Tăng kích thước */
-            line-height: 1.9;
+            font-size: 1.5rem;
+            line-height: 1.8;
             text-align: center;
             font-style: italic;
             color: var(--dark);
@@ -384,117 +558,55 @@
         
         .message-author {
             text-align: right;
-            margin-top: 40px;
+            margin-top: 2.5rem;
             font-weight: 700;
             color: var(--primary);
-            font-size: 1.3rem; /* Tăng kích thước */
+            font-size: 1.4rem;
         }
         
-        /* Contact Section */
-        .contact {
-            padding: 120px 60px; /* Tăng padding */
-            background: rgba(255, 255, 255, 0.6);
-        }
-        
-        .contact-content {
-            max-width: 900px; /* Tăng max-width */
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .contact-content p {
-            font-size: 1.4rem; /* Tăng kích thước */
-            margin-bottom: 50px;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 40px; /* Tăng gap */
-            margin-top: 50px;
-        }
-        
-        .social-link {
-            width: 90px; /* Tăng kích thước */
-            height: 90px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem; /* Tăng kích thước */
-            color: var(--primary);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .social-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .social-link:hover::before {
-            left: 100%;
-        }
-        
-        .social-link:hover {
-            transform: translateY(-12px) scale(1.1);
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 15px 30px rgba(138, 28, 90, 0.4);
-        }
-        
-        /* Footer */
+        /* FOOTER - PHÓNG TO */
         footer {
             background: var(--dark);
             color: white;
-            padding: 60px; /* Tăng padding */
+            padding: 4rem 3rem;
             text-align: center;
         }
         
         .footer-content {
-            max-width: 1300px; /* Tăng max-width */
+            max-width: 1000px;
             margin: 0 auto;
         }
         
         .footer-logo {
-            font-size: 2.5rem; /* Tăng kích thước */
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 1.5rem;
             color: var(--light);
         }
         
         .footer-content p {
-            font-size: 1.3rem; /* Tăng kích thước */
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
         }
         
         .copyright {
-            margin-top: 40px;
-            padding-top: 30px;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
             border-top: 2px solid rgba(255, 255, 255, 0.2);
             font-size: 1.1rem;
         }
         
-        /* Floating KIM elements - Di chuyển nhanh */
+        /* FLOATING ELEMENTS - PHÓNG TO */
         .floating-kim {
             position: fixed;
-            font-size: 3.5rem; /* Tăng kích thước */
+            font-size: 3rem;
             font-weight: 900;
             color: rgba(255, 77, 135, 0.8);
             z-index: 10;
             user-select: none;
             pointer-events: none;
-            text-shadow: 0 0 15px rgba(255, 77, 135, 0.6);
-            animation: floatKimFast 8s linear infinite; /* Tốc độ nhanh hơn */
+            text-shadow: 0 0 20px rgba(255, 77, 135, 0.6);
+            animation: floatKimFast 8s linear infinite;
         }
         
         @keyframes floatKimFast {
@@ -514,12 +626,12 @@
             }
         }
         
-        /* Heart animation - Đổi màu */
+        /* HEART ANIMATION - PHÓNG TO */
         .heart {
             color: #ff4d87;
             animation: heartbeat 1.5s ease-in-out infinite, colorChange 3s infinite alternate;
             display: inline-block;
-            font-size: 3rem; /* Tăng kích thước */
+            font-size: 2.5rem;
             text-shadow: 0 0 20px currentColor;
         }
         
@@ -562,12 +674,12 @@
             }
         }
         
-        /* Back to top button */
+        /* BACK TO TOP - PHÓNG TO */
         .back-to-top {
             position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 70px; /* Tăng kích thước */
+            bottom: 3rem;
+            right: 3rem;
+            width: 70px;
             height: 70px;
             border-radius: 50%;
             background: var(--primary);
@@ -575,14 +687,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem; /* Tăng kích thước */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            font-size: 1.8rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
             cursor: pointer;
             opacity: 0;
             visibility: hidden;
             transition: all 0.4s ease;
             z-index: 999;
             border: 3px solid white;
+            animation: pulse 2s infinite;
         }
         
         .back-to-top.active {
@@ -593,56 +706,37 @@
         .back-to-top:hover {
             transform: translateY(-5px) scale(1.1);
             background: var(--secondary);
+            animation: none;
         }
         
-        /* Particle background */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-        }
-        
-        /* Responsive */
+        /* RESPONSIVE DESIGN */
         @media (max-width: 1200px) {
             .hero h1 {
-                font-size: 4.5rem;
+                font-size: 4rem;
             }
             
             .about-content {
                 grid-template-columns: 1fr;
             }
-            
-            .about-img {
-                order: 2;
-            }
-            
-            .about-text {
-                order: 1;
-            }
         }
         
         @media (max-width: 768px) {
+            :root {
+                --font-size-h1: 3.2rem;
+                --font-size-h2: 2.2rem;
+                --font-size-h3: 1.8rem;
+            }
+            
             nav {
-                padding: 20px 30px;
+                padding: 1.2rem 2rem;
             }
             
             .nav-links {
-                display: none;
+                gap: 1.5rem;
             }
             
             .hero {
-                padding: 120px 30px 60px;
-            }
-            
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-            
-            .hero h2 {
-                font-size: 2.2rem;
+                padding: 7rem 2rem 2rem;
             }
             
             .hero-btns {
@@ -656,36 +750,50 @@
                 justify-content: center;
             }
             
-            .about, .gallery, .message-section, .contact {
-                padding: 100px 30px;
+            .about, .gallery, .message-section {
+                padding: 4rem 2rem;
             }
             
-            .message-container {
-                padding: 40px 25px;
+            .section-title {
+                font-size: 2.8rem;
             }
             
             .gallery-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .message-container {
+                padding: 2.5rem;
+            }
         }
         
         @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2.8rem;
+            :root {
+                --font-size-h1: 2.5rem;
+                --font-size-h2: 1.8rem;
             }
             
-            .section-title {
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
                 font-size: 2.5rem;
             }
             
-            .social-links {
-                gap: 20px;
+            .hero p {
+                font-size: 1.4rem;
             }
             
-            .social-link {
-                width: 70px;
-                height: 70px;
-                font-size: 1.8rem;
+            .back-to-top {
+                width: 60px;
+                height: 60px;
+                bottom: 2rem;
+                right: 2rem;
             }
         }
     </style>
@@ -702,11 +810,9 @@
         </div>
         <div class="nav-links">
             <a href="#home">Trang chủ</a>
-            <a href="#about">Giới thiệu</a>
-            <a href="#gallery">Bộ sưu tập</a>
-            <a href="#message">Lời nhắn</a>
         </div>
     </nav>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
@@ -720,7 +826,6 @@
                 <button class="btn btn-secondary" id="messageBtn">
                     <i class="fas fa-envelope"></i> Gửi lời chúc
                 </button>
-                <!-- Nút mới kết nối với xinh.html -->
                 <button class="btn btn-special" id="askKimBtn">
                     <i class="fas fa-question-circle"></i> Nhấn vào đây! Anh hỏi bé Kim tí (nhớ lướt xuống trước)
                 </button>
@@ -733,7 +838,7 @@
         <h2 class="section-title">Về ẻm</h2>
         <div class="about-content">
             <div class="about-img">
-                <img src="images/kim_4.jpg" alt="Trần Ngọc Thiên Kim">
+                <img src="images/kim_4.jpg" alt="Trần Ngọc Thiên Kim" onerror="this.style.display='none'">
             </div>
             <div class="about-text">
                 <h3>Xin chào, tôi là Nhật Duy và tôi muốn nói vài lời</h3>
@@ -749,21 +854,21 @@
         <h2 class="section-title">Khoảnh Khắc Đẹp</h2>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img src="images/kim_1.jpg">
+                <img src="images/kim_1.jpg" alt="Kim 1" onerror="this.style.display='none'">
                 <div class="gallery-overlay">
                     <h3>Nụ cười tỏa nắng</h3>
                     <p>Làm mọi con tim rung động</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="images/kim_2.jpg" >
+                <img src="images/kim_2.jpg" alt="Kim 2" onerror="this.style.display='none'">
                 <div class="gallery-overlay">
                     <h3>Khoảnh khắc tự nhiên</h3>
                     <p>Lúc mà hoa còn phải ganh tị</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="images/kim_3.jpg">
+                <img src="images/kim_3.jpg" alt="Kim 3" onerror="this.style.display='none'">
                 <div class="gallery-overlay">
                     <h3>Ánh mắt ấm áp</h3>
                     <p>Vạn vật đều nghiêng ngả</p>
@@ -801,7 +906,6 @@
         <i class="fas fa-chevron-up"></i>
     </div>
     
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -809,7 +913,7 @@
             particlesJS('particles-js', {
                 particles: {
                     number: {
-                        value: 100, // Tăng số lượng particles
+                        value: 100,
                         density: {
                             enable: true,
                             value_area: 1000
@@ -819,7 +923,7 @@
                         value: ['#ff4d87', '#8a1c5a', '#ff9a9e', '#fad0c4']
                     },
                     shape: {
-                        type: ['circle', 'heart'], // Thêm hình trái tim
+                        type: ['circle', 'heart'],
                         stroke: {
                             width: 0,
                             color: '#000000'
@@ -854,7 +958,7 @@
                     },
                     move: {
                         enable: true,
-                        speed: 3, // Tăng tốc độ
+                        speed: 3,
                         direction: 'none',
                         random: true,
                         straight: false,
@@ -879,55 +983,27 @@
                             mode: 'push'
                         },
                         resize: true
-                    },
-                    modes: {
-                        grab: {
-                            distance: 500,
-                            line_linked: {
-                                opacity: 1
-                            }
-                        },
-                        bubble: {
-                            distance: 500,
-                            size: 50,
-                            duration: 2,
-                            opacity: 0.8,
-                            speed: 3
-                        },
-                        repulse: {
-                            distance: 150,
-                            duration: 0.5
-                        },
-                        push: {
-                            particles_nb: 6
-                        },
-                        remove: {
-                            particles_nb: 3
-                        }
                     }
                 },
                 retina_detect: true
             });
             
-            // Create floating "Kim" text elements - Di chuyển nhanh
+            // Create floating "Kim" text elements
             function createFloatingKim() {
                 const container = document.body;
-                const kimCount = 15; // Tăng số lượng
+                const kimCount = 15;
                 
                 for (let i = 0; i < kimCount; i++) {
                     const kim = document.createElement('div');
                     kim.classList.add('floating-kim');
                     kim.textContent = 'KIM';
                     
-                    // Random start position
                     const startLeft = Math.random() * 100;
                     kim.style.left = `${startLeft}%`;
                     
-                    // Random delay
                     const delay = Math.random() * 5;
                     kim.style.animationDelay = `${delay}s`;
                     
-                    // Random size variation
                     const size = Math.random() * 1 + 2.5;
                     kim.style.fontSize = `${size}rem`;
                     
@@ -946,15 +1022,12 @@
                     animal.classList.add('animal');
                     animal.textContent = animals[i];
                     
-                    // Random vertical position
                     const top = Math.random() * 80 + 10;
                     animal.style.top = `${top}%`;
                     
-                    // Random delay
                     const delay = Math.random() * 10;
                     animal.style.animationDelay = `${delay}s`;
                     
-                    // Random size
                     const size = Math.random() * 1 + 2;
                     animal.style.fontSize = `${size}rem`;
                     
@@ -996,13 +1069,10 @@
                 });
             });
 
-            // Nút mới - Kết nối với xinh.html
             document.getElementById('askKimBtn').addEventListener('click', function() {
-                // Thêm hiệu ứng chuyển trang
                 document.querySelector('.hero-content').style.opacity = '0';
                 document.querySelector('.hero-content').style.transform = 'scale(0.8)';
                 
-                // Chuyển hướng sau khi hiệu ứng hoàn thành
                 setTimeout(function() {
                     window.location.href = "./xinh.html";
                 }, 500);
@@ -1041,12 +1111,19 @@
             }, observerOptions);
             
             // Observe elements for animation
-            const animatedElements = document.querySelectorAll('.about-content, .gallery-grid, .message-container, .contact-content');
+            const animatedElements = document.querySelectorAll('.about-content, .gallery-grid, .message-container');
             animatedElements.forEach(el => {
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(30px)';
                 el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(el);
+            });
+            
+            // Fallback cho images
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.style.display = 'none';
+                });
             });
         });
     </script>
