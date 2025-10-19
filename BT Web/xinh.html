@@ -885,7 +885,14 @@
                 // Create celebration effect
                 createCelebration();
             });
-            
+
+            noBtn.addEventListener('click', function() {
+                message.textContent = 'Bấm 1000000 lần nữa để anh đồng ý';
+                message.classList.add('show');
+                
+                // Create celebration effect
+                createCelebration();
+            });
             // Hiển thị cảnh báo
             function showWarning() {
                 warning.classList.add('show');
