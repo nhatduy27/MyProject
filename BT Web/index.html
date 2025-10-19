@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trần Ngọc Thiên Kim - Cô Gái Đáng Yêu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ff4d87;
+            --secondary: #8a1c5a;
+            --accent: #ff9a9e;
+            --light: #fff5f7;
+            --dark: #4a0e2a;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+            color: var(--dark);
+            line-height: 1.6;
+            font-size: 18px; /* Tăng kích thước chữ */
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 60px; /* Tăng padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .logo {
+            font-size: 2.2rem; /* Tăng kích thước */
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px; /* Tăng khoảng cách */
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.2rem; /* Tăng kích thước */
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 60px 80px; /* Tăng padding */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 1200px; /* Tăng max-width */
+            margin-top: 20px;
+            z-index: 5;
+        }
+        
+        .hero h1 {
+            font-size: 5.5rem; /* Tăng đáng kể */
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 8px 20px rgba(138, 28, 90, 0.3);
+            line-height: 1.1;
+        }
+        
+        .hero h2 {
+            font-size: 2.8rem; /* Tăng kích thước */
+            font-weight: 500;
+            margin-bottom: 40px;
+            color: var(--secondary);
+        }
+        
+        .hero p {
+            font-size: 1.6rem; /* Tăng kích thước */
+            margin-bottom: 50px;
+            color: var(--dark);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 20px 45px; /* Tăng padding */
+            border-radius: 60px;
+            font-size: 1.3rem; /* Tăng kích thước */
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 8px 20px rgba(138, 28, 90, 0.5);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(138, 28, 90, 0.7);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            border: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        /* Nút mới - Nhấn vào đây! Anh hỏi bé Kim tí */
+        .btn-special {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #8B4513;
+            border: 3px solid #FF8C00;
+            font-weight: 700;
+            animation: bounce 2s infinite;
+            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.4);
+        }
+        
+        .btn-special:hover {
+            background: linear-gradient(45deg, #FFA500, #FF8C00);
+            color: white;
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(255, 140, 0, 0.6);
+            animation: none;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* About Section */
+        .about {
+            padding: 120px 60px; /* Tăng padding */
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 3.2rem; /* Tăng kích thước */
+            margin-bottom: 80px;
+            color: var(--secondary);
+            position: relative;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px; /* Tăng gap */
+            align-items: center;
+            max-width: 1300px; /* Tăng max-width */
+            margin: 0 auto;
+        }
+        
+        .about-img {
+            position: relative;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .about-img:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.03);
+        }
+        
+        .about-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .about-img:hover img {
+            transform: scale(1.1);
+        }
+        
+        .about-text {
+            padding: 30px;
+        }
+        
+        .about-text h3 {
+            font-size: 2.5rem; /* Tăng kích thước */
+            margin-bottom: 30px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .about-text p {
+            margin-bottom: 25px;
+            font-size: 1.3rem; /* Tăng kích thước */
+            line-height: 1.8;
+        }
+        
+        /* Gallery Section */
+        .gallery {
+            padding: 120px 60px; /* Tăng padding */
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Tăng min-width */
+            gap: 40px; /* Tăng gap */
+            max-width: 1300px; /* Tăng max-width */
+            margin: 0 auto;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            height: 300px; /* Tăng chiều cao */
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.15);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 25px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+        .gallery-overlay h3 {
+            font-size: 1.5rem; /* Tăng kích thước */
+            margin-bottom: 10px;
+        }
+        
+        /* Message Section */
+        .message-section {
+            padding: 120px 60px; /* Tăng padding */
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .message-container {
+            max-width: 900px; /* Tăng max-width */
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            padding: 60px; /* Tăng padding */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .message-container:hover {
+            transform: perspective(1000px) rotateX(0deg) scale(1.02);
+        }
+        
+        .message-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .message-text {
+            font-size: 1.4rem; /* Tăng kích thước */
+            line-height: 1.9;
+            text-align: center;
+            font-style: italic;
+            color: var(--dark);
+        }
+        
+        .message-author {
+            text-align: right;
+            margin-top: 40px;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.3rem; /* Tăng kích thước */
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 120px 60px; /* Tăng padding */
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+        .contact-content {
+            max-width: 900px; /* Tăng max-width */
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .contact-content p {
+            font-size: 1.4rem; /* Tăng kích thước */
+            margin-bottom: 50px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px; /* Tăng gap */
+            margin-top: 50px;
+        }
+        
+        .social-link {
+            width: 90px; /* Tăng kích thước */
+            height: 90px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem; /* Tăng kích thước */
+            color: var(--primary);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .social-link:hover::before {
+            left: 100%;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-12px) scale(1.1);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 15px 30px rgba(138, 28, 90, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px; /* Tăng padding */
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1300px; /* Tăng max-width */
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem; /* Tăng kích thước */
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--light);
+        }
+        
+        .footer-content p {
+            font-size: 1.3rem; /* Tăng kích thước */
+            margin-bottom: 20px;
+        }
+        
+        .copyright {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 1.1rem;
+        }
+        
+        /* Floating KIM elements - Di chuyển nhanh */
+        .floating-kim {
+            position: fixed;
+            font-size: 3.5rem; /* Tăng kích thước */
+            font-weight: 900;
+            color: rgba(255, 77, 135, 0.8);
+            z-index: 10;
+            user-select: none;
+            pointer-events: none;
+            text-shadow: 0 0 15px rgba(255, 77, 135, 0.6);
+            animation: floatKimFast 8s linear infinite; /* Tốc độ nhanh hơn */
+        }
+        
+        @keyframes floatKimFast {
+            0% {
+                transform: translate(0, 110vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(100vw - 100px), -100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Heart animation - Đổi màu */
+        .heart {
+            color: #ff4d87;
+            animation: heartbeat 1.5s ease-in-out infinite, colorChange 3s infinite alternate;
+            display: inline-block;
+            font-size: 3rem; /* Tăng kích thước */
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1.1); }
+            75% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes colorChange {
+            0% { color: #ff4d87; }
+            25% { color: #ff9a9e; }
+            50% { color: #ff6b9d; }
+            75% { color: #ff4d6d; }
+            100% { color: #ff8fa3; }
+        }
+        
+        /* Animal animations */
+        .animal {
+            position: fixed;
+            font-size: 3rem;
+            z-index: 5;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: animalMove 15s linear infinite;
+        }
+        
+        @keyframes animalMove {
+            0% {
+                transform: translateX(-100px) rotate(0deg);
+            }
+            50% {
+                transform: translateX(calc(100vw + 100px)) rotate(180deg);
+            }
+            100% {
+                transform: translateX(-100px) rotate(360deg);
+            }
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 70px; /* Tăng kích thước */
+            height: 70px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem; /* Tăng kích thước */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 999;
+            border: 3px solid white;
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: var(--secondary);
+        }
+        
+        /* Particle background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 4.5rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-img {
+                order: 2;
+            }
+            
+            .about-text {
+                order: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 30px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                padding: 120px 30px 60px;
+            }
+            
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 350px;
+                justify-content: center;
+            }
+            
+            .about, .gallery, .message-section, .contact {
+                padding: 100px 30px;
+            }
+            
+            .message-container {
+                padding: 40px 25px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .social-links {
+                gap: 20px;
+            }
+            
+            .social-link {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-heart heart"></i>
+            <span>Thiên Kim</span>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Trang chủ</a>
+            <a href="#about">Giới thiệu</a>
+            <a href="#gallery">Bộ sưu tập</a>
+            <a href="#message">Lời nhắn</a>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Xin chào</h2>
+            <h1>TRẦN NGỌC THIÊN KIM</h1>
+            <p>Hôm nay tôi có một vài lời chúc đến cô gái đang đọc dòng chữ này</p>
+            <div class="hero-btns">
+                <button class="btn btn-primary" id="discoverBtn">
+                    <i class="fas fa-search"></i> Khám phá thêm
+                </button>
+                <button class="btn btn-secondary" id="messageBtn">
+                    <i class="fas fa-envelope"></i> Gửi lời chúc
+                </button>
+                <!-- Nút mới kết nối với xinh.html -->
+                <button class="btn btn-special" id="askKimBtn">
+                    <i class="fas fa-question-circle"></i> Nhấn vào đây! Anh hỏi bé Kim tí (nhớ lướt xuống trước)
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2 class="section-title">Về ẻm</h2>
+        <div class="about-content">
+            <div class="about-img">
+                <img src="images/kim_4.jpg" alt="Trần Ngọc Thiên Kim">
+            </div>
+            <div class="about-text">
+                <h3>Xin chào, tôi là Nhật Duy và tôi muốn nói vài lời</h3>
+                <p>Có lẽ em sẽ nghĩ : "Mình là con gái chứ có phải phụ nữ đâu mà cha nội này chúc dữ vậy" nhưng quan trọng là anh thích vậy đó :33 </p>
+                <p>Chúc cô nương đây xinh đẹp đây có một ngày 20/10 vui vẻ, hạnh phúc nhé. Chúc mọi dự định trong tương lai của em sẽ thành công. Hạnh phúc nhá</p>
+                <p>Ngoài ra, có buồn gì đi nữa thì cũng mau quên đi nhé - xinh đẹp dễ thương mà buồn quài, nói rồi á. Tóm lại là chúc em nhiêu đây thoiiii (3đ văn nên hỏng biết nói gì luôn), anh hong có gặp em nên làm món quà tinh thần hoi he hihi</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h2 class="section-title">Khoảnh Khắc Đẹp</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="images/kim_1.jpg">
+                <div class="gallery-overlay">
+                    <h3>Nụ cười tỏa nắng</h3>
+                    <p>Làm mọi con tim rung động</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/kim_2.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Khoảnh khắc tự nhiên</h3>
+                    <p>Lúc mà hoa còn phải ganh tị</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/kim_3.jpg">
+                <div class="gallery-overlay">
+                    <h3>Ánh mắt ấm áp</h3>
+                    <p>Vạn vật đều nghiêng ngả</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Message Section -->
+    <section class="message-section" id="message">
+        <h2 class="section-title">Lời Nhắn Đặc Biệt</h2>
+        <div class="message-container">
+            <div class="message-text">
+                20/10 này, mong em tạm gác lại những điều làm lòng mình nặng. Cuộc sống đôi khi chẳng dịu dàng, nhưng vẫn còn rất nhiều điều nhỏ bé đang chờ em mỉm cười. Chúc em một ngày bình yên, đủ an nhiên để thấy mọi nỗi buồn chỉ là gió thoảng. Và còn nữa đừng quên anh vẫn luôn ở đây – im lặng nhưng không biến mất 😏
+            </div>
+            <div class="message-author">- Từ một người xa lạ -</div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-heart heart"></i> Thiên Kim
+            </div>
+            <p>Một tâm hồn đẹp với trái tim ấm áp và nụ cười tỏa nắng</p>
+            <div class="copyright">
+                &copy; 2025 Trần Ngọc Thiên Kim. Bản quyền thuộc về Dy
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize particles.js
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 100, // Tăng số lượng particles
+                        density: {
+                            enable: true,
+                            value_area: 1000
+                        }
+                    },
+                    color: {
+                        value: ['#ff4d87', '#8a1c5a', '#ff9a9e', '#fad0c4']
+                    },
+                    shape: {
+                        type: ['circle', 'heart'], // Thêm hình trái tim
+                        stroke: {
+                            width: 0,
+                            color: '#000000'
+                        }
+                    },
+                    opacity: {
+                        value: 0.6,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 1,
+                            opacity_min: 0.2,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 6,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 3,
+                            size_min: 0.5,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 180,
+                        color: '#ff4d87',
+                        opacity: 0.3,
+                        width: 2
+                    },
+                    move: {
+                        enable: true,
+                        speed: 3, // Tăng tốc độ
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 800,
+                            rotateY: 1600
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: 'repulse'
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: 'push'
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 500,
+                            line_linked: {
+                                opacity: 1
+                            }
+                        },
+                        bubble: {
+                            distance: 500,
+                            size: 50,
+                            duration: 2,
+                            opacity: 0.8,
+                            speed: 3
+                        },
+                        repulse: {
+                            distance: 150,
+                            duration: 0.5
+                        },
+                        push: {
+                            particles_nb: 6
+                        },
+                        remove: {
+                            particles_nb: 3
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+            
+            // Create floating "Kim" text elements - Di chuyển nhanh
+            function createFloatingKim() {
+                const container = document.body;
+                const kimCount = 15; // Tăng số lượng
+                
+                for (let i = 0; i < kimCount; i++) {
+                    const kim = document.createElement('div');
+                    kim.classList.add('floating-kim');
+                    kim.textContent = 'KIM';
+                    
+                    // Random start position
+                    const startLeft = Math.random() * 100;
+                    kim.style.left = `${startLeft}%`;
+                    
+                    // Random delay
+                    const delay = Math.random() * 5;
+                    kim.style.animationDelay = `${delay}s`;
+                    
+                    // Random size variation
+                    const size = Math.random() * 1 + 2.5;
+                    kim.style.fontSize = `${size}rem`;
+                    
+                    container.appendChild(kim);
+                }
+            }
+            
+            // Create animal elements
+            function createAnimals() {
+                const container = document.body;
+                const animals = ['🐰', '🐱', '🐶', '🐼', '🦊', '🐻', '🐯', '🐨'];
+                const animalCount = 8;
+                
+                for (let i = 0; i < animalCount; i++) {
+                    const animal = document.createElement('div');
+                    animal.classList.add('animal');
+                    animal.textContent = animals[i];
+                    
+                    // Random vertical position
+                    const top = Math.random() * 80 + 10;
+                    animal.style.top = `${top}%`;
+                    
+                    // Random delay
+                    const delay = Math.random() * 10;
+                    animal.style.animationDelay = `${delay}s`;
+                    
+                    // Random size
+                    const size = Math.random() * 1 + 2;
+                    animal.style.fontSize = `${size}rem`;
+                    
+                    container.appendChild(animal);
+                }
+            }
+            
+            createFloatingKim();
+            createAnimals();
+            
+            // Back to top button
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('active');
+                } else {
+                    backToTopBtn.classList.remove('active');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Button functionality
+            document.getElementById('discoverBtn').addEventListener('click', function() {
+                document.getElementById('about').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+            
+            document.getElementById('messageBtn').addEventListener('click', function() {
+                document.getElementById('message').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+            // Nút mới - Kết nối với xinh.html
+            document.getElementById('askKimBtn').addEventListener('click', function() {
+                // Thêm hiệu ứng chuyển trang
+                document.querySelector('.hero-content').style.opacity = '0';
+                document.querySelector('.hero-content').style.transform = 'scale(0.8)';
+                
+                // Chuyển hướng sau khi hiệu ứng hoàn thành
+                setTimeout(function() {
+                    window.location.href = "./xinh.html";
+                }, 500);
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements for animation
+            const animatedElements = document.querySelectorAll('.about-content, .gallery-grid, .message-container, .contact-content');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

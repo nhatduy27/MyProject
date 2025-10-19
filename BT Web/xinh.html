@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Em có xinh không?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ff4d87;
+            --secondary: #8a1c5a;
+            --accent: #ff9a9e;
+            --light: #fff5f7;
+            --dark: #4a0e2a;
+            --yes-color: #4CAF50;
+            --no-color: #f44336;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+            color: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(138, 28, 90, 0.2);
+            line-height: 1.2;
+        }
+        
+        .question {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--secondary);
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 20px 50px;
+            border-radius: 60px;
+            font-size: 2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            min-width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-yes {
+            background: linear-gradient(45deg, var(--yes-color), #2E7D32);
+            color: white;
+            z-index: 100;
+        }
+        
+        .btn-yes:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(76, 175, 80, 0.4);
+        }
+        
+        /* Nút Không với hiệu ứng né chuột */
+        .btn-no-container {
+            position: relative;
+            z-index: 50;
+        }
+        
+        .btn-no {
+            background: linear-gradient(45deg, var(--no-color), #C62828);
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease-out;
+        }
+        
+        /* Thêm chân cho nút Không */
+        .btn-no::before, .btn-no::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background: #C62828;
+            border-radius: 50% 50% 0 0;
+            bottom: -20px;
+            animation: legMove 0.5s ease-in-out infinite alternate;
+        }
+        
+        .btn-no::before {
+            left: 25%;
+            transform: rotate(10deg);
+        }
+        
+        .btn-no::after {
+            right: 25%;
+            transform: rotate(-10deg);
+        }
+        
+        @keyframes legMove {
+            0% { transform: rotate(10deg); }
+            100% { transform: rotate(-10deg); }
+        }
+        
+        /* Cảnh báo khi cố tình lia vào */
+        .warning {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            font-size: 1.1rem;
+        }
+        
+        .warning.show {
+            opacity: 1;
+        }
+        
+        .attempt-counter {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            z-index: 1000;
+        }
+        
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0;
+            animation: floatUp 5s linear infinite;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .message {
+            margin-top: 40px;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .back-btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* Floating KIM elements */
+        .floating-kim {
+            position: fixed;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: rgba(255, 77, 135, 0.7);
+            z-index: 1;
+            user-select: none;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(255, 77, 135, 0.5);
+            animation: floatKim 15s linear infinite;
+        }
+        
+        @keyframes floatKim {
+            0% {
+                transform: translate(0, 110vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(100vw - 100px), -100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Particle background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .question {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 15px 30px;
+                font-size: 1.7rem;
+                min-width: 140px;
+            }
+            
+            .buttons-container {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .question {
+                font-size: 1.7rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1.5rem;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Cảnh báo -->
+    <div class="warning" id="warning">
+        <i class="fas fa-exclamation-triangle"></i> Đừng cố bắt em! Em không thích đâu!
+    </div>
+    
+    <div class="attempt-counter" id="attemptCounter">
+        Số lần cố bắt: <span id="attemptCount">0</span>
+    </div>
+    
+    <!-- Floating KIM elements -->
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Trần Ngọc Thiên Kim</h1>
+        <div class="question">Em có xinh không? 💖</div>
+        
+        <div class="buttons-container">
+            <button class="btn btn-yes" id="yesBtn">
+                <i class="fas fa-heart"></i> CÓ
+            </button>
+            <div class="btn-no-container">
+                <button class="btn btn-no" id="noBtn">
+                    <i class="fas fa-times"></i> KHÔNG
+                </button>
+            </div>
+        </div>
+        
+        <div class="message" id="message">
+            Biết ngay mà! Em là người xinh đẹp nhất! 💕
+        </div>
+        
+        <button class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i> Quay lại trang chính
+        </button>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize particles.js
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 80,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: ['#ff4d87', '#8a1c5a', '#ff9a9e']
+                    },
+                    shape: {
+                        type: 'heart',
+                        stroke: {
+                            width: 0,
+                            color: '#000000'
+                        }
+                    },
+                    opacity: {
+                        value: 0.5,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 8,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 4,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: '#ff4d87',
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 3,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: 'repulse'
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: 'bubble'
+                        },
+                        resize: true
+                    }
+                }
+            });
+            
+            // Create floating hearts
+            function createHearts() {
+                const container = document.getElementById('heartsContainer');
+                const heartCount = 15;
+                
+                for (let i = 0; i < heartCount; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '💖';
+                    
+                    // Random position
+                    const left = Math.random() * 100;
+                    heart.style.left = `${left}%`;
+                    
+                    // Random delay
+                    const delay = Math.random() * 5;
+                    heart.style.animationDelay = `${delay}s`;
+                    
+                    // Random size
+                    const size = Math.random() * 1 + 1.5;
+                    heart.style.fontSize = `${size}rem`;
+                    
+                    container.appendChild(heart);
+                }
+            }
+            
+            // Create floating KIM text
+            function createFloatingKim() {
+                const container = document.body;
+                const kimCount = 8;
+                
+                for (let i = 0; i < kimCount; i++) {
+                    const kim = document.createElement('div');
+                    kim.classList.add('floating-kim');
+                    kim.textContent = 'KIM';
+                    
+                    // Random start position
+                    const startLeft = Math.random() * 100;
+                    kim.style.left = `${startLeft}%`;
+                    
+                    // Random delay
+                    const delay = Math.random() * 10;
+                    kim.style.animationDelay = `${delay}s`;
+                    
+                    // Random size variation
+                    const size = Math.random() * 1 + 1.5;
+                    kim.style.fontSize = `${size}rem`;
+                    
+                    container.appendChild(kim);
+                }
+            }
+            
+            createHearts();
+            createFloatingKim();
+            
+            // Get elements
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const message = document.getElementById('message');
+            const backBtn = document.getElementById('backBtn');
+            const warning = document.getElementById('warning');
+            const attemptCount = document.getElementById('attemptCount');
+            const attemptCounter = document.getElementById('attemptCounter');
+            
+            let attempts = 0;
+            let isChasing = false;
+            
+            // Hiệu ứng né chuột như nam châm cùng cực
+            let mouseX = 0;
+            let mouseY = 0;
+            let noBtnX = 0;
+            let noBtnY = 0;
+            let repulsionDistance = 500; // Khoảng cách bắt đầu né
+            let repulsionForce = 2; // Lực đẩy
+            
+            // Giới hạn di chuyển trong màn hình
+            let maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            let maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            let minX = 20;
+            let minY = 20;
+            
+            // Cập nhật kích thước màn hình khi resize
+            window.addEventListener('resize', function() {
+                maxX = window.innerWidth - noBtn.offsetWidth - 20;
+                maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            });
+            
+            // Theo dõi vị trí chuột
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Lấy vị trí hiện tại của nút Không
+                const noBtnRect = noBtn.getBoundingClientRect();
+                noBtnX = noBtnRect.left + noBtnRect.width / 2;
+                noBtnY = noBtnRect.top + noBtnRect.height / 2;
+                
+                // Tính khoảng cách từ chuột đến nút
+                const distance = Math.sqrt(
+                    Math.pow(mouseX - noBtnX, 2) + 
+                    Math.pow(mouseY - noBtnY, 2)
+                );
+                
+                // Nếu chuột đến gần, đẩy nút ra xa
+                if (distance < repulsionDistance && !isChasing) {
+                    isChasing = true;
+                    attempts++;
+                    attemptCount.textContent = attempts;
+                    
+                    // Hiển thị cảnh báo
+                    showWarning();
+                    
+                    // Tính hướng đẩy (từ chuột ra xa)
+                    const angle = Math.atan2(noBtnY - mouseY, noBtnX - mouseX);
+                    const moveDistance = repulsionForce * (repulsionDistance - distance);
+                    const moveX = Math.cos(angle) * moveDistance;
+                    const moveY = Math.sin(angle) * moveDistance;
+                    
+                    // Lấy vị trí hiện tại
+                    const currentTransform = window.getComputedStyle(noBtn).transform;
+                    let currentTranslateX = 0;
+                    let currentTranslateY = 0;
+                    
+                    if (currentTransform !== 'none') {
+                        const matrix = currentTransform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                        currentTranslateX = parseFloat(matrix[4]) || 0;
+                        currentTranslateY = parseFloat(matrix[5]) || 0;
+                    }
+                    
+                    // Tính vị trí mới với giới hạn
+                    let newX = currentTranslateX + moveX;
+                    let newY = currentTranslateY + moveY;
+                    
+                    // Giới hạn trong màn hình
+                    const noBtnRectAfterMove = {
+                        left: noBtnRect.left + moveX,
+                        top: noBtnRect.top + moveY,
+                        right: noBtnRect.right + moveX,
+                        bottom: noBtnRect.bottom + moveY
+                    };
+                    
+                    // Kiểm tra và điều chỉnh nếu ra khỏi màn hình
+                    if (noBtnRectAfterMove.left < minX) {
+                        newX = currentTranslateX + (minX - noBtnRect.left);
+                    }
+                    if (noBtnRectAfterMove.right > maxX + noBtn.offsetWidth) {
+                        newX = currentTranslateX - (noBtnRectAfterMove.right - (maxX + noBtn.offsetWidth));
+                    }
+                    if (noBtnRectAfterMove.top < minY) {
+                        newY = currentTranslateY + (minY - noBtnRect.top);
+                    }
+                    if (noBtnRectAfterMove.bottom > maxY + noBtn.offsetHeight) {
+                        newY = currentTranslateY - (noBtnRectAfterMove.bottom - (maxY + noBtn.offsetHeight));
+                    }
+                    
+                    // Di chuyển nút
+                    noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
+                    
+                    // Reset trạng thái sau khi di chuyển
+                    setTimeout(() => {
+                        isChasing = false;
+                    }, 300);
+                    
+                    // Hiển thị counter nếu đã thử nhiều lần
+                    if (attempts >= 3) {
+                        attemptCounter.style.display = 'block';
+                    }
+                }
+            });
+            
+            // Yes button functionality
+            yesBtn.addEventListener('click', function() {
+                message.textContent = 'Biết ngay mà! Kim xinh mà - Em chọn giống ý anh 💕';
+                message.classList.add('show');
+                
+                // Create celebration effect
+                createCelebration();
+            });
+            
+            // No button click functionality - rất khó để click được
+            
+            // Hiển thị cảnh báo
+            function showWarning() {
+                warning.classList.add('show');
+                
+                // Các câu cảnh báo ngẫu nhiên
+                const warnings = [
+                    "Hihi, Đố em bắt được anh!",
+                    "Thôi đi! Anh không muốn bị bắt đâuuuuu!",
+                    "Dừng lại ngay! Anh nhắc emmmmm",
+                    "Không được đâu liuliu! Anh nhanh lắm!",
+                    "Buông tay nhau ra - Sơn Tùng MTP",
+                    "Ựa Ựa"
+                ];
+                
+                warning.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${warnings[Math.floor(Math.random() * warnings.length)]}`;
+                
+                setTimeout(() => {
+                    warning.classList.remove('show');
+                }, 2000);
+            }
+            
+            // Back button functionality
+            backBtn.addEventListener('click', function() {
+                // Add transition effect before navigating back
+                document.querySelector('.container').style.opacity = '0';
+                document.querySelector('.container').style.transform = 'scale(0.8)';
+                
+                // Wait for animation to complete then navigate
+                setTimeout(function() {
+                    window.location.href = "./index.html";
+                }, 500);
+            });
+            
+            // Create celebration effect
+            function createCelebration() {
+                const container = document.getElementById('heartsContainer');
+                
+                // Create more hearts
+                for (let i = 0; i < 20; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '💖';
+                    
+                    // Random position
+                    const left = Math.random() * 100;
+                    heart.style.left = `${left}%`;
+                    
+                    // Faster animation for celebration
+                    heart.style.animation = `floatUp 3s linear ${i * 0.1}s`;
+                    
+                    // Random size
+                    const size = Math.random() * 1 + 2;
+                    heart.style.fontSize = `${size}rem`;
+                    
+                    container.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3000);
+                }
+                
+                // Add confetti effect
+                createConfetti();
+            }
+            
+            // Create victory effect khi bắt được nút Không
+            function createVictoryEffect() {
+                const container = document.getElementById('heartsContainer');
+                
+                // Tạo nhiều trái tim hơn
+                for (let i = 0; i < 30; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '🎉';
+                    heart.style.color = '#4CAF50';
+                    
+                    // Random position
+                    const left = Math.random() * 100;
+                    heart.style.left = `${left}%`;
+                    
+                    // Faster animation
+                    heart.style.animation = `floatUp 2s linear ${i * 0.05}s`;
+                    
+                    // Random size
+                    const size = Math.random() * 1 + 2;
+                    heart.style.fontSize = `${size}rem`;
+                    
+                    container.appendChild(heart);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 2000);
+                }
+                
+                createConfetti();
+            }
+            
+            // Create confetti effect
+            function createConfetti() {
+                const colors = ['#ff4d87', '#8a1c5a', '#ff9a9e', '#4CAF50', '#2196F3', '#FFC107'];
+                const container = document.body;
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.top = '-10px';
+                    confetti.style.zIndex = '1';
+                    confetti.style.opacity = '0.8';
+                    
+                    // Animation
+                    confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
+                    
+                    container.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+                
+                // Add keyframes for animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes confettiFall {
+                        0% {
+                            transform: translateY(0) rotate(0deg);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translateY(100vh) rotate(${Math.random() * 360}deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        });
+    </script>
+</body>
+</html>
