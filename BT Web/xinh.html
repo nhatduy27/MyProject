@@ -722,7 +722,7 @@
             let mouseY = 0;
             let noBtnX = 0;
             let noBtnY = 0;
-            let repulsionDistance = 250; // Giảm khoảng cách bắt đầu né
+            let repulsionDistance = 3000; // Giảm khoảng cách bắt đầu né
             let repulsionForce = 2.5; // Tăng lực đẩy
             
             // Giới hạn di chuyển trong toàn bộ màn hình
@@ -893,11 +893,10 @@
                 // Các câu cảnh báo ngẫu nhiên
                 const warnings = [
                     "Hihi, Đố em bắt được anh!",
-                    "Thôi đi! Anh không muốn bị bắt đâuuuuu!",
                     "Dừng lại ngay! Anh nhắc emmmmm",
                     "Không được đâu liuliu! Anh nhanh lắm!",
                     "Buông tay nhau ra - Sơn Tùng MTP",
-                    "Ựa Ựa"
+                    "Ựa Ựa Hự Hự"
                 ];
                 
                 warning.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${warnings[Math.floor(Math.random() * warnings.length)]}`;
