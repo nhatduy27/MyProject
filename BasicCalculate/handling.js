@@ -4,6 +4,7 @@ class computer {
 
         this.previousNumberDisplay= previousNumberDisplay
         this.currentNumberDisplay = currentNumberDisplay
+        this.twoElement = false
         this.clear()
     }
 
@@ -19,7 +20,6 @@ class computer {
         this.currentNumber = '0'
     }
 
-
     delete(){
 
         if(this.currentNumber === '0' || this.currentNumber.length === 1) {
@@ -31,11 +31,15 @@ class computer {
     }
     
 
-
     addNumber(number){
 
         if(number === '.' && this.currentNumber.includes('.')) return
         if(number != '.' && this.currentNumber === '0') this.currentNumber = number
+        else if(this.twoElement == false){
+
+            this.twoElement = true
+            this.currentNumber = number
+        }
         else{
 
             this.currentNumber = this.currentNumber + number
@@ -50,7 +54,7 @@ class computer {
         }
 
         this.previousNumber = this.currentNumber
-        this.currentNumber = '0'
+        this.twoElement = false
         this.operator = operator
     }
 
@@ -75,6 +79,10 @@ class computer {
                 result = numberA - numberB
                 break
             case '÷' :
+                if(numberB == 0){
+                    alert('Không thể chia cho số 0')
+                    break
+                }
                 result = numberA / numberB
                 break
             case 'X' :
@@ -85,7 +93,7 @@ class computer {
         }
 
         this.currentNumber = result.toString()
-        this.previousNumber = ''
+        this.previousNumber = numberA.toString() + ' ' + this.operator + ' ' + numberB.toString() + '=' 
         this.operator = undefined
     }
 
@@ -99,15 +107,18 @@ class computer {
         switch (operator) {
             case '%':
                 result = numberA / 100;
+                this.previousNumber = numberA.toString() + '%'
                 break;
             case 'x²':
                 result = numberA * numberA;
+                this.previousNumber = numberA.toString() + '²'
                 break;
             case '√':
                 if (numberA < 0) {
                     alert('Không thể tính căn bậc 2 của số âm');
                     return;
                 }
+                this.previousNumber = 'sqrt(' + numberA.toString() + ')' 
                 result = Math.sqrt(numberA);
                 break;
             case '+/-':
@@ -151,7 +162,7 @@ class computer {
             this.previousNumberDisplay.innerText = 
                 `${this.getDisplayNumber(this.previousNumber)} ${this.operator}`;
         } else {
-            this.previousNumberDisplay.innerText = '';
+            this.previousNumberDisplay.innerText = this.previousNumber;
         }
     }
 }
