@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #d8d8e8, #b0b1b3);
+    padding: 20px;
+}
+
+.monitor {
+    
+    padding: 15px;
+    background-color: #1a1a1a;
+    text-align: right;
+    color: white;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.calculator {
+    width: 500px;
+    background-color: #2c2c2c;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.previous-operand {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 10px;
+    min-height: 25px;
+}
+
+.current-operand {
+    font-size: 36px;
+    font-weight: 300;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1px;
+    background-color: #3c3c3c;
+}
+
+button {
+    border: none;
+    outline: none;
+    padding: 20px 0;
+    font-size: 18px;
+    background-color: #4a4a4a;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.zero {
+  grid-column: span 2;  
+}
+
+
+button:hover {
+    background-color: #5a5a5a;
+}
+
+button:active {
+    background-color: #3a3a3a;
+}
+
+.operator {
+    background-color: #ff9500;
+}
+
+.operator:hover {
+    background-color: #ffaa33;
+}
+
+.operator:active {
+    background-color: #e68500;
+}
+
+.equals {
+    background-color: #ff9500;
+}
+
+.equals:hover {
+    background-color: #ffaa33;
+}
+
+.equals:active {
+    background-color: #e68500;
+}
+
+.clear, .backspace {
+    background-color: #a6a6a6;
+    color: #1a1a1a;
+}
+
+.clear:hover, .backspace:hover {
+    background-color: #b6b6b6;
+}
+
+.clear:active, .backspace:active {
+    background-color: #969696;
+}
+
+.span-two {
+    grid-column: span 2;
+}
+
+.unary-operator {
+    background-color: #5a5a5a;
+}
+
+.unary-operator:hover {
+    background-color: #6a6a6a;
+}
+
+.unary-operator:active {
+    background-color: #4a4a4a;
+}
+
