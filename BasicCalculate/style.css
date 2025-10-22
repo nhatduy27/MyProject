@@ -136,7 +136,7 @@ button:active {
     body {
 	justify-content: center;
         padding: 10px;
-        align-items: flex-start;
+        align-items: center;
         min-height: 100vh;
     }
     
