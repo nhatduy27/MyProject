@@ -3,7 +3,7 @@ class computer {
     constructor(previousNumberDisplay, currentNumberDisplay){
         this.previousNumberDisplay= previousNumberDisplay
         this.currentNumberDisplay = currentNumberDisplay
-        this.newCalculate = false
+        this.newNumber = false
         this.history = [] // Mảng lưu lịch sử
         this.clear()
     }
@@ -29,31 +29,34 @@ class computer {
     
     addNumber(number){ //Hàm nhập số khi nhấn phím
         if(number === '.' && this.currentNumber.includes('.')) return
-        else if(this.newCalculate){
+        else if(number != '.' && this.currentNumber === '0') this.currentNumber = number
+        else if(this.newNumber){
 
             this.currentNumber = number
-            this.newCalculate = false
+            this.newNumber = false
         }
-        else if(number != '.' && this.currentNumber === '0') this.currentNumber = number
         else{
             this.currentNumber = this.currentNumber + number
         }
     }
 
     chooseOperator(operator){ //Xử lí khi chọn toán tử
-        if(this.previousNumber !== '') {
-            this.compute()
-        }
-
+        
         this.previousNumber = this.currentNumber
-        this.newCalculate = true
+        this.newNumber = true
         this.operator = operator
     }
 
     compute(){ //Hàm tính toán cho phép tính 2 toán hạng
         const numberA = parseFloat(this.previousNumber)
         const numberB = parseFloat(this.currentNumber)
+
+
         if (isNaN(numberA) || isNaN(numberB)){
+            if(!isNaN(numberB)){
+                this.previousNumber = numberB
+                this.operator = ' ='
+            }
             return
         }
 
@@ -85,7 +88,7 @@ class computer {
         this.currentNumber = result.toString()
         this.previousNumber = numberA.toString() + ' ' + this.operator + ' ' + numberB.toString() + ' = ' 
         this.operator = undefined
-        this.newCalculate = true
+        this.newNumber = true
     }
 
     applyUnaryOperation(operator) {  //Hàm tính cho phép tính 1 toán hạng
@@ -123,7 +126,7 @@ class computer {
         this.saveUnaryToHistory(expression, result)
         this.currentNumber = result.toString();
         this.previousNumber = expression;
-        this.newCalculate = true
+        this.newNumber = true
     }
 
 
