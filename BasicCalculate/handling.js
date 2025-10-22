@@ -3,7 +3,7 @@ class computer {
     constructor(previousNumberDisplay, currentNumberDisplay){
         this.previousNumberDisplay= previousNumberDisplay
         this.currentNumberDisplay = currentNumberDisplay
-        this.newNumber = false
+        this.newNumber = false // Đánh dấu phép tính mới
         this.history = [] // Mảng lưu lịch sử
         this.clear()
     }
@@ -29,12 +29,12 @@ class computer {
     
     addNumber(number){ //Hàm nhập số khi nhấn phím
         if(number === '.' && this.currentNumber.includes('.')) return
-        else if(number != '.' && this.currentNumber === '0') this.currentNumber = number
-        else if(this.newNumber){
+        else if(this.newNumber){ //Kiểm tra có phải là số mới
 
             this.currentNumber = number
             this.newNumber = false
         }
+        else if(number != '.' && this.currentNumber === '0') this.currentNumber = number
         else{
             this.currentNumber = this.currentNumber + number
         }
@@ -56,10 +56,10 @@ class computer {
             if(!isNaN(numberB)){
                 this.previousNumber = numberB
                 this.operator = ' ='
+                this.newNumber = true
             }
             return
         }
-
         let result
 
         switch(this.operator){
@@ -129,6 +129,7 @@ class computer {
         this.newNumber = true
     }
 
+    //-----------------NHỮNG HÀM LIÊN QUAN ĐẾN LỊCH SỬ PHÉP TÍNH CÓ SỬ DỤNG AI HỖ TRỢ------------------------------
 
     //2 hàm lưu lại lịch sử của 2 hàm tính toán
     saveToHistory(numA, numB, result) {
@@ -335,6 +336,8 @@ class computer {
         document.body.appendChild(historyPopup);
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+
     getDisplayNumber(number) {
         const stringNumber = number.toString();
         const integerDigits = parseFloat(stringNumber.split('.')[0]);
@@ -429,6 +432,8 @@ historyButton.addEventListener('click', () => {
     calculate.showHistory();
 });
 
+
+//Hỗ trợ bàn phím
 document.addEventListener('keydown', (event) => {
     if (event.key >= '0' && event.key <= '9') {
         calculate.addNumber(event.key);
@@ -449,6 +454,12 @@ document.addEventListener('keydown', (event) => {
         calculate.chooseOperator(operator);
         calculate.updateDisplay();
     }
+
+    if (event.key === 'c') {
+        calculate.clear();
+        calculate.updateDisplay();
+    }
+
     if (event.key === 'Enter' || event.key === '=') {
         calculate.compute();
         calculate.updateDisplay();
