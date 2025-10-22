@@ -1,55 +1,46 @@
 class computer {
 
     constructor(previousNumberDisplay, currentNumberDisplay){
-
         this.previousNumberDisplay= previousNumberDisplay
         this.currentNumberDisplay = currentNumberDisplay
-        this.twoElement = false
+        this.twoElement = false //Đánh dấu phép tính đã có 2 tham số chưa (chủ yếu phục vụ hiển thị cho giống với win11)
+        this.history = [] // Mảng lưu lịch sử
         this.clear()
     }
 
-    clear(){
-
+    clear(){ //Hàm xóa toàn bộ phép tính
         this.previousNumber = ''
         this.currentNumber = '0'
         this.operator = undefined
     }
 
-    clear_entry(){
-
+    clear_entry(){ //Xóa toán hạng hiện tại
         this.currentNumber = '0'
     }
 
-    delete(){
-
+    delete(){ //Hàm xóa 
         if(this.currentNumber === '0' || this.currentNumber.length === 1) {
-        this.currentNumber = '0'
+            this.currentNumber = '0'
         } 
         else {
-                this.currentNumber = this.currentNumber.slice(0, -1)
-            }
+            this.currentNumber = this.currentNumber.slice(0, -1)
+        }
     }
     
-
-    addNumber(number){
-
+    addNumber(number){ //Hàm nhập số khi nhấn phím
         if(number === '.' && this.currentNumber.includes('.')) return
         if(number != '.' && this.currentNumber === '0') this.currentNumber = number
         else if(this.twoElement == false){
-
             this.twoElement = true
             this.currentNumber = number
         }
         else{
-
             this.currentNumber = this.currentNumber + number
         }
     }
 
-    chooseOperator(operator){
-
+    chooseOperator(operator){ //Xử lí khi chọn toán tử
         if(this.previousNumber !== '') {
-
             this.compute()
         }
 
@@ -58,20 +49,16 @@ class computer {
         this.operator = operator
     }
 
-
-    compute(){
-
+    compute(){ //Hàm tính toán cho phép tính 2 toán hạng
         const numberA = parseFloat(this.previousNumber)
         const numberB = parseFloat(this.currentNumber)
         if (isNaN(numberA) || isNaN(numberB)){
-
             return
         }
 
         let result
 
         switch(this.operator){
-
             case '+' :  
                 result = numberA + numberB
                 break
@@ -92,69 +79,278 @@ class computer {
                 return
         }
 
+       
+        this.saveToHistory(numberA, numberB, result) 
         this.currentNumber = result.toString()
-        this.previousNumber = numberA.toString() + ' ' + this.operator + ' ' + numberB.toString() + '=' 
+        this.previousNumber = numberA.toString() + ' ' + this.operator + ' ' + numberB.toString() + ' = ' 
         this.operator = undefined
     }
 
-
-    applyUnaryOperation(operator) {
-
+    applyUnaryOperation(operator) {  //Hàm tính cho phép tính 1 toán hạng
         const numberA = parseFloat(this.currentNumber);
         if (isNaN(numberA)) return;
         
         let result;
+        let expression = '';
+        
         switch (operator) {
             case '%':
                 result = numberA / 100;
-                this.previousNumber = numberA.toString() + '%'
+                expression = numberA.toString() + '%';
                 break;
             case 'x²':
                 result = numberA * numberA;
-                this.previousNumber = numberA.toString() + '²'
+                expression = '('+ numberA.toString() + ')' + '²';
                 break;
             case '√':
                 if (numberA < 0) {
                     alert('Không thể tính căn bậc 2 của số âm');
                     return;
                 }
-                this.previousNumber = 'sqrt(' + numberA.toString() + ')' 
+                expression = '√(' + numberA.toString() + ')';
                 result = Math.sqrt(numberA);
                 break;
             case '+/-':
                 result = -numberA;
+                expression = '±(' + numberA.toString() + ')';
                 break;
             default:
                 return;
         }
         
+        this.saveUnaryToHistory(expression, result)
         this.currentNumber = result.toString();
+        this.previousNumber = expression;
     }
 
 
-    getDisplayNumber(number) {
-            const stringNumber = number.toString();
-            const integerDigits = parseFloat(stringNumber.split('.')[0]);
-            const decimalDigits = stringNumber.split('.')[1];
-            let integerDisplay;
-            
-            if (isNaN(integerDigits)) {
-                integerDisplay = '';
-            } else {
-                integerDisplay = integerDigits.toLocaleString('en', {
-                    maximumFractionDigits: 0
-                });
-            }
-            
-            if (decimalDigits != null) {
-                return `${integerDisplay}.${decimalDigits}`;
-            } else {
-                return integerDisplay;
-            }
+    //2 hàm lưu lại lịch sử của 2 hàm tính toán
+    saveToHistory(numA, numB, result) {
+        const historyItem = {
+            type: 'binary',
+            expression: `${this.getDisplayNumber(numA)} ${this.operator} ${this.getDisplayNumber(numB)}`,
+            result: this.getDisplayNumber(result),
+            timestamp: new Date().toLocaleTimeString()
+        };
+        
+        this.history.unshift(historyItem);
+        
+        if (this.history.length > 20) {
+            this.history.pop();
         }
         
-    updateDisplay() {
+        this.saveHistoryToStorage();
+    }
 
+    saveUnaryToHistory(expression, result) {
+        const historyItem = {
+            type: 'unary',
+            expression: expression,
+            result: this.getDisplayNumber(result),
+            timestamp: new Date().toLocaleTimeString()
+        };
+        
+        this.history.unshift(historyItem);
+        
+        if (this.history.length > 20) {
+            this.history.pop();
+        }
+        
+        this.saveHistoryToStorage();
+    }
+
+    //lưu lịch sử vào localStorage
+    saveHistoryToStorage() {
+        try {
+            localStorage.setItem('calculatorHistory', JSON.stringify(this.history));
+        } catch (e) {
+            console.log('Không thể lưu lịch sử:', e);
+        }
+    }
+
+    
+    //load lên từ localStorage 
+    loadHistoryFromStorage() {
+        try {
+            const savedHistory = localStorage.getItem('calculatorHistory');
+            if (savedHistory) {
+                this.history = JSON.parse(savedHistory);
+            }
+        } catch (e) {
+            console.log('Không thể tải lịch sử:', e);
+        }
+    }
+
+    //xóa lịch sử
+    clearHistory() {
+        this.history = [];
+        try {
+            localStorage.removeItem('calculatorHistory');
+        } catch (e) {
+            console.log('Không thể xóa lịch sử:', e);
+        }
+    }
+
+    //Hiển thị lịch sử
+    showHistory() {
+        if (this.history.length === 0) {
+            alert('Chưa có phép tính nào trong lịch sử');
+            return;
+        }
+
+        //popup hiển thị lịch sử
+        const historyPopup = document.createElement('div');
+        historyPopup.className = 'history-popup';
+        historyPopup.innerHTML = `
+            <div class="history-content">
+                <div class="history-header">
+                    <h3>Lịch Sử Tính Toán</h3>
+                    <button class="close-history">&times;</button>
+                </div>
+                <div class="history-list">
+                    ${this.history.map((item, index) => `
+                        <div class="history-item">
+                            <div class="history-expression">${item.expression}</div>
+                            <div class="history-result">= ${item.result}</div>
+                            <div class="history-time">${item.timestamp}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="history-actions">
+                    <button class="clear-history-btn">Xóa Lịch Sử</button>
+                </div>
+            </div>
+        `;
+
+        // CSS cho popup hiện lịch sử
+        const style = document.createElement('style');
+        style.textContent = `
+            .history-popup {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .history-content {
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                max-width: 400px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .history-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 10px;
+            }
+            .history-header h3 {
+                margin: 0;
+                color: #333;
+            }
+            .close-history {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #666;
+            }
+            .history-list {
+                margin-bottom: 15px;
+            }
+            .history-item {
+                padding: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            .history-expression {
+                font-weight: bold;
+                color: #333;
+            }
+            .history-result {
+                color: #007bff;
+                font-size: 1.1em;
+            }
+            .history-time {
+                font-size: 0.8em;
+                color: #666;
+                text-align: right;
+            }
+            .history-actions {
+                text-align: center;
+            }
+            .clear-history-btn {
+                background: #dc3545;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .clear-history-btn:hover {
+                background: #c82333;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Thêm sự kiện cho nút đóng
+        historyPopup.querySelector('.close-history').addEventListener('click', () => {
+            document.body.removeChild(historyPopup);
+            document.head.removeChild(style);
+        });
+
+        //nút xóa lịch sử
+        historyPopup.querySelector('.clear-history-btn').addEventListener('click', () => {
+            if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử?')) {
+                this.clearHistory();
+                document.body.removeChild(historyPopup);
+                document.head.removeChild(style);
+                alert('Đã xóa lịch sử');
+            }
+        });
+
+        //trường hợp người dùng click ra ngoài để đóng
+        historyPopup.addEventListener('click', (e) => {
+            if (e.target === historyPopup) {
+                document.body.removeChild(historyPopup);
+                document.head.removeChild(style);
+            }
+        });
+
+        document.body.appendChild(historyPopup);
+    }
+
+    getDisplayNumber(number) {
+        const stringNumber = number.toString();
+        const integerDigits = parseFloat(stringNumber.split('.')[0]);
+        const decimalDigits = stringNumber.split('.')[1];
+        let integerDisplay;
+        
+        if (isNaN(integerDigits)) {
+            integerDisplay = '';
+        } else {
+            integerDisplay = integerDigits.toLocaleString('en', {
+                maximumFractionDigits: 0
+            });
+        }
+        
+        if (decimalDigits != null) {
+            return `${integerDisplay}.${decimalDigits}`;
+        } else {
+            return integerDisplay;
+        }
+    }
+    
+    updateDisplay() {
         this.currentNumberDisplay.innerText = 
             this.getDisplayNumber(this.currentNumber);
         
@@ -174,25 +370,25 @@ const equalsButton = document.querySelector('.equals');
 const clearButton = document.querySelector('.clear');
 const clearEntryButton = document.querySelector('.clear-entry')
 const BackSpaceButton = document.querySelector('.backspace');
+const historyButton = document.querySelector('.history'); 
 const previousNumberDisplay = document.querySelector('.previous-operand');
 const currentnumberDisplay = document.querySelector('.current-operand');
 
 const calculate =  new computer(previousNumberDisplay, currentnumberDisplay)
 
-BackSpaceButton.addEventListener('click', () => {
+calculate.loadHistoryFromStorage();
 
+BackSpaceButton.addEventListener('click', () => {
     calculate.delete()
     calculate.updateDisplay()
 });
 
 clearButton.addEventListener('click', () => {
-
     calculate.clear()
     calculate.updateDisplay()
 });
 
 clearEntryButton.addEventListener('click', () => {
-
     calculate.clear_entry()
     calculate.updateDisplay()
 });
@@ -204,7 +400,6 @@ numbersButton.forEach(button => {
     });
 });
 
-
 normalOperator.forEach(button => {
     button.addEventListener('click', () => {
         calculate.chooseOperator(button.innerText);
@@ -212,13 +407,10 @@ normalOperator.forEach(button => {
     });
 });
 
-
 equalsButton.addEventListener('click', () => {
-
     calculate.compute()
     calculate.updateDisplay()
 });
-
 
 unaryOperator.forEach(button => {
     button.addEventListener('click', () => {
@@ -227,6 +419,9 @@ unaryOperator.forEach(button => {
     });
 });
 
+historyButton.addEventListener('click', () => {
+    calculate.showHistory();
+});
 
 document.addEventListener('keydown', (event) => {
     if (event.key >= '0' && event.key <= '9') {
@@ -261,11 +456,3 @@ document.addEventListener('keydown', (event) => {
         calculate.updateDisplay();
     }
 });
-
-
-
-
-
-
-
-

@@ -14,9 +14,17 @@ body {
     padding: 20px;
 }
 
+.calculator {
+    width: 100%;
+    max-width: 500px;
+    background-color: #2c2c2c;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
 .monitor {
-    
-    padding: 15px;
+    padding: 15px 20px;
     background-color: #1a1a1a;
     text-align: right;
     color: white;
@@ -26,28 +34,22 @@ body {
     justify-content: flex-end;
 }
 
-.calculator {
-    width: 500px;
-    background-color: #2c2c2c;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
 .previous-operand {
-    font-size: 18px;
+    font-size: 16px;
     color: #aaa;
     margin-bottom: 10px;
-    min-height: 25px;
+    min-height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .current-operand {
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 300;
     word-wrap: break-word;
     word-break: break-all;
+    line-height: 1.2;
 }
-
 
 .buttons {
     display: grid;
@@ -59,18 +61,14 @@ body {
 button {
     border: none;
     outline: none;
-    padding: 20px 0;
-    font-size: 18px;
+    padding: 18px 5px;
+    font-size: 16px;
     background-color: #4a4a4a;
     color: white;
     cursor: pointer;
     transition: background-color 0.2s;
+    min-height: 60px;
 }
-
-.zero {
-  grid-column: span 2;  
-}
-
 
 button:hover {
     background-color: #5a5a5a;
@@ -133,3 +131,71 @@ button:active {
     background-color: #4a4a4a;
 }
 
+/* Media Queries cho mobile */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+    
+    .calculator {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+    
+    .monitor {
+        padding: 12px 15px;
+        min-height: 100px;
+    }
+    
+    .previous-operand {
+        font-size: 14px;
+        min-height: 20px;
+    }
+    
+    .current-operand {
+        font-size: 24px;
+    }
+    
+    button {
+        padding: 16px 5px;
+        font-size: 15px;
+        min-height: 55px;
+    }
+}
+
+@media (max-width: 320px) {
+    .monitor {
+        padding: 10px 12px;
+        min-height: 90px;
+    }
+    
+    .previous-operand {
+        font-size: 13px;
+    }
+    
+    .current-operand {
+        font-size: 22px;
+    }
+    
+    button {
+        padding: 14px 3px;
+        font-size: 14px;
+        min-height: 50px;
+    }
+}
+
+@media (max-height: 600px) {
+    body {
+        align-items: flex-start;
+        padding-top: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    button {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
