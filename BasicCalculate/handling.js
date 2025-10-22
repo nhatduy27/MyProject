@@ -3,7 +3,7 @@ class computer {
     constructor(previousNumberDisplay, currentNumberDisplay){
         this.previousNumberDisplay= previousNumberDisplay
         this.currentNumberDisplay = currentNumberDisplay
-        this.twoElement = false //Đánh dấu phép tính đã có 2 tham số chưa (chủ yếu phục vụ hiển thị cho giống với win11)
+        this.newCalculate = false
         this.history = [] // Mảng lưu lịch sử
         this.clear()
     }
@@ -29,11 +29,12 @@ class computer {
     
     addNumber(number){ //Hàm nhập số khi nhấn phím
         if(number === '.' && this.currentNumber.includes('.')) return
-        if(number != '.' && this.currentNumber === '0') this.currentNumber = number
-        else if(this.twoElement == false){
-            this.twoElement = true
+        else if(this.newCalculate){
+
             this.currentNumber = number
+            this.newCalculate = false
         }
+        else if(number != '.' && this.currentNumber === '0') this.currentNumber = number
         else{
             this.currentNumber = this.currentNumber + number
         }
@@ -45,7 +46,7 @@ class computer {
         }
 
         this.previousNumber = this.currentNumber
-        this.twoElement = false
+        this.newCalculate = true
         this.operator = operator
     }
 
@@ -84,6 +85,7 @@ class computer {
         this.currentNumber = result.toString()
         this.previousNumber = numberA.toString() + ' ' + this.operator + ' ' + numberB.toString() + ' = ' 
         this.operator = undefined
+        this.newCalculate = true
     }
 
     applyUnaryOperation(operator) {  //Hàm tính cho phép tính 1 toán hạng
@@ -121,6 +123,7 @@ class computer {
         this.saveUnaryToHistory(expression, result)
         this.currentNumber = result.toString();
         this.previousNumber = expression;
+        this.newCalculate = true
     }
 
 
