@@ -134,6 +134,7 @@ button:active {
 /* Media Queries cho mobile */
 @media (max-width: 480px) {
     body {
+	justify-content: center;
         padding: 10px;
         align-items: flex-start;
         min-height: 100vh;
