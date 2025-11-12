@@ -4,6 +4,7 @@ import ButtonGroup from './ButtonGroup';
 import ResultArea from './ResultArea';
 
 const SumCalculator = () => {
+    
   const [number1, setNumber1] = useState('');
   const [number2, setNumber2] = useState('');
   const [sum, setSum] = useState(null);

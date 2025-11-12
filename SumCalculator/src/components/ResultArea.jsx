@@ -11,8 +11,8 @@ const ErrorMessage = ({ error }) => {
 };
 
 const SumResult = ({ sum }) => {
+
   if (sum === null) return null;
-  
   return (
     <div className="sum-result">
       <strong>Sum Result:</strong> {sum}
