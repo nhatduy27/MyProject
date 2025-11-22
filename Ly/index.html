@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phan Lương Ly</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffdde1);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .name-text {
+            color: #ff1493;
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: bold;
+            text-shadow: 
+                0 0 12px #ff69b4, 
+                0 0 24px #ff1493,
+                0 0 36px #ff69b4;
+            text-align: center;
+            animation: textGlow 3s infinite alternate;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            z-index: 10;
+        }
+
+        .heart-container {
+            position: relative;
+            width: min(400px, 85vw);
+            height: min(400px, 85vw);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heart {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.4));
+            z-index: 2;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 80%;
+            border-radius: 50% 50% 0 0;
+            box-shadow: 
+                0 0 25px rgba(255, 105, 180, 0.6),
+                inset 0 0 30px rgba(255, 255, 255, 0.4);
+            animation: colorChange 6s infinite alternate, softGlow 4s infinite alternate;
+        }
+
+        .heart:before {
+            left: 50%;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab, #ffb6c1);
+        }
+
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+            background: linear-gradient(135deg, #ff8fab, #ffb6c1, #ffc8dd);
+        }
+
+        .heart-inner {
+            position: absolute;
+            width: 72%;
+            height: 72%;
+            top: 14%;
+            left: 14%;
+            overflow: hidden;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Tạo hình trái tim tự nhiên hơn */
+            clip-path: path('M140,45 C185,10 255,45 255,125 C255,195 140,255 140,255 C140,255 25,195 25,125 C25,45 95,10 140,45 Z');
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+        }
+
+        .heart-image {
+            width: 105%;
+            height: 105%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+        }
+
+        .description-text {
+            color: #ff1493;
+            font-size: clamp(14px, 3.5vw, 18px);
+            line-height: 1.6;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 20px 30px;
+            border-radius: 25px;
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            max-width: min(600px, 90vw);
+            z-index: 10;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.7), rgba(255, 143, 171, 0.5));
+            transform: rotate(45deg);
+            opacity: 0.6;
+            animation: float 12s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.4));
+            border-radius: 3px;
+        }
+
+        .floating-heart:before,
+        .floating-heart:after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .floating-heart:before {
+            top: -12.5px;
+            left: 0;
+        }
+
+        .floating-heart:after {
+            top: 0;
+            left: -12.5px;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            border: 3px solid rgba(255, 105, 180, 0.3);
+            border-radius: 50%;
+            animation: pulseRing 8s infinite;
+            z-index: 1;
+        }
+
+        .background-effects {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,105,180,0.2) 0%, rgba(255,20,147,0.1) 70%);
+            animation: bubbleFloat 25s infinite linear;
+        }
+
+        .hearts-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-heart {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(255,107,157,0.15), rgba(255,143,171,0.08));
+            transform: rotate(45deg);
+            opacity: 0.2;
+            animation: bgFloat 30s infinite linear;
+            border-radius: 3px;
+        }
+
+        .bg-heart:before,
+        .bg-heart:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .bg-heart:before {
+            top: -25px;
+            left: 0;
+        }
+
+        .bg-heart:after {
+            top: 0;
+            left: -25px;
+        }
+
+        @keyframes colorChange {
+            0% { 
+                background: linear-gradient(135deg, #ff6b9d, #ff8fab, #ffb6c1);
+            }
+            33% { 
+                background: linear-gradient(135deg, #ff8fab, #ffb6c1, #ffc8dd);
+            }
+            66% { 
+                background: linear-gradient(135deg, #ffb6c1, #ffc8dd, #ff6b9d);
+            }
+            100% { 
+                background: linear-gradient(135deg, #ffc8dd, #ff6b9d, #ff8fab);
+            }
+        }
+
+        @keyframes softGlow {
+            0% { 
+                box-shadow: 
+                    0 0 20px rgba(255, 105, 180, 0.5),
+                    inset 0 0 25px rgba(255, 255, 255, 0.3);
+            }
+            100% { 
+                box-shadow: 
+                    0 0 35px rgba(255, 105, 180, 0.7),
+                    inset 0 0 35px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        @keyframes textGlow {
+            0% { 
+                text-shadow: 0 0 12px #ff69b4, 0 0 24px #ff1493; 
+            }
+            100% { 
+                text-shadow: 0 0 18px #ff69b4, 0 0 36px #ff1493, 0 0 54px #ff69b4; 
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(45deg) scale(0);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.6;
+            }
+            85% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(45deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bubbleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bgFloat {
+            0% {
+                transform: translateY(100vh) translateX(-100px) rotate(45deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(45deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                gap: 20px;
+                padding: 15px;
+            }
+            
+            .name-text {
+                padding: 12px 25px;
+            }
+            
+            .description-text {
+                padding: 15px 25px;
+            }
+            
+            .heart-container {
+                width: min(350px, 80vw);
+                height: min(350px, 80vw);
+            }
+            
+            .floating-heart {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .floating-heart:before,
+            .floating-heart:after {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .floating-heart:before {
+                top: -10px;
+            }
+            
+            .floating-heart:after {
+                left: -10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                gap: 15px;
+                padding: 10px;
+            }
+            
+            .name-text {
+                padding: 10px 20px;
+                font-size: 20px;
+            }
+            
+            .description-text {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .heart-container {
+                width: min(320px, 75vw);
+                height: min(320px, 75vw);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="name-text">Phan Lương Ly</div>
+        
+        <div class="heart-container">
+            <div class="pulse-ring"></div>
+            <div class="heart">
+                <div class="heart-inner">
+                    <!-- Thay thế URL hình ảnh bằng hình ảnh của bạn -->
+                    <img src="ly.jpg" alt="Hình ảnh trái tim" class="heart-image">
+                </div>
+            </div>
+        </div>
+        
+        <div class="description-text">
+            Chúc Ly luôn có những ngày thật bình yên, nhẹ nhàng như những cơn gió sớm, và cũng thật rực rỡ như ánh nắng cuối chiều. 
+            Mong rằng mọi điều tốt đẹp nhất sẽ tìm đến Ly, từ những niềm vui nhỏ xíu cho đến những ước mơ lớn lao. 
+            Hy vọng Ly sẽ luôn giữ được nụ cười dịu dàng mà ai nhìn cũng thấy ấm lòng. 
+            Chúc Ly hạnh phúc, may mắn, và mỗi bước Ly đi đều được bao quanh bởi những điều ngọt ngào nhất. 
+            Ly siêu cấp dễ thương 
+            
+        </div>
+        
+        <div class="floating-hearts" id="floatingHearts"></div>
+        <div class="hearts-background" id="heartsBackground"></div>
+        <div class="background-effects" id="backgroundEffects"></div>
+    </div>
+
+    <script>
+        // Tạo các trái tim nhỏ bay lơ lửng
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const count = window.innerWidth < 768 ? 20 : 30;
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                
+                // Vị trí ngẫu nhiên
+                const left = Math.random() * 100;
+                heart.style.left = `${left}%`;
+                
+                // Thời gian delay ngẫu nhiên
+                heart.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Kích thước ngẫu nhiên
+                const baseSize = window.innerWidth < 768 ? 15 : 25;
+                const size = baseSize + Math.random() * 15;
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                
+                container.appendChild(heart);
+            }
+        }
+
+        // Tạo các trái tim nền lớn
+        function createBackgroundHearts() {
+            const container = document.getElementById('heartsBackground');
+            const count = window.innerWidth < 768 ? 12 : 18;
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                
+                // Vị trí ngẫu nhiên
+                const left = Math.random() * 100;
+                heart.style.left = `${left}%`;
+                
+                // Thời gian delay ngẫu nhiên
+                heart.style.animationDelay = `${Math.random() * 30}s`;
+                
+                // Kích thước ngẫu nhiên
+                const size = 30 + Math.random() * 40;
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                
+                container.appendChild(heart);
+            }
+        }
+
+        // Tạo hiệu ứng bong bóng nền
+        function createBubbles() {
+            const container = document.getElementById('backgroundEffects');
+            const count = window.innerWidth < 768 ? 12 : 18;
+            
+            for (let i = 0; i < count; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Kích thước ngẫu nhiên
+                const size = 40 + Math.random() * 120;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // Vị trí ngẫu nhiên
+                const left = Math.random() * 100;
+                bubble.style.left = `${left}%`;
+                
+                // Thời gian delay và duration ngẫu nhiên
+                bubble.style.animationDelay = `${Math.random() * 25}s`;
+                bubble.style.animationDuration = `${20 + Math.random() * 30}s`;
+                
+                container.appendChild(bubble);
+            }
+        }
+
+        // Thêm hiệu ứng vòng xung quanh trái tim
+        function createPulseRings() {
+            const container = document.querySelector('.heart-container');
+            for (let i = 0; i < 2; i++) {
+                const ring = document.createElement('div');
+                ring.classList.add('pulse-ring');
+                ring.style.animationDelay = `${i * 3}s`;
+                container.appendChild(ring);
+            }
+        }
+
+        // Khởi tạo các hiệu ứng (đã loại bỏ sparkles)
+        createFloatingHearts();
+        createBackgroundHearts();
+        createBubbles();
+        createPulseRings();
+
+        
+    </script>
+</body>
+</html>
