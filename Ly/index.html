@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phan Lương Ly</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -17,54 +18,66 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             font-family: 'Arial', sans-serif;
+            padding: 20px;
         }
 
         .container {
             position: relative;
             width: 100%;
-            height: 100vh;
+            max-width: 1400px;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 25px;
+            gap: 30px;
             padding: 20px;
         }
 
         .name-text {
             color: #ff1493;
-            font-size: clamp(24px, 5vw, 36px);
+            font-size: clamp(28px, 6vw, 48px);
             font-weight: bold;
             text-shadow: 
-                0 0 12px #ff69b4, 
-                0 0 24px #ff1493,
-                0 0 36px #ff69b4;
+                0 0 15px #ff69b4, 
+                0 0 30px #ff1493,
+                0 0 45px #ff69b4;
             text-align: center;
             animation: textGlow 3s infinite alternate;
             background: rgba(255, 255, 255, 0.25);
-            padding: 15px 30px;
+            padding: 20px 40px;
             border-radius: 50px;
             backdrop-filter: blur(8px);
             border: 2px solid rgba(255, 255, 255, 0.4);
             z-index: 10;
+            width: fit-content;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
         }
 
         .heart-container {
             position: relative;
-            width: min(400px, 85vw);
-            height: min(400px, 85vw);
+            width: min(700px, 90vw);
+            height: min(700px, 90vw);
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 20px 0;
         }
 
         .heart {
             position: relative;
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.4));
+            filter: drop-shadow(0 0 40px rgba(255, 20, 147, 0.6));
             z-index: 2;
         }
 
@@ -76,8 +89,8 @@
             height: 80%;
             border-radius: 50% 50% 0 0;
             box-shadow: 
-                0 0 25px rgba(255, 105, 180, 0.6),
-                inset 0 0 30px rgba(255, 255, 255, 0.4);
+                0 0 40px rgba(255, 105, 180, 0.8),
+                inset 0 0 50px rgba(255, 255, 255, 0.5);
             animation: colorChange 6s infinite alternate, softGlow 4s infinite alternate;
         }
 
@@ -106,33 +119,134 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Tạo hình trái tim tự nhiên hơn */
             clip-path: path('M140,45 C185,10 255,45 255,125 C255,195 140,255 140,255 C140,255 25,195 25,125 C25,45 95,10 140,45 Z');
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(2px);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(3px);
         }
 
-        .heart-image {
-            width: 105%;
-            height: 105%;
+        .photo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .photo-frame {
+            width: min(450px, 80vw);
+            height: min(450px, 80vw);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.25),
+                0 0 30px rgba(255, 105, 180, 0.5);
+            border: 10px solid white;
+            position: relative;
+            animation: photoFloat 6s ease-in-out infinite;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             object-position: center;
+        }
+
+        .photo-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .decoration-corner {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 4px solid #ff69b4;
+        }
+
+        .decoration-corner:nth-child(1) {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .decoration-corner:nth-child(2) {
+            top: 15px;
+            right: 15px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .decoration-corner:nth-child(3) {
+            bottom: 15px;
+            left: 15px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .decoration-corner:nth-child(4) {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .icon-row {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-circle {
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            color: #ff1493;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            animation: iconFloat 4s ease-in-out infinite;
+            backdrop-filter: blur(6px);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .icon-text {
+            font-size: 16px;
+            color: #ff1493;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
         }
 
         .description-text {
             color: #ff1493;
-            font-size: clamp(14px, 3.5vw, 18px);
-            line-height: 1.6;
-            text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+            font-size: clamp(16px, 4vw, 22px);
+            line-height: 1.7;
+            text-shadow: 0 0 12px rgba(255, 105, 180, 0.9);
             text-align: center;
-            background: rgba(255, 255, 255, 0.25);
-            padding: 20px 30px;
-            border-radius: 25px;
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            max-width: min(600px, 90vw);
+            background: rgba(255, 255, 255, 0.3);
+            padding: 25px 35px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            max-width: min(900px, 90vw);
             z-index: 10;
         }
 
@@ -147,41 +261,41 @@
 
         .floating-heart {
             position: absolute;
-            width: 25px;
-            height: 25px;
-            background: linear-gradient(135deg, rgba(255, 107, 157, 0.7), rgba(255, 143, 171, 0.5));
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.8), rgba(255, 143, 171, 0.6));
             transform: rotate(45deg);
-            opacity: 0.6;
+            opacity: 0.7;
             animation: float 12s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.4));
-            border-radius: 3px;
+            filter: drop-shadow(0 0 12px rgba(255, 105, 180, 0.5));
+            border-radius: 4px;
         }
 
         .floating-heart:before,
         .floating-heart:after {
             content: '';
             position: absolute;
-            width: 25px;
-            height: 25px;
+            width: 35px;
+            height: 35px;
             background: inherit;
             border-radius: 50%;
         }
 
         .floating-heart:before {
-            top: -12.5px;
+            top: -17.5px;
             left: 0;
         }
 
         .floating-heart:after {
             top: 0;
-            left: -12.5px;
+            left: -17.5px;
         }
 
         .pulse-ring {
             position: absolute;
-            width: 120%;
-            height: 120%;
-            border: 3px solid rgba(255, 105, 180, 0.3);
+            width: 130%;
+            height: 130%;
+            border: 4px solid rgba(255, 105, 180, 0.4);
             border-radius: 50%;
             animation: pulseRing 8s infinite;
             z-index: 1;
@@ -200,7 +314,7 @@
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,105,180,0.2) 0%, rgba(255,20,147,0.1) 70%);
+            background: radial-gradient(circle, rgba(255,105,180,0.25) 0%, rgba(255,20,147,0.15) 70%);
             animation: bubbleFloat 25s infinite linear;
         }
 
@@ -216,33 +330,33 @@
 
         .bg-heart {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, rgba(255,107,157,0.15), rgba(255,143,171,0.08));
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(255,143,171,0.12));
             transform: rotate(45deg);
-            opacity: 0.2;
+            opacity: 0.25;
             animation: bgFloat 30s infinite linear;
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         .bg-heart:before,
         .bg-heart:after {
             content: '';
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             background: inherit;
             border-radius: 50%;
         }
 
         .bg-heart:before {
-            top: -25px;
+            top: -35px;
             left: 0;
         }
 
         .bg-heart:after {
             top: 0;
-            left: -25px;
+            left: -35px;
         }
 
         @keyframes colorChange {
@@ -263,22 +377,22 @@
         @keyframes softGlow {
             0% { 
                 box-shadow: 
-                    0 0 20px rgba(255, 105, 180, 0.5),
-                    inset 0 0 25px rgba(255, 255, 255, 0.3);
+                    0 0 30px rgba(255, 105, 180, 0.6),
+                    inset 0 0 40px rgba(255, 255, 255, 0.4);
             }
             100% { 
                 box-shadow: 
-                    0 0 35px rgba(255, 105, 180, 0.7),
-                    inset 0 0 35px rgba(255, 255, 255, 0.5);
+                    0 0 50px rgba(255, 105, 180, 0.9),
+                    inset 0 0 60px rgba(255, 255, 255, 0.6);
             }
         }
 
         @keyframes textGlow {
             0% { 
-                text-shadow: 0 0 12px #ff69b4, 0 0 24px #ff1493; 
+                text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493; 
             }
             100% { 
-                text-shadow: 0 0 18px #ff69b4, 0 0 36px #ff1493, 0 0 54px #ff69b4; 
+                text-shadow: 0 0 25px #ff69b4, 0 0 50px #ff1493, 0 0 75px #ff69b4; 
             }
         }
 
@@ -288,10 +402,10 @@
                 opacity: 0;
             }
             15% {
-                opacity: 0.6;
+                opacity: 0.7;
             }
             85% {
-                opacity: 0.6;
+                opacity: 0.7;
             }
             100% {
                 transform: translateY(-100px) rotate(45deg) scale(1);
@@ -302,13 +416,13 @@
         @keyframes pulseRing {
             0% {
                 transform: scale(0.9);
-                opacity: 0.6;
+                opacity: 0.7;
             }
             50% {
-                opacity: 0.3;
+                opacity: 0.4;
             }
             100% {
-                transform: scale(1.2);
+                transform: scale(1.3);
                 opacity: 0;
             }
         }
@@ -319,10 +433,10 @@
                 opacity: 0;
             }
             10% {
-                opacity: 0.4;
+                opacity: 0.5;
             }
             90% {
-                opacity: 0.4;
+                opacity: 0.5;
             }
             100% {
                 transform: translateY(-100px) translateX(100px) scale(1);
@@ -336,10 +450,10 @@
                 opacity: 0;
             }
             10% {
-                opacity: 0.2;
+                opacity: 0.25;
             }
             90% {
-                opacity: 0.2;
+                opacity: 0.25;
             }
             100% {
                 transform: translateY(-100px) translateX(100px) rotate(45deg) scale(1);
@@ -347,65 +461,154 @@
             }
         }
 
+        @keyframes photoFloat {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(1.5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        @keyframes iconFloat {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-8px) scale(1.08);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .container {
-                gap: 20px;
+                gap: 25px;
                 padding: 15px;
+                min-height: 85vh;
             }
             
             .name-text {
-                padding: 12px 25px;
+                padding: 15px 30px;
             }
             
             .description-text {
-                padding: 15px 25px;
+                padding: 20px 30px;
             }
             
             .heart-container {
-                width: min(350px, 80vw);
-                height: min(350px, 80vw);
+                width: min(600px, 85vw);
+                height: min(600px, 85vw);
+            }
+            
+            .photo-frame {
+                width: min(400px, 75vw);
+                height: min(400px, 75vw);
+            }
+            
+            .icon-circle {
+                width: 75px;
+                height: 75px;
+                font-size: 30px;
+            }
+            
+            .icon-text {
+                font-size: 14px;
             }
             
             .floating-heart {
-                width: 20px;
-                height: 20px;
+                width: 25px;
+                height: 25px;
             }
             
             .floating-heart:before,
             .floating-heart:after {
-                width: 20px;
-                height: 20px;
+                width: 25px;
+                height: 25px;
             }
             
             .floating-heart:before {
-                top: -10px;
+                top: -12.5px;
             }
             
             .floating-heart:after {
-                left: -10px;
+                left: -12.5px;
             }
         }
 
         @media (max-width: 480px) {
-            .container {
-                gap: 15px;
+            body {
                 padding: 10px;
             }
             
+            .container {
+                gap: 20px;
+                padding: 10px;
+                min-height: 80vh;
+            }
+            
             .name-text {
-                padding: 10px 20px;
-                font-size: 20px;
+                padding: 12px 25px;
+                font-size: 24px;
             }
             
             .description-text {
-                padding: 12px 20px;
-                font-size: 14px;
+                padding: 15px 25px;
+                font-size: 16px;
             }
             
             .heart-container {
-                width: min(320px, 75vw);
-                height: min(320px, 75vw);
+                width: min(500px, 80vw);
+                height: min(500px, 80vw);
+            }
+            
+            .photo-frame {
+                width: min(350px, 70vw);
+                height: min(350px, 70vw);
+            }
+            
+            .icon-circle {
+                width: 65px;
+                height: 65px;
+                font-size: 26px;
+            }
+            
+            .icon-text {
+                font-size: 13px;
+            }
+            
+            .icon-row {
+                gap: 20px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .container {
+                min-height: 95vh;
+                justify-content: flex-start;
+                padding-top: 40px;
+            }
+            
+            .heart-container {
+                width: min(400px, 70vw);
+                height: min(400px, 70vw);
+            }
+            
+            .photo-frame {
+                width: min(300px, 60vw);
+                height: min(300px, 60vw);
+            }
+            
+            .description-text {
+                font-size: clamp(14px, 3vw, 18px);
+                padding: 15px 20px;
+                max-height: 30vh;
+                overflow-y: auto;
             }
         }
     </style>
@@ -414,12 +617,52 @@
     <div class="container">
         <div class="name-text">Phan Lương Ly</div>
         
-        <div class="heart-container">
-            <div class="pulse-ring"></div>
-            <div class="heart">
-                <div class="heart-inner">
-                    <!-- Thay thế URL hình ảnh bằng hình ảnh của bạn -->
-                    <img src="ly.jpg" alt="Hình ảnh trái tim" class="heart-image">
+        <div class="content-wrapper">
+            <div class="heart-container">
+                <div class="pulse-ring"></div>
+                <div class="heart">
+                    <div class="heart-inner">
+                        <!-- Trái tim không có ảnh bên trong -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="photo-section">
+                <div class="photo-frame">
+                    <img src="ly.jpg" alt="Phan Lương Ly">
+                    <div class="photo-decoration">
+                        <div class="decoration-corner"></div>
+                        <div class="decoration-corner"></div>
+                        <div class="decoration-corner"></div>
+                        <div class="decoration-corner"></div>
+                    </div>
+                </div>
+                
+                <div class="icon-row">
+                    <div class="icon-item">
+                        <div class="icon-circle" style="animation-delay: 0s;">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="icon-text">Tình Yêu</div>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-circle" style="animation-delay: 0.5s;">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="icon-text">Ngôi Sao</div>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-circle" style="animation-delay: 1s;">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <div class="icon-text">Hạnh Phúc</div>
+                    </div>
+                    <div class="icon-item">
+                        <div class="icon-circle" style="animation-delay: 1.5s;">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="icon-text">Phép Màu</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -430,7 +673,6 @@
             Hy vọng Ly sẽ luôn giữ được nụ cười dịu dàng mà ai nhìn cũng thấy ấm lòng. 
             Chúc Ly hạnh phúc, may mắn, và mỗi bước Ly đi đều được bao quanh bởi những điều ngọt ngào nhất. 
             Ly siêu cấp dễ thương 
-            
         </div>
         
         <div class="floating-hearts" id="floatingHearts"></div>
@@ -442,7 +684,7 @@
         // Tạo các trái tim nhỏ bay lơ lửng
         function createFloatingHearts() {
             const container = document.getElementById('floatingHearts');
-            const count = window.innerWidth < 768 ? 20 : 30;
+            const count = window.innerWidth < 768 ? 25 : 35;
             
             for (let i = 0; i < count; i++) {
                 const heart = document.createElement('div');
@@ -456,8 +698,8 @@
                 heart.style.animationDelay = `${Math.random() * 15}s`;
                 
                 // Kích thước ngẫu nhiên
-                const baseSize = window.innerWidth < 768 ? 15 : 25;
-                const size = baseSize + Math.random() * 15;
+                const baseSize = window.innerWidth < 768 ? 20 : 35;
+                const size = baseSize + Math.random() * 20;
                 heart.style.width = `${size}px`;
                 heart.style.height = `${size}px`;
                 
@@ -468,7 +710,7 @@
         // Tạo các trái tim nền lớn
         function createBackgroundHearts() {
             const container = document.getElementById('heartsBackground');
-            const count = window.innerWidth < 768 ? 12 : 18;
+            const count = window.innerWidth < 768 ? 15 : 22;
             
             for (let i = 0; i < count; i++) {
                 const heart = document.createElement('div');
@@ -482,7 +724,7 @@
                 heart.style.animationDelay = `${Math.random() * 30}s`;
                 
                 // Kích thước ngẫu nhiên
-                const size = 30 + Math.random() * 40;
+                const size = 40 + Math.random() * 50;
                 heart.style.width = `${size}px`;
                 heart.style.height = `${size}px`;
                 
@@ -493,14 +735,14 @@
         // Tạo hiệu ứng bong bóng nền
         function createBubbles() {
             const container = document.getElementById('backgroundEffects');
-            const count = window.innerWidth < 768 ? 12 : 18;
+            const count = window.innerWidth < 768 ? 15 : 22;
             
             for (let i = 0; i < count; i++) {
                 const bubble = document.createElement('div');
                 bubble.classList.add('bubble');
                 
                 // Kích thước ngẫu nhiên
-                const size = 40 + Math.random() * 120;
+                const size = 50 + Math.random() * 150;
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
                 
@@ -519,21 +761,32 @@
         // Thêm hiệu ứng vòng xung quanh trái tim
         function createPulseRings() {
             const container = document.querySelector('.heart-container');
-            for (let i = 0; i < 2; i++) {
+            for (let i = 0; i < 3; i++) {
                 const ring = document.createElement('div');
                 ring.classList.add('pulse-ring');
-                ring.style.animationDelay = `${i * 3}s`;
+                ring.style.animationDelay = `${i * 2.5}s`;
                 container.appendChild(ring);
             }
         }
 
-        // Khởi tạo các hiệu ứng (đã loại bỏ sparkles)
+        // Khởi tạo các hiệu ứng
         createFloatingHearts();
         createBackgroundHearts();
         createBubbles();
         createPulseRings();
 
-        
+        // Xử lý responsive khi thay đổi kích thước màn hình
+        window.addEventListener('resize', function() {
+            // Xóa các hiệu ứng cũ
+            document.getElementById('floatingHearts').innerHTML = '';
+            document.getElementById('heartsBackground').innerHTML = '';
+            document.getElementById('backgroundEffects').innerHTML = '';
+            
+            // Tạo lại các hiệu ứng với kích thước mới
+            createFloatingHearts();
+            createBackgroundHearts();
+            createBubbles();
+        });
     </script>
 </body>
 </html>
