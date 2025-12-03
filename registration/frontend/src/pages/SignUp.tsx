@@ -1,9 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { userApi } from '../api/userApi';
 import { RegisterRequest } from '../types/user';
-import { Link } from 'react-router-dom';
+
 
 const SignUp: React.FC = () => {
   const {

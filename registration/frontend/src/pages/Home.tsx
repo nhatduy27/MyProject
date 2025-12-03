@@ -27,21 +27,6 @@ const Home: React.FC = () => {
               Sign In
             </Link>
           </div>
-
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold mb-2">Secure Registration</h3>
-              <p className="text-gray-600">Password hashing and validation for secure user registration</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold mb-2">Modern UI</h3>
-              <p className="text-gray-600">Clean and responsive interface built with Tailwind CSS</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold mb-2">Full Stack</h3>
-              <p className="text-gray-600">Complete solution with React frontend and NestJS backend</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
