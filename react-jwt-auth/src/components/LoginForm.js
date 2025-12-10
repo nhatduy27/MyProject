@@ -13,12 +13,10 @@ const LoginForm = () => {
   const { mutate: login, isLoading, error, isSuccess, data } = useLogin();
 
 
+  // Redirect khi login thành công
   useEffect(() => {
     if (isSuccess && data) {
-      window.location.hash = '/dashboard';
-    }
-    else{
-      return;
+      navigate('/'); //chuyển hướng quay về trang dashboard nếu đăng nhập thành công
     }
   }, [isSuccess, data, navigate]);
 

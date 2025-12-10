@@ -23,20 +23,8 @@ const Dashboard = () => {
   }, [fetchUserData]);
 
   const handleLogout = () => {
-    // Clear localStorage trước
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    
-    logout(undefined, {
-      onSuccess: () => {
-        
-        window.location.href = '/#/login';
-      },
-      onError: () => {
-        // Fallback: vẫn redirect dù API fail
-        window.location.href = '/#/login';
-      }
-    });
+    logout();
+    window.location.href = '/login';
   };
 
   return (
@@ -69,6 +57,7 @@ const Dashboard = () => {
             </div>
           </div>
         )}
+  
       </div>
       
       <div className="token-info">
@@ -81,7 +70,10 @@ const Dashboard = () => {
         <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>
+        
+
       </div>
+      
     </div>
   );
 };
