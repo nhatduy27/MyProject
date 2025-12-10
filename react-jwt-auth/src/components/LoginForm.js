@@ -13,10 +13,9 @@ const LoginForm = () => {
   const { mutate: login, isLoading, error, isSuccess, data } = useLogin();
 
 
-  // Redirect khi login thành công
   useEffect(() => {
     if (isSuccess && data) {
-      navigate('/'); 
+      window.location.hash = '/dashboard';
     }
     else{
       return;

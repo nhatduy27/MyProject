@@ -1,11 +1,12 @@
+// App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // ← ĐỔI TỪ BrowserRouter
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Dashboard from './components/Dashboard'; // ← IMPORT TỪ components/
+import Dashboard from './components/Dashboard';
 import './App.css';
 
 const queryClient = new QueryClient({
@@ -21,7 +22,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Router>
+        <Router> {/* ← BÂY GIỜ LÀ HashRouter */}
           <div className="App">
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -33,7 +34,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {}
               <Route
                 path="/dashboard"
                 element={

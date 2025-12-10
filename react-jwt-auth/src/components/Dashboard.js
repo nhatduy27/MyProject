@@ -23,13 +23,18 @@ const Dashboard = () => {
   }, [fetchUserData]);
 
   const handleLogout = () => {
+    // Clear localStorage trước
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    
     logout(undefined, {
       onSuccess: () => {
-        window.location.replace('/login'); // redirect không lưu history
+        
+        window.location.href = '/login';
       },
       onError: () => {
-        localStorage.clear();
-        window.location.replace('/login');
+        // Fallback: vẫn redirect dù API fail
+        window.location.href = '/login';
       }
     });
   };
@@ -64,7 +69,6 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-  
       </div>
       
       <div className="token-info">
@@ -77,9 +81,7 @@ const Dashboard = () => {
         <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>
-        
       </div>
-      
     </div>
   );
 };
