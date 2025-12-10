@@ -1,5 +1,4 @@
 import * as jose from 'jose';
-import { MY_KEY_ACCESS, MY_KEY_REFRESH } from '../.env';
 
 const MOCK_API = {
   LOGIN: '/auth/login',
@@ -15,8 +14,8 @@ const TOKEN_LIFETIMES = {
 
 let username = "";
 
-const SECRET_KEY = new TextEncoder().encode(MY_KEY_ACCESS);
-const REFRESH_SECRET_KEY = new TextEncoder().encode(MY_KEY_REFRESH);
+const SECRET_KEY = new TextEncoder().encode(process.env.MY_KEY_ACCESS);
+const REFRESH_SECRET_KEY = new TextEncoder().encode(process.env.MY_KEY_REFRESH);
 
 // Tạo access token với jose
 const createAccessToken = async (payload) => {
