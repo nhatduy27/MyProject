@@ -28,7 +28,6 @@ export const useLogout = () => {
     onSuccess: () => {
       clearTokens();
       queryClient.clear();
-      window.location.href = '/login';
     }
   });
 };

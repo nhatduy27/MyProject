@@ -22,9 +22,15 @@ const Dashboard = () => {
     });
   }, [fetchUserData]);
 
-  const handleLogout = () => {
-    logout();
-    window.location.href = '/login';
+  const handleLogout = async () => {
+    try {
+      await logout(); // Đợi mutation hoàn thành
+    } catch (error) {
+      console.log('Logout error:', error);
+    } finally {
+      // Luôn redirect dù API thành công hay thất bại
+      window.location.href = '/login';
+    }
   };
 
   return (
@@ -71,7 +77,6 @@ const Dashboard = () => {
           Logout
         </button>
         
-
       </div>
       
     </div>
