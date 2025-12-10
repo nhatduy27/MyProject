@@ -23,16 +23,16 @@ function App() {
         <Router>
           <div className="App">
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
               <Route
                 path="/dashboard"
                 element={
                   <ProtectedRoute>
-                    <Home />
+                    <Home /> {/* Giữ nguyên Home */}
                   </ProtectedRoute>
                 }
               />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
           </div>
         </Router>

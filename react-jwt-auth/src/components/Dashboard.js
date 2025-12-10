@@ -7,7 +7,7 @@ const Dashboard = () => {
   const [protectedData, setProtectedData] = useState(null);
   const { mutate: logout } = useLogout();
   const { mutate: fetchUserData } = useUserData();
-  const Navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const { accessToken } = getTokens();
@@ -25,8 +25,21 @@ const Dashboard = () => {
   }, [fetchUserData]);
 
   const handleLogout = () => {
-    logout();
-    Navigate('/', { replace: true });
+    // Clear localStorage trước
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    
+    // Gọi API logout
+    logout(undefined, {
+      onSuccess: () => {
+        console.log('Logout successful, redirecting...');
+        navigate('/login', { replace: true }); 
+      },
+      onError: (error) => {
+        console.log('Logout API error, but still redirecting...', error);
+        navigate('/login', { replace: true }); 
+      }
+    });
   };
 
   return (
@@ -59,7 +72,6 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-  
       </div>
       
       <div className="token-info">
@@ -72,10 +84,7 @@ const Dashboard = () => {
         <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>
-        
-
       </div>
-      
     </div>
   );
 };
