@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../hooks/useAuth';
 
 const LoginForm = () => {
@@ -9,16 +8,16 @@ const LoginForm = () => {
       username: "Nguyễn Nhật Duy"
   }
 });
-  const navigate = useNavigate();
+ 
   const { mutate: login, isLoading, error, isSuccess, data } = useLogin();
 
 
   // Redirect khi login thành công
   useEffect(() => {
     if (isSuccess && data) {
-      navigate('/dashboard'); 
+      window.location.href = '/#/dashboard'; 
     }
-  }, [isSuccess, data, navigate]);
+  }, [isSuccess, data]);
 
   const onSubmit = (formData) => {
     console.log('Form submitted:', formData);

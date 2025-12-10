@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Đổi ở đây
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -20,9 +20,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Router>
+        <Router> {/* Giờ là HashRouter */}
           <Routes>
-
             {/* Khi mở app → vào /login */}
             <Route path="/" element={<Navigate to="/login" replace />} />
 
@@ -40,7 +39,6 @@ function App() {
             />
 
             <Route path="*" element={<Navigate to="/login" replace />} />
-
           </Routes>
         </Router>
       </AuthProvider>

@@ -25,7 +25,6 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/login';
   };
 
   return (
