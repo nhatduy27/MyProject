@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLogout, useUserData } from '../hooks/useAuth';
 import { getTokens } from '../api/axiosClient';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [protectedData, setProtectedData] = useState(null);
   const { mutate: logout } = useLogout();
   const { mutate: fetchUserData } = useUserData();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const { accessToken } = getTokens();
@@ -29,7 +31,7 @@ const Dashboard = () => {
       console.log('Logout error:', error);
     } finally {
       // Luôn redirect dù API thành công hay thất bại
-      window.location.href = '/login';
+      navigate("/login", { replace: true });
     }
   };
 
