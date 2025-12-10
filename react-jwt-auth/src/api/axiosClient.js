@@ -102,7 +102,6 @@ const logout = () => {
   localStorage.removeItem('refreshToken');
   stopTokenCheck();
   isModalShown = false;
-  window.location.href = '/login';
 };
 
 export const setTokens = (newAccessToken, newRefreshToken) => {

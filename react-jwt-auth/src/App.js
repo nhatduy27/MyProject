@@ -21,28 +21,27 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Router>
-          <div className="App">
-            <Routes>
-              {/* Đường dẫn chính: tự động redirect */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              
-              {/* Route công khai */}
-              <Route path="/login" element={<Login />} />
-              
-              {/* Route được bảo vệ */}
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Home />
-                  </ProtectedRoute>
-                }
-              />
-              
-              {/* Route catch-all: giữ nguyên hoặc redirect về /login */}
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-          </div>
+          <Routes>
+
+            {/* Khi mở app → vào /login */}
+            <Route path="/" element={<Navigate to="/login" replace />} />
+
+            {/* Trang login */}
+            <Route path="/login" element={<Login />} />
+
+            {/* Dashboard chỉ truy cập khi đã đăng nhập */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<Navigate to="/login" replace />} />
+
+          </Routes>
         </Router>
       </AuthProvider>
     </QueryClientProvider>
