@@ -1,6 +1,6 @@
-// App.js
+// App.js - SỬA LẠI
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // ← ĐỔI TỪ BrowserRouter
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // ← GIỮ BrowserRouter
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -22,7 +22,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Router> {/* ← BÂY GIỜ LÀ HashRouter */}
+        <Router> {/* ← VẪN LÀ BrowserRouter */}
           <div className="App">
             <Routes>
               <Route path="/login" element={<Login />} />
