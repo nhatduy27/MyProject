@@ -5,7 +5,6 @@ import { MOCK_API } from '../api/mockEndpoints';
 export const useLogin = () => {
   const queryClient = useQueryClient();
   
-  
   return useMutation({
     mutationFn: async (credentials) => {
       const response = await axiosClient.post(MOCK_API.LOGIN, credentials);
@@ -23,9 +22,20 @@ export const useLogout = () => {
   
   return useMutation({
     mutationFn: async () => {
-      await axiosClient.post(MOCK_API.LOGOUT);
+      try {
+        await axiosClient.post(MOCK_API.LOGOUT);
+      } catch (error) {
+        // Vẫn tiếp tục dù API fail
+        console.log('Logout API error (proceeding anyway):', error);
+      }
     },
     onSuccess: () => {
+      clearTokens();
+      queryClient.clear();
+      queryClient.removeQueries(); 
+    },
+    onError: () => {
+     
       clearTokens();
       queryClient.clear();
     }
