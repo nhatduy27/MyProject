@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 import { 
   MOCK_API, 
@@ -71,6 +73,7 @@ const showExpiredModal = () => {
     document.body.removeChild(modal);
     isModalShown = false;
     logout();
+    window.location.href = '/login';
   };
 };
 
@@ -102,7 +105,6 @@ const logout = () => {
   localStorage.removeItem('refreshToken');
   stopTokenCheck();
   isModalShown = false;
-  //window.location.href = '/login';
 };
 
 export const setTokens = (newAccessToken, newRefreshToken) => {
