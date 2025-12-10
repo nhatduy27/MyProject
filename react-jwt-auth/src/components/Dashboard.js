@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLogout, useUserData } from '../hooks/useAuth';
 import { getTokens } from '../api/axiosClient';
-import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [protectedData, setProtectedData] = useState(null);
   const { mutate: logout } = useLogout();
   const { mutate: fetchUserData } = useUserData();
-  const navigate = useNavigate(); 
+  
 
   useEffect(() => {
     const { accessToken } = getTokens();
@@ -25,21 +24,7 @@ const Dashboard = () => {
   }, [fetchUserData]);
 
   const handleLogout = () => {
-    // Clear localStorage trước
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    
-    // Gọi API logout
-    logout(undefined, {
-      onSuccess: () => {
-        console.log('Logout successful, redirecting...');
-        navigate('/login', { replace: true }); 
-      },
-      onError: (error) => {
-        console.log('Logout API error, but still redirecting...', error);
-        navigate('/login', { replace: true }); 
-      }
-    });
+    logout();
   };
 
   return (
@@ -72,6 +57,7 @@ const Dashboard = () => {
             </div>
           </div>
         )}
+  
       </div>
       
       <div className="token-info">
@@ -84,7 +70,10 @@ const Dashboard = () => {
         <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>
+        
+
       </div>
+      
     </div>
   );
 };

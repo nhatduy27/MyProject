@@ -22,18 +22,9 @@ export const useLogout = () => {
   
   return useMutation({
     mutationFn: async () => {
-      try {
-        await axiosClient.post(MOCK_API.LOGOUT);
-      } catch (error) {
-        console.log('Logout API error (proceeding anyway):', error);
-      }
+      await axiosClient.post(MOCK_API.LOGOUT);
     },
     onSuccess: () => {
-      clearTokens();
-      queryClient.clear();
-    },
-    onError: () => {
-     
       clearTokens();
       queryClient.clear();
     }
