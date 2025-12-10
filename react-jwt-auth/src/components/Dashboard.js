@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLogout, useUserData } from '../hooks/useAuth';
 import { getTokens } from '../api/axiosClient';
-import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [protectedData, setProtectedData] = useState(null);
   const { mutate: logout } = useLogout();
   const { mutate: fetchUserData } = useUserData();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const { accessToken } = getTokens();
@@ -24,15 +22,16 @@ const Dashboard = () => {
     });
   }, [fetchUserData]);
 
-  const handleLogout = async () => {
-    try {
-      await logout(); // Đợi mutation hoàn thành
-    } catch (error) {
-      console.log('Logout error:', error);
-    } finally {
-      // Luôn redirect dù API thành công hay thất bại
-      navigate("/login", { replace: true });
-    }
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        window.location.replace('/login'); // redirect không lưu history
+      },
+      onError: () => {
+        localStorage.clear();
+        window.location.replace('/login');
+      }
+    });
   };
 
   return (
