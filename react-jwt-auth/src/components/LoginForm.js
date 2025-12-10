@@ -16,7 +16,7 @@ const LoginForm = () => {
   // Redirect khi login thành công
   useEffect(() => {
     if (isSuccess && data) {
-      navigate('/'); //chuyển hướng quay về trang dashboard nếu đăng nhập thành công
+      navigate('/dashboard'); //chuyển hướng quay về trang dashboard nếu đăng nhập thành công
     }
   }, [isSuccess, data, navigate]);
 
