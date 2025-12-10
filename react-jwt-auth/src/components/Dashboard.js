@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLogout, useUserData } from '../hooks/useAuth';
 import { getTokens } from '../api/axiosClient';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [protectedData, setProtectedData] = useState(null);
   const { mutate: logout } = useLogout();
   const { mutate: fetchUserData } = useUserData();
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const { accessToken } = getTokens();
@@ -25,6 +26,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logout();
+    navigate('/login', { replace: true });
   };
 
   return (
