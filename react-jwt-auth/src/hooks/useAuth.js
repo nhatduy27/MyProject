@@ -5,6 +5,7 @@ import { MOCK_API } from '../api/mockEndpoints';
 export const useLogin = () => {
   const queryClient = useQueryClient();
   
+  
   return useMutation({
     mutationFn: async (credentials) => {
       const response = await axiosClient.post(MOCK_API.LOGIN, credentials);
@@ -27,6 +28,7 @@ export const useLogout = () => {
     onSuccess: () => {
       clearTokens();
       queryClient.clear();
+      window.location.href = '/login';
     }
   });
 };
