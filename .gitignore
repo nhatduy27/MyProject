@@ -1,2 +1,3 @@
 registration/backend/.env
 registration/frontend/.env
+react-jwt-auth/src/.env
