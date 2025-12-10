@@ -25,14 +25,12 @@ export const useLogout = () => {
       try {
         await axiosClient.post(MOCK_API.LOGOUT);
       } catch (error) {
-        // Vẫn tiếp tục dù API fail
         console.log('Logout API error (proceeding anyway):', error);
       }
     },
     onSuccess: () => {
       clearTokens();
       queryClient.clear();
-      queryClient.removeQueries(); 
     },
     onError: () => {
      
