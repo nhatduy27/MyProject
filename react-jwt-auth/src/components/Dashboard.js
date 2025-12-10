@@ -33,11 +33,11 @@ const Dashboard = () => {
     logout(undefined, {
       onSuccess: () => {
         console.log('Logout successful, redirecting...');
-         navigate('/login');
+        navigate('/login', { replace: true }); 
       },
       onError: (error) => {
         console.log('Logout API error, but still redirecting...', error);
-         navigate('/login');
+        navigate('/login', { replace: true }); 
       }
     });
   };
