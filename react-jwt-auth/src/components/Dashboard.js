@@ -30,11 +30,11 @@ const Dashboard = () => {
     logout(undefined, {
       onSuccess: () => {
         
-        window.location.href = '#/login';
+        window.location.href = '/#/login';
       },
       onError: () => {
         // Fallback: vẫn redirect dù API fail
-        window.location.href = '#/login';
+        window.location.href = '/#/login';
       }
     });
   };
