@@ -42,7 +42,7 @@ const QRCodePage = () => {
 					message={error || "Table not found"}
 					onClose={() => setError(null)}
 				/>
-				<Button onClick={() => navigate("/#/tables")}>
+				<Button onClick={() => navigate("/tables")}>
 					Back to Tables
 				</Button>
 			</div>
@@ -57,7 +57,7 @@ const QRCodePage = () => {
 					<Button
 						variant="outline"
 						size="sm"
-						onClick={() => navigate("/#/tables")}
+						onClick={() => navigate("/tables")}
 					>
 						<svg
 							className="w-4 h-4"
