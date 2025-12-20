@@ -6,9 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
 
   server: {
-    port: 5173,                    // Đổi port local thành 3000
-    host: 'localhost',             // Hoặc '0.0.0.0' để truy cập từ thiết bị khác
-    open: true                     // Tự động mở browser
+    port: 5173,                    
+    host: 'localhost',            
+    open: true                   
   },
 
   plugins: [react(), tailwindcss()],
