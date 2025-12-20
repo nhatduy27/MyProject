@@ -168,7 +168,7 @@ const TableList = () => {
 							Download All QR
 						</span>
 					</Button>
-					<Button onClick={() => navigate("/tables/new")}>
+					<Button onClick={() => navigate("/#/tables/new")}>
 						<span className="flex items-center gap-2">
 							<svg
 								className="w-5 h-5"
@@ -469,9 +469,7 @@ const TableList = () => {
 													size="sm"
 													variant="outline"
 													onClick={() =>
-														navigate(
-															`/tables/${table.id}`
-														)
+														navigate(`/#/tables/${table.id}`)
 													}
 												>
 													Edit
@@ -500,9 +498,7 @@ const TableList = () => {
 													size="sm"
 													variant="secondary"
 													onClick={() =>
-														navigate(
-															`/tables/${table.id}/qr`
-														)
+														navigate(`/#/tables/${table.id}/qr`)
 													}
 												>
 													QR Code

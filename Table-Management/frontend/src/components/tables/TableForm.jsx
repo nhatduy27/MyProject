@@ -139,7 +139,7 @@ const TableForm = () => {
 			if (isEditMode) {
 				await tableService.updateTable(id, submitData);
 				setSuccess("Table updated successfully");
-				setTimeout(() => navigate("/tables"), 1500);
+				setTimeout(() => navigate("/#/tables"), 1500);
 			} else {
 				await tableService.createTable(submitData);
 				setSuccess("Table created successfully");
@@ -167,7 +167,7 @@ const TableForm = () => {
 					<Button
 						variant="outline"
 						size="sm"
-						onClick={() => navigate("/tables")}
+						onClick={() => navigate("/#/tables")}
 					>
 						<svg
 							className="w-4 h-4"
@@ -320,7 +320,7 @@ const TableForm = () => {
 							<Button
 								type="button"
 								variant="outline"
-								onClick={() => navigate("/tables")}
+								onClick={() => navigate("/#/tables")}
 								disabled={loading}
 							>
 								Cancel

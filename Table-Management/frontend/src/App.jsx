@@ -1,6 +1,7 @@
+// App.jsx
 import React from "react";
 import {
-	BrowserRouter as Router,
+	HashRouter as Router,  // ĐỔI BrowserRouter THÀNH HashRouter
 	Routes,
 	Route,
 	Navigate,
