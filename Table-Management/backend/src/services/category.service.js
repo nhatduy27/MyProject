@@ -324,7 +324,6 @@ export class CategoryService {
       const existingCategory = await MenuCategory.findOne({
         where: {
           name: data.name.trim(),
-          is_deleted: false
         }
       });
       
@@ -335,10 +334,6 @@ export class CategoryService {
       // 2. Xác định display_order nếu không có
       let displayOrder = data.display_order;
       if (displayOrder === undefined) {
-        // Lấy display_order cao nhất và +1
-        const maxOrder = await MenuCategory.max('display_order', {
-          where: { is_deleted: false }
-        });
         displayOrder = (maxOrder || 0) + 1;
       }
       
