@@ -2,6 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import dns from "dns";
+dns.setDefaultResultOrder("ipv4first");
 
 // Import db từ index (đã bao gồm setup associations)
 import db from '../models/index.js'; 
