@@ -348,7 +348,6 @@ export class CategoryService {
         description: data.description ? data.description.trim() : null,
         display_order: displayOrder,
         status: data.status || 'active',
-        is_deleted: false,
         created_at: new Date(),
         updated_at: new Date()
       };
