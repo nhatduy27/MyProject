@@ -241,6 +241,8 @@ export const downloadAllQRCodes = async (req, res) => {
  */
 export const verifyQRToken = async (req, res) => {
 	try {
+
+		console.log("Đã chạy vào hàm này")
 		const { table: tableId, token } = req.query;
 
 		if (!tableId || !token) {
@@ -319,7 +321,6 @@ export const verifyQRToken = async (req, res) => {
 				},
 				token_info: {
 					created_at: table.qr_token_created_at,
-					restaurant_id: decoded.restaurantId,
 				},
 			},
 		});

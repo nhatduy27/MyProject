@@ -3,41 +3,69 @@ import { useSearchParams } from "react-router-dom";
 import Loading from "../common/Loading";
 import Alert from "../common/Alert";
 import tableService from "../../services/tableService";
+import MenuHeader from "./MenuHeader";
+import MenuFooter from "./MenuFooter";
+import CategoryTabs from "./CategoryTabs";
+import MenuItemCard from "./MenuItemCard";
+import CartSidebar from "./CartSidebar";
+import CartButton from "./CartButton";
+import ModifierModal from "./ModifierModal";
+import useCart from "./hooks/useCart";
 
 const MenuPage = () => {
 	const [searchParams] = useSearchParams();
 	const tableId = searchParams.get("table");
 	const token = searchParams.get("token");
 	const [loading, setLoading] = useState(true);
+	const [menuLoading, setMenuLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [menuError, setMenuError] = useState(null);
 	const [tableInfo, setTableInfo] = useState(null);
+	const [categories, setCategories] = useState([]);
+	const [activeCategory, setActiveCategory] = useState(null);
+	const [selectedItem, setSelectedItem] = useState(null); // For modifier modal
+
+	const {
+		cart,
+		cartTotal,
+		isCartOpen,
+		setIsCartOpen,
+		addToCart,
+		removeFromCart,
+		updateQuantity,
+		clearCart,
+		getTotalItems,
+	} = useCart();
 
 	useEffect(() => {
 		const verifyQRCode = async () => {
 			if (!tableId || !token) {
+				console.error(
+					"Missing parameters - tableId:",
+					tableId,
+					"token:",
+					token
+				);
 				setError("Invalid QR code. Missing table or token.");
 				setLoading(false);
 				return;
 			}
 
 			try {
-				// Verify QR token with backend
+				console.log("TABLE ID (from query):", tableId);
+				console.log("TOKEN (from query):", token);
 				const response = await tableService.verifyQRToken(
 					tableId,
 					token
 				);
 
 				if (response.success) {
-					setTableInfo(response.data.table);
+					setTableInfo(response.data);
 				} else {
 					setError(response.message || "Invalid QR code");
 				}
 			} catch (err) {
 				console.error("QR verification error:", err);
-				setError(
-					err.message ||
-						"This QR code is no longer valid. Please ask staff for assistance."
-				);
 			} finally {
 				setLoading(false);
 			}
@@ -45,6 +73,99 @@ const MenuPage = () => {
 
 		verifyQRCode();
 	}, [tableId, token]);
+
+	// Load menu when tableInfo is available
+	useEffect(() => {
+		const loadMenu = async () => {
+			if (!tableInfo) return;
+
+			setMenuLoading(true);
+			setMenuError(null);
+
+			try {
+				const rawCategories = tableInfo.categories || [];
+				const items = tableInfo.items || [];
+
+				if (rawCategories.length > 0) {
+					const itemsByCategory = items.reduce((acc, item) => {
+						const categoryId = item.category?.id;
+						if (categoryId) {
+							if (!acc[categoryId]) {
+								acc[categoryId] = [];
+							}
+							acc[categoryId].push(item);
+						}
+						return acc;
+					}, {});
+
+					const categoriesWithItems = rawCategories.map(
+						(category) => ({
+							...category,
+							items: itemsByCategory[category.id] || [],
+						})
+					);
+
+					setCategories(categoriesWithItems);
+
+					if (categoriesWithItems.length > 0) {
+						setActiveCategory(categoriesWithItems[0].id);
+					}
+				} else {
+					setMenuError("Failed to load menu");
+				}
+			} catch (err) {
+				console.error("Error loading menu:", err);
+				setMenuError("Unable to load menu. Please try again later.");
+			} finally {
+				setMenuLoading(false);
+			}
+		};
+
+		if (tableInfo) {
+			loadMenu();
+		}
+	}, [tableInfo]);
+
+	const handlePlaceOrder = () => {
+		if (cart.length === 0) {
+			alert("Your cart is empty!");
+			return;
+		}
+
+		const orderData = {
+			table_id: tableInfo.id,
+			items: cart.map((item) => ({
+				menu_item_id: item.id,
+				quantity: item.quantity,
+				base_price: item.basePrice,
+				modifiers: item.modifiers || [],
+				modifiers_total: item.modifiersTotalPrice || 0,
+				unit_price: item.unitPrice,
+				total: item.total,
+			})),
+			total_amount: cartTotal,
+		};
+
+		console.log("Placing order:", orderData);
+		alert(`Order placed successfully! Total: $${cartTotal.toFixed(2)}`);
+		clearCart();
+	};
+
+	// Handle customize (open modifier modal)
+	const handleCustomize = (item) => {
+		setSelectedItem(item);
+	};
+
+	// Handle add to cart from modifier modal
+	const handleAddFromModal = (
+		item,
+		modifiers,
+		quantity,
+		modifiersTotalPrice
+	) => {
+		addToCart(item, modifiers, quantity, modifiersTotalPrice);
+		setSelectedItem(null);
+	};
 
 	if (loading) {
 		return (
@@ -90,200 +211,183 @@ const MenuPage = () => {
 		);
 	}
 
+	const activeCategoryData = categories.find(
+		(cat) => cat.id === activeCategory
+	);
+
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-			{/* Success Message */}
-			<div className="container mx-auto px-4 py-8">
-				<div className="max-w-2xl mx-auto">
-					{/* Success Card */}
-					<div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-						<div className="text-center mb-6">
-							<div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-								<svg
-									className="w-8 h-8 text-green-600"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth={2}
-										d="M5 13l4 4L19 7"
-									/>
-								</svg>
-							</div>
-							<h1 className="text-3xl font-bold text-gray-900 mb-2">
-								Welcome!
-							</h1>
-							<p className="text-xl text-gray-600">
-								Table {tableInfo.table_number}
-							</p>
-						</div>
+		<div className="min-h-screen bg-white">
+			<MenuHeader
+				tableNumber={tableInfo.table?.table_number}
+				cartItemCount={cart.length}
+			/>
 
-						<div className="border-t border-gray-200 pt-6">
-							<div className="bg-blue-50 rounded-lg p-4 mb-6">
-								<div className="flex items-start gap-3">
-									<svg
-										className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
-									<div>
-										<h3 className="font-semibold text-blue-900 mb-1">
-											QR Code Verified Successfully
-										</h3>
-										<p className="text-sm text-blue-700">
-											Your table has been confirmed. The
-											menu and ordering system will be
-											available here.
-										</p>
-									</div>
-								</div>
-							</div>
-
-							{/* Coming Soon Features */}
-							<div className="space-y-4">
-								<h3 className="font-semibold text-gray-900 mb-3">
-									Coming Soon:
-								</h3>
-
-								<div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-									<svg
-										className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-										/>
-									</svg>
-									<div>
-										<p className="font-medium text-gray-900">
-											Digital Menu
-										</p>
-										<p className="text-sm text-gray-600">
-											Browse our full menu with photos and
-											descriptions
-										</p>
-									</div>
-								</div>
-
-								<div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-									<svg
-										className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-										/>
-									</svg>
-									<div>
-										<p className="font-medium text-gray-900">
-											Online Ordering
-										</p>
-										<p className="text-sm text-gray-600">
-											Place orders directly from your
-											table
-										</p>
-									</div>
-								</div>
-
-								<div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-									<svg
-										className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-										/>
-									</svg>
-									<div>
-										<p className="font-medium text-gray-900">
-											Payment System
-										</p>
-										<p className="text-sm text-gray-600">
-											Request bill and pay securely online
-										</p>
-									</div>
-								</div>
-
-								<div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-									<svg
-										className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-										/>
-									</svg>
-									<div>
-										<p className="font-medium text-gray-900">
-											Call Waiter
-										</p>
-										<p className="text-sm text-gray-600">
-											Request assistance with one tap
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
+			<main className="container mx-auto px-4 py-6">
+				{menuError && (
+					<div className="mb-6">
+						<Alert type="warning" message={menuError} />
 					</div>
+				)}
 
-					{/* Info Card */}
-					<div className="bg-white rounded-lg shadow-md p-6 text-center">
-						<p className="text-gray-600 mb-4">
-							This is a table management system demo. The menu and
-							ordering features are under development.
-						</p>
-						<div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-							<svg
-								className="w-4 h-4"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={2}
-									d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-								/>
-							</svg>
-							<span>Secured with JWT token verification</span>
-						</div>
+				{menuLoading ? (
+					<div className="flex justify-center py-12">
+						<Loading text="Loading menu..." />
 					</div>
-				</div>
-			</div>
+				) : categories.length > 0 ? (
+					<div className="mb-8">
+						<h2 className="text-xl font-bold text-gray-900 mb-4">
+							Our Menu
+						</h2>
+
+						<CategoryTabs
+							categories={categories}
+							activeCategory={activeCategory}
+							onSelectCategory={setActiveCategory}
+						/>
+
+						{activeCategoryData ? (
+							<div className="space-y-6">
+								<div className="flex items-center justify-between mb-4">
+									<h3 className="text-xl font-bold text-gray-900">
+										{activeCategoryData.name}
+									</h3>
+									{activeCategoryData.description && (
+										<p className="text-gray-600 text-sm md:text-base max-w-lg hidden md:block">
+											{activeCategoryData.description}
+										</p>
+									)}
+								</div>
+
+								{activeCategoryData.description && (
+									<p className="text-gray-600 text-sm mb-6 md:hidden">
+										{activeCategoryData.description}
+									</p>
+								)}
+
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+									{activeCategoryData.items
+										?.sort(
+											(a, b) =>
+												new Date(b.created_at) -
+												new Date(a.created_at)
+										)
+										.map((item) => (
+											<MenuItemCard
+												key={item.id}
+												item={item}
+												onAddToCart={addToCart}
+												onCustomize={handleCustomize}
+											/>
+										))}
+								</div>
+
+								{(!activeCategoryData.items ||
+									activeCategoryData.items.length === 0) && (
+									<EmptyCategory />
+								)}
+							</div>
+						) : (
+							<div className="text-center py-12">
+								<p className="text-gray-600">
+									Select a category to view items
+								</p>
+							</div>
+						)}
+					</div>
+				) : (
+					<EmptyMenu />
+				)}
+
+				<CartSidebar
+					cart={cart}
+					cartTotal={cartTotal}
+					isOpen={isCartOpen}
+					onClose={() => setIsCartOpen(false)}
+					onUpdateQuantity={updateQuantity}
+					onRemoveItem={removeFromCart}
+					onClearCart={clearCart}
+					onPlaceOrder={handlePlaceOrder}
+				/>
+
+				{!isCartOpen && (
+					<CartButton
+						totalItems={getTotalItems()}
+						cartTotal={cartTotal}
+						onClick={() => setIsCartOpen(true)}
+					/>
+				)}
+
+				{/* Modifier Modal */}
+				<ModifierModal
+					item={selectedItem}
+					isOpen={!!selectedItem}
+					onClose={() => setSelectedItem(null)}
+					onAddToCart={handleAddFromModal}
+				/>
+			</main>
+
+			<MenuFooter />
 		</div>
 	);
 };
+
+// Small sub-components for empty states
+const EmptyCategory = () => (
+	<div className="text-center py-12">
+		<div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+			<svg
+				className="w-8 h-8 text-gray-400"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth={2}
+					d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+				/>
+			</svg>
+		</div>
+		<h3 className="text-lg font-medium text-gray-900 mb-2">
+			No items available
+		</h3>
+		<p className="text-gray-600">
+			Check back later for new menu items in this category.
+		</p>
+	</div>
+);
+
+const EmptyMenu = () => (
+	<div className="text-center py-12">
+		<div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+			<svg
+				className="w-8 h-8 text-gray-400"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth={2}
+					d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+				/>
+			</svg>
+		</div>
+		<h3 className="text-lg font-medium text-gray-900 mb-2">
+			Menu Not Available
+		</h3>
+		<p className="text-gray-600">
+			The menu is currently being prepared. Please check back soon.
+		</p>
+		<button
+			onClick={() => window.location.reload()}
+			className="mt-4 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
+		>
+			Retry
+		</button>
+	</div>
+);
 
 export default MenuPage;
