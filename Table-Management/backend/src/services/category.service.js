@@ -311,7 +311,6 @@ export class CategoryService {
   }
 
 
-
   static async create(data) {
     // Validate dữ liệu đầu vào
     const validationErrors = this.validateCategoryData(data);
@@ -334,6 +333,10 @@ export class CategoryService {
       // 2. Xác định display_order nếu không có
       let displayOrder = data.display_order;
       if (displayOrder === undefined) {
+        // Lấy display_order cao nhất và +1
+        const maxOrder = await MenuCategory.max('display_order', {
+
+        });
         displayOrder = (maxOrder || 0) + 1;
       }
       
