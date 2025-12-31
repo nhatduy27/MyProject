@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Năm Mới 2026 - Nhật Duy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #DC143C 0%, #8B0000 50%, #4B0000 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            padding: 20px;
+        }
+
+        .countdown {
+            font-size: clamp(8rem, 25vw, 15rem);
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.8),
+                         0 0 80px rgba(255, 255, 255, 0.6),
+                         0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: pulse 1s ease-in-out;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            color: #FFD700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
+                         0 0 60px rgba(255, 255, 255, 0.5),
+                         0 5px 20px rgba(0, 0, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: 20px;
+            letter-spacing: 0.1em;
+        }
+
+        .year {
+            font-size: clamp(6rem, 18vw, 12rem);
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700, #FF4500, #FFD700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite, bounce 2s ease-in-out infinite;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 1);
+            margin: 20px 0;
+            filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.6));
+        }
+
+        .wishes {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: #FFF;
+            font-weight: 600;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7),
+                         0 0 30px rgba(255, 215, 0, 0.4);
+            margin-top: 20px;
+            animation: fadeSlide 3s ease-in-out infinite;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+            line-height: 1.6;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Phần mới thêm cho Nhật Duy */
+        .signature {
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+            color: #FFD700;
+            margin-top: 20px;
+            font-style: italic;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            letter-spacing: 1px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .decorative-line {
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            margin: 15px auto;
+            animation: pulse-line 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            }
+            to {
+                text-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 10px white;
+            }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        @keyframes fadeSlide {
+            0%, 100% { opacity: 0.85; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-10px); }
+        }
+
+        @keyframes pulse-line {
+            0%, 100% { opacity: 0.5; transform: scaleX(0.8); }
+            50% { opacity: 1; transform: scaleX(1); }
+        }
+
+        .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: explode 1.8s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.5); opacity: 0; }
+        }
+
+        .floating-particle {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: floatUp 10s linear infinite;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; transform: translateY(90vh) scale(1); }
+            100% { transform: translateY(-20vh) rotate(360deg) scale(0.5); opacity: 0; }
+        }
+
+        .ribbon {
+            position: fixed;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.4) 50%, transparent 100%);
+            animation: ribbon-move 4s linear infinite;
+            z-index: 2;
+        }
+
+        .ribbon-top { top: 0; transform: rotate(-3deg); }
+        .ribbon-bottom { bottom: 0; transform: rotate(3deg); }
+
+        @keyframes ribbon-move {
+            0% { background-position: -200% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            .wishes { font-size: 1.1rem; }
+            .signature { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti"></canvas>
+    <div class="ribbon ribbon-top"></div>
+    <div class="ribbon ribbon-bottom"></div>
+    
+    <div class="container">
+        <div id="countdownDiv">
+            <div class="countdown" id="countdownNumber">3</div>
+        </div>
+        
+        <div id="celebrationDiv" class="hidden">
+            <div class="decorative-line"></div>
+            <h1>CHÚC MỪNG NĂM MỚI</h1>
+            <div class="decorative-line"></div>
+            <div class="year">2026</div>
+            <div class="decorative-line"></div>
+            <div class="wishes" id="wishText">
+                Chúc Mừng Năm Mới - Vạn Sự Như Ý
+            </div>
+            <div class="signature">Nhật Duy chúc mọi người năm mới vui vẻ</div>
+            <div class="decorative-line"></div>
+        </div>
+    </div>
+
+    <script>
+        const wishes = [
+            "Chúc Mừng Năm Mới - Vạn Sự Như Ý",
+            "An Khang Thịnh Vượng - Phát Tài Phát Lộc",
+            "Sức Khỏe Dồi Dào - Hạnh Phúc Tràn Đầy",
+            "Gia Đình Hòa Thuận - Công Danh Thăng Tiến",
+            "Vạn Sự Hanh Thông - Như Ý Cát Tường",
+            "Tài Lộc Dồi Dào - Tiền Vào Như Nước",
+            "May Mắn Liên Miên - Bình An Mãi Mãi",
+            "Phúc Lộc Thọ - Tấn Tài Tấn Lộc"
+        ];
+
+        let currentWishIndex = 0;
+        let countdownStarted = false;
+
+        function createFloatingParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'floating-particle';
+            const colors = ['#FFD700', '#FF0000', '#FFA500', '#FFFF00'];
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (7 + Math.random() * 6) + 's';
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 10000);
+        }
+
+        function startCountdown() {
+            if (countdownStarted) return;
+            countdownStarted = true;
+            const countdownNumber = document.getElementById('countdownNumber');
+            let count = 3;
+
+            const countInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownNumber.textContent = count;
+                    countdownNumber.style.animation = 'none';
+                    setTimeout(() => countdownNumber.style.animation = 'pulse 1s ease-in-out', 10);
+                } else {
+                    clearInterval(countInterval);
+                    showCelebration();
+                }
+            }, 1000);
+        }
+
+        function showCelebration() {
+            document.getElementById('countdownDiv').classList.add('hidden');
+            document.getElementById('celebrationDiv').classList.remove('hidden');
+            
+            setInterval(() => {
+                createFirework(Math.random() * window.innerWidth, Math.random() * window.innerHeight * 0.7);
+            }, 200);
+
+            setInterval(() => createFloatingParticle(), 500);
+
+            setInterval(() => {
+                currentWishIndex = (currentWishIndex + 1) % wishes.length;
+                const wishText = document.getElementById('wishText');
+                wishText.style.opacity = '0';
+                setTimeout(() => {
+                    wishText.textContent = wishes[currentWishIndex];
+                    wishText.style.opacity = '1';
+                }, 500);
+            }, 3500);
+        }
+
+        function createFirework(x, y) {
+            const colors = ['#FFD700', '#FF0000', '#FFA500', '#FFF', '#FF1493', '#00FF00'];
+            for (let i = 0; i < 40; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = x + 'px';
+                firework.style.top = y + 'px';
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                firework.style.background = color;
+                firework.style.boxShadow = `0 0 10px ${color}`;
+                const angle = (Math.PI * 2 * i) / 40;
+                const velocity = 80 + Math.random() * 100;
+                firework.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+                firework.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1500);
+            }
+        }
+
+        // Canvas Confetti
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const confetti = [];
+
+        for (let i = 0; i < 150; i++) {
+            confetti.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 6 + 2,
+                color: ['#FFD700', '#FF0000', '#FFF'][Math.floor(Math.random() * 3)],
+                v: Math.random() * 2 + 1
+            });
+        }
+
+        function drawConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confetti.forEach(c => {
+                ctx.beginPath();
+                ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                ctx.fillStyle = c.color;
+                ctx.fill();
+                c.y += c.v;
+                if (c.y > canvas.height) c.y = -10;
+            });
+            requestAnimationFrame(drawConfetti);
+        }
+
+        drawConfetti();
+        setTimeout(startCountdown, 1000);
+        document.addEventListener('click', (e) => createFirework(e.clientX, e.clientY));
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
