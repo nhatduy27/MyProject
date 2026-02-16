@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chúc Mừng Năm Mới Bính Ngọ</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Be+Vietnam+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;height:100%;overflow:hidden;font-family:'Be Vietnam Pro',sans-serif;background:#06000d}
+    .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 90% 55% at 50% -5%,#5a0010 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 10% 110%,#2a0e00 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 90% 110%,#1a0030 0%,transparent 55%),#06000d}
+    #particles{position:fixed;inset:0;z-index:1;pointer-events:none}
+    .pt{position:absolute;border-radius:50%;animation:ptRise linear infinite;opacity:0}
+    @keyframes ptRise{0%{transform:translateY(105vh) scale(.3);opacity:0}8%{opacity:1}92%{opacity:.7}100%{transform:translateY(-5vh) scale(1);opacity:0}}
+    .fw{position:fixed;pointer-events:none;z-index:2}
+    .sk{position:absolute;border-radius:50%;animation:skFly var(--d) ease-out forwards}
+    @keyframes skFly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+    #lanterns{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-around;align-items:flex-start;padding:0 clamp(6px,2vw,20px);z-index:3;pointer-events:none}
+    .ln{display:flex;flex-direction:column;align-items:center;transform-origin:top center;animation:lnSway ease-in-out infinite alternate}
+    .ln:nth-child(odd){animation-duration:3.3s}.ln:nth-child(even){animation-duration:2.7s;animation-delay:.6s}
+    @keyframes lnSway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+    .ln-str{width:1px;height:clamp(28px,5vh,55px);background:linear-gradient(#777,#ccc)}
+    .ln-bd{width:clamp(18px,3.2vw,30px);height:clamp(30px,5.2vw,48px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(8px,1.4vw,14px);font-weight:700;animation:lnGlow 2.2s ease-in-out infinite alternate}
+    .ln-bd.r{background:radial-gradient(circle at 35% 35%,#ff8888,#aa0000);box-shadow:0 0 14px #ff3333,0 0 28px #880000;color:#fff8cc}
+    .ln-bd.g{background:radial-gradient(circle at 35% 35%,#ffe97a,#bb7700);box-shadow:0 0 14px #ffcc00,0 0 28px #886600;color:#fff}
+    .ln-bd.o{background:radial-gradient(circle at 35% 35%,#ffbb77,#bb4400);box-shadow:0 0 14px #ff8800,0 0 28px #884400;color:#fff8cc}
+    @keyframes lnGlow{from{filter:brightness(.8)}to{filter:brightness(1.25)}}
+    .ln-fr{display:flex;gap:2px;margin-top:2px}
+    .ln-fr span{width:1.5px;height:clamp(5px,1vw,10px);background:#ffd700;border-radius:1px}
+    #header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;flex-direction:column;align-items:center;padding-top:clamp(60px,10vh,100px);pointer-events:none;text-align:center}
+    .hdr-sub{font-size:clamp(8px,1.8vw,11px);letter-spacing:5px;text-transform:uppercase;color:#f5c500;opacity:.75;margin-bottom:4px}
+    .hdr-main{font-family:'Dancing Script',cursive;font-size:clamp(1.5rem,5vw,2.8rem);background:linear-gradient(135deg,#ffe066,#ffaa00,#ff6600,#dd0000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 16px rgba(255,140,0,.5));line-height:1.1}
+    #stage{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:clamp(95px,17vh,155px) clamp(16px,4vw,48px) clamp(65px,12vh,110px)}
+    .wish{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.5vh,22px);padding:clamp(26px,5vw,52px) clamp(24px,6vw,60px);width:min(720px,92vw);border-radius:24px;background:rgba(70,0,10,.32);border:1px solid rgba(245,197,0,.25);box-shadow:0 0 60px rgba(180,0,0,.22),0 0 120px rgba(180,0,0,.1),inset 0 1px 0 rgba(255,210,0,.15);backdrop-filter:blur(14px);text-align:center;opacity:0}
+    .wish::before,.wish::after{content:'✦';position:absolute;color:rgba(245,197,0,.35);font-size:clamp(11px,2vw,18px)}
+    .wish::before{top:12px;left:14px}.wish::after{bottom:12px;right:14px}
+    .wish.enter{animation:wIn .75s cubic-bezier(.22,1,.36,1) forwards}
+    .wish.exit{animation:wOut .55s ease-in forwards}
+    @keyframes wIn{0%{opacity:0;transform:scale(.88) translateY(40px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+    @keyframes wOut{0%{opacity:1;transform:scale(1) translateY(0)}100%{opacity:0;transform:scale(.9) translateY(-40px)}}
+    .wish-icon{font-size:clamp(3.5rem,13vw,7.5rem);line-height:1;filter:drop-shadow(0 0 clamp(10px,2.5vw,22px) rgba(255,180,0,.75));animation:iconFloat 3s ease-in-out infinite alternate}
+    @keyframes iconFloat{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-10px) rotate(2deg)}}
+    .wish-text{font-size:clamp(1.15rem,4.2vw,2.1rem);color:#ffe8b0;font-style:italic;line-height:1.65;max-width:580px}
+    .wish-text strong{color:#ffcc44;font-style:normal}
+    #progress{position:fixed;bottom:clamp(42px,8vh,70px);left:50%;transform:translateX(-50%);z-index:20;width:min(280px,58vw);height:2px;background:rgba(245,197,0,.15);border-radius:2px;overflow:hidden}
+    #pbar{height:100%;background:linear-gradient(to right,#ff6600,#f5c500);border-radius:2px;width:0%;transition:width linear}
+    #dots{position:fixed;bottom:clamp(16px,4vh,34px);left:0;right:0;z-index:20;display:flex;justify-content:center;gap:clamp(6px,1.5vw,10px)}
+    .dot{width:clamp(6px,1.4vw,8px);height:clamp(6px,1.4vw,8px);border-radius:50%;background:rgba(245,197,0,.22);cursor:pointer;transition:background .4s,transform .4s}
+    .dot.active{background:#f5c500;transform:scale(1.5)}
+  </style>
+</head>
+<body>
+<div class="bg"></div>
+<div id="particles"></div>
+<div id="lanterns"></div>
+<div id="header">
+  <div class="hdr-sub">✦ Năm Bính Ngọ ✦</div>
+  <div class="hdr-main">🐴 Chúc Mừng Năm Mới 🐴</div>
+</div>
+<div id="stage"></div>
+<div id="progress"><div id="pbar"></div></div>
+<div id="dots"></div>
+<script>
+const wishes=[
+  {icon:'🌟',text:'Đầu tiên thì anh xin chúc bé Thiên Kim một năm mới vui vẻ và tràn đầy hạnh phúc nha'},
+  {icon:'💰',text:'Năm nay là lần đầu tiên anh gặp em nên anh hong chắc là mình hiểu hết được em'},
+  {icon:'🍀',text:'Nhưng mà... những gì anh cảm nhận được thì năm qua em có nhiều chuyện hong vui lắm'},
+  {icon:'🏡',text:'Vì thế...'},
+  {icon:'📈',text:'Năm nay phải là năm mà Thiên Kim phải vượt mức Pickleball!!!!!'},
+  {icon:'🎓',text:'Con đường học tập của em năm nay sẽ nhẹ nhàng hơn, ít áp lực hơn, nhiều niềm vui hơn và đạt được những gì mà em hi vọng'},
+  {icon:'❤️',text:'Em sẽ nhận được sự yêu thương từ gia đình, bạn bè và những người thân xung quanh em'},
+  {icon:'🌺',text:'Nếu có lúc nào em thấy khó khăn, thì anh tin là em hoàn toàn có khả năng vượt qua được'},
+  {icon:'🎊',text:'Dù thế nào đi nữa, anh cũng mong em mỗi ngày đều có một điều nhỏ bé khiến em mỉm cười thật lòng'},
+  {icon:'❤️',text:'Điều nhỏ nhoi nhưng lại là quan trọng nhất là em phải tin vào bản thân mình hơn, được là chính mình hơn nha'},
+  {icon:'🐴',text:'Chúc mừng Tết Nguyên Đán Bính Ngọ 2026 bé Kim nhaaaaaaaaaaa '}
+];
+
+
+const DURATION=5000;
+const stage=document.getElementById('stage'),dotsEl=document.getElementById('dots'),bar=document.getElementById('pbar');
+let current=0,busy=false,timer;
+const slides=wishes.map(w=>{
+  const el=document.createElement('div');el.className='wish';
+  el.innerHTML=`<div class="wish-icon">${w.icon}</div><div class="wish-text">${w.text}</div>`;
+  stage.appendChild(el);
+  const dot=document.createElement('div');dot.className='dot';dotsEl.appendChild(dot);
+  return{el,dot};
+});
+function startBar(){bar.style.transition='none';bar.style.width='0%';requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.style.transition=`width ${DURATION}ms linear`;bar.style.width='100%';}));}
+function showSlide(next){
+  if(busy||next===current)return;busy=true;
+  const prev=current;current=next;
+  slides[prev].dot.classList.remove('active');slides[next].dot.classList.add('active');
+  slides[prev].el.classList.remove('enter');slides[prev].el.classList.add('exit');
+  setTimeout(()=>{
+    slides[prev].el.classList.remove('exit');slides[prev].el.style.opacity='0';
+    slides[next].el.style.opacity='';slides[next].el.classList.add('enter');
+    setTimeout(()=>{slides[next].el.classList.remove('enter');slides[next].el.style.opacity='1';busy=false;},750);
+  },550);
+  startBar();
+}
+function resetTimer(){clearInterval(timer);timer=setInterval(()=>showSlide((current+1)%wishes.length),DURATION);}
+slides[0].el.style.opacity='1';slides[0].dot.classList.add('active');
+startBar();resetTimer();
+slides.forEach(({dot},i)=>dot.addEventListener('click',()=>{if(i===current)return;clearInterval(timer);showSlide(i);resetTimer();}));
+let tx=null;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)<40)return;clearInterval(timer);showSlide(dx<0?(current+1)%wishes.length:(current-1+wishes.length)%wishes.length);resetTimer();},{passive:true});
+const pc=document.getElementById('particles'),pC=['#ff4444','#ff8800','#ffdd00','#ff6600','#ffaa44'];
+for(let i=0;i<55;i++){const p=document.createElement('div');p.className='pt';const sz=[3,4,5,6,7][i%5],cl=pC[i%pC.length];p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${cl};box-shadow:0 0 ${sz*3}px ${cl};animation-duration:${7+Math.random()*9}s;animation-delay:${Math.random()*14}s;`;pc.appendChild(p);}
+const lc=document.getElementById('lanterns'),lT=['r','g','o'],lCh=['福','春','財','喜','壽'];
+const lN=Math.min(8,Math.max(4,Math.floor(window.innerWidth/100)));
+for(let i=0;i<lN;i++)lc.innerHTML+=`<div class="ln"><div class="ln-str"></div><div class="ln-bd ${lT[i%3]}">${lCh[i%5]}</div><div class="ln-fr"><span></span><span></span><span></span></div></div>`;
+function boom(){const fw=document.createElement('div');fw.className='fw';fw.style.left=(10+Math.random()*80)+'vw';fw.style.top=(5+Math.random()*50)+'vh';const cols=['#ff4444','#ffaa00','#ffee00','#fff','#ff88cc','#88ddff','#aaffaa'],n=18+Math.floor(Math.random()*14);for(let i=0;i<n;i++){const a=(i/n)*360,d=45+Math.random()*80,r=a*Math.PI/180,cl=cols[i%cols.length],sz=2+Math.random()*4,s=document.createElement('div');s.className='sk';s.style.cssText=`width:${sz}px;height:${sz}px;background:${cl};box-shadow:0 0 6px ${cl};--tx:${Math.cos(r)*d}px;--ty:${Math.sin(r)*d}px;--d:${.9+Math.random()*.5}s;`;fw.appendChild(s);}document.body.appendChild(fw);setTimeout(()=>fw.remove(),1800);}
+function loopFW(){boom();if(Math.random()>.4)setTimeout(boom,300);setTimeout(loopFW,2000+Math.random()*2000);}
+setTimeout(loopFW,500);
+</script>
+</body>
+</html>
