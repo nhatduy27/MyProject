@@ -753,229 +753,227 @@ body {
     font-size: 1.5rem;
 }
 
-@media screen and (max-width:768px) {
-    .flag__birthday{
+@media screen and (max-width: 768px) {
+
+    /* ── Wrapper & content ── */
+    #wrapper {
+        overflow-x: hidden;
+    }
+
+    .content {
+        transform: translateY(0) !important;
+        flex-direction: column !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 180px; /* chừa chỗ cho btn-bar cố định */
+    }
+
+    /* ── Cờ ── */
+    .flag__birthday {
         animation-delay: 0.2s;
     }
     .flag__birthday .flag__left,
-    .flag__birthday .flag__right{
+    .flag__birthday .flag__right {
         width: 160px;
     }
-    .flag__left{
-        transform: rotate(-10deg) translate(-20px,20px)!important;
+    .flag__left {
+        transform: rotate(-10deg) translate(-20px, 20px) !important;
     }
-    .flag__right{
-        transform: rotate(10deg) translate(20px, 20px) scaleX(-1)!important;
+    .flag__right {
+        transform: rotate(10deg) translate(20px, 20px) scaleX(-1) !important;
     }
-    #wrapper .content{
-        flex-direction: column;
-        padding-top: 1rem;
-    }
-    #wrapper .content .left{
-        position: unset;
+
+    /* ── Cột trái: chữ Happy Birthday ── */
+    #wrapper .content .left {
+        position: unset !important;
         width: 100% !important;
+        padding: 0 !important;
+        align-items: center !important;
+        order: 1;
     }
-    #wrapper .content .right{
-        width: 100% !important;
-        margin-top: 20px;
+
+    #wrapper .content .left .title {
+        font-size: 2.2rem;
+        margin-left: 0 !important;
+        text-align: center;
     }
-    #wrapper .content .left .title{
-        font-size: 2rem;
-        margin-left: 0;  /* Reset margin trên mobile */
-    }
-    .happy span, .birthday span {
-        font-size: 1.5rem;
-    }
-    .title .happy, .title .birthday{
+
+    .title .happy,
+    .title .birthday {
         left: 0;
+        justify-content: center;
     }
-    .happy span:nth-child(1){
-        animation-delay: 1s;
+
+    .happy span,
+    .birthday span {
+        font-size: 1.6rem;
     }
-    .happy span:nth-child(2){
-        animation-delay: 1.2s;
-    }
-    .happy span:nth-child(3){
-        animation-delay: 1.4s;
-    }
-    .happy span:nth-child(4){
-        animation-delay: 1.6s;
-    }
-    .happy span:nth-child(5){
-        animation-delay: 1.8s;
-    }
-    .birthday span:nth-child(1){
-        animation-delay: 2s;
-    }
-    .birthday span:nth-child(2){
-        animation-delay: 2.2s;
-    }
-    .birthday span:nth-child(3){
-        animation-delay: 2.4s;
-    }
-    .birthday span:nth-child(4){
-        animation-delay: 2.6s;
-    }
-    .birthday span:nth-child(5){
-        animation-delay: 2.8s;
-    }
-    .birthday span:nth-child(6){
-        animation-delay: 3s;
-    }
-    .birthday span:nth-child(7){
-        animation-delay: 3.2s;
-    }
-    .birthday span:nth-child(8){
-        animation-delay: 3.4s;
-    }
-    .title .hat{
+
+    /* animation delay chữ */
+    .happy span:nth-child(1) { animation-delay: 1s; }
+    .happy span:nth-child(2) { animation-delay: 1.2s; }
+    .happy span:nth-child(3) { animation-delay: 1.4s; }
+    .happy span:nth-child(4) { animation-delay: 1.6s; }
+    .happy span:nth-child(5) { animation-delay: 1.8s; }
+    .birthday span:nth-child(1) { animation-delay: 2s; }
+    .birthday span:nth-child(2) { animation-delay: 2.2s; }
+    .birthday span:nth-child(3) { animation-delay: 2.4s; }
+    .birthday span:nth-child(4) { animation-delay: 2.6s; }
+    .birthday span:nth-child(5) { animation-delay: 2.8s; }
+    .birthday span:nth-child(6) { animation-delay: 3s; }
+    .birthday span:nth-child(7) { animation-delay: 3.2s; }
+    .birthday span:nth-child(8) { animation-delay: 3.4s; }
+
+    .title .hat {
         animation-delay: 3.5s;
         right: -50px;
     }
-    .title .hat img{
+    .title .hat img {
         width: 85px;
     }
-    .date__of__birth, .balloon_one, .balloon_two{
+
+    /* Ẩn ngày sinh dạng pill (desktop) */
+    .date__of__birth {
         display: none;
     }
-    .btn{
-        position: absolute;
-        bottom: -80px;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-left: 0;  /* Reset margin trên mobile */
+
+    /* ── Cột phải: ảnh + tên ── */
+    #wrapper .content .right {
+        width: 100% !important;
+        order: 2;
+        margin-top: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-    @keyframes scaleCricleMobile {
-        0%{
-            transform: translateX(-50%) scale(0);
-        }
-        10%{
-            transform: translateX(-50%) scale(1.3);
-        }
-        20%{
-            transform: translateX(-50%) scale(0.7);
-        }
-        30%,100%{
-            transform: translateX(-50%) scale(1);
-        }
-    }
-    #btn__letter{
-        padding: 12px 35px;
-        margin-left: 0;
-        font-size: 2rem;   
-    }
-    .right .box__account{
+
+    .right .box__account {
         display: flex;
         justify-content: center;
+        align-items: center;
         width: 100%;
+        margin-left: 0 !important;
+        margin-top: 0 !important;
         transform: translateY(0);
         animation: none !important;
     }
-    .right .box__account .image{
-        width: 260px;     
-        height: 260px;  
+
+    /* Ảnh tròn */
+    .right .box__account .image {
+        width: 220px !important;
+        height: 220px !important;
         transform: scale(0);
         animation: scaleHeartLetter 2s 4s forwards !important;
     }
-    .right .box__account .name{
-        padding: 8px 25px;
+
+    /* Tên bên dưới ảnh */
+    .right .box__account .name {
+        padding: 8px 22px;
+        bottom: -18px;
         transform: scale(0);
         animation: scaleHeartLetter 2s 5s forwards !important;
-        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%) scale(0);
     }
-    .right .box__account .name span{
-        font-size: 1.1rem;  /* Tăng từ 0.9rem lên 1.1rem trên mobile */
-        margin: 0 15px;
+    .right .box__account .name span {
+        font-size: 1.05rem;
+        margin: 0 12px;
     }
-    .cricle{
-        top: -20px;
-        right: 10px;
+
+    /* Vòng tròn chữ xoay */
+    .cricle {
+        top: -22px;
+        right: 8px;
         animation-delay: 6s;
     }
-    .text__cricle{
+    .text__cricle {
         width: 65px;
         height: 65px;
         border-width: 2px;
     }
-    .text__cricle span{
+    .text__cricle span {
         transform-origin: 0 30px;
         font-size: 0.5rem;
     }
-    .content .right .day, .content .right .month{
+
+    /* Ngày/tháng hiển thị 2 bên ảnh */
+    .content .right .day,
+    .content .right .month {
         display: block;
+        font-size: 2rem;
     }
-    .decorate_star.star1 {
-        top: 125px;
-        left: 375px;
-        animation-delay: 5.2s;
-    }
-    .decorate_star.star2 {
-        top: 80px;
-        right: 360px;
-        animation-delay: 5.2s;
-    }
-    .decorate_star.star3 {
-        top: 255px;
-        left: 300px;
-        animation-delay: 5.2s;
-    }
-    .decorate_star.star4{
-        animation-delay: 5.2s;
-    }
-    .decorate_star.star5 {
-        bottom: 140px;
-        left: 350px;
-        animation-delay: 5.2s;
-    }
-    .decorate_flower--one{
-        animation-delay: 5.2s;
-    }
-    .decorate_flower--two{
+
+    /* Bóng bay: ẩn đi cho gọn */
+    .balloon_one,
+    .balloon_two {
         display: none;
     }
-    .decorate_flower--three{
-        top: 45px;
-        animation-delay: 5.2s;
-    }
-    .left .btn{
+
+    /* ── Trang trí ── */
+    .decorate_star.star1 { top: 125px; left: 375px; animation-delay: 5.2s; }
+    .decorate_star.star2 { top: 80px;  right: 360px; animation-delay: 5.2s; }
+    .decorate_star.star3 { top: 255px; left: 300px;  animation-delay: 5.2s; }
+    .decorate_star.star4 { animation-delay: 5.2s; }
+    .decorate_star.star5 { bottom: 140px; left: 350px; animation-delay: 5.2s; }
+
+    .decorate_flower--one   { animation-delay: 5.2s; }
+    .decorate_flower--two   { display: none; }
+    .decorate_flower--three { top: 45px; animation-delay: 5.2s; }
+
+    /* ── Nút cố định phía dưới ── */
+    .left .btn {
         animation-delay: 6s;
     }
-    .smiley__icon{
-        display: center;
-        position: fixed ;
-        left: 50%;
-        top: 50% ;
-        transform: translate(-50%, -50%) ;
-        z-index: 10 ;
-        pointer-events: none ;
+
+    /* btn-bar: xếp dọc, full width */
+    .btn-bar {
+        flex-direction: column !important;
+        bottom: 14px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 28px) !important;
+        gap: 8px !important;
+        align-items: stretch !important;
     }
-    .box__letter .letter__border{
+
+    .btn-bar .btn {
+        width: 100% !important;
+    }
+
+    .btn-bar #btn__letter,
+    .btn-bar button {
+        width: 100% !important;
+        height: 50px !important;
+        font-size: 1.05rem !important;
+        padding: 0 16px !important;
+        border-radius: 50px !important;
+    }
+
+    #musicControl {
+        width: 100% !important;
+        min-width: unset !important;
+        font-size: 1.05rem !important;
+        height: 50px !important;
+        padding: 0 16px !important;
+    }
+
+    /* ── Letter modal ── */
+    .box__letter .letter__border {
         width: 95%;
         height: 500px;
     }
-    .letter__border .letter .title__letter{
+    .letter__border .letter .title__letter {
         font-size: 1.6rem;
     }
-    .content__letter .left{
+    .content__letter .left {
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .content__letter .left .heart_2{
-        top: 50px;
-    }
-    .content__letter .left .heart_3 {
-        bottom: 60px;
-        left: 75px;
-    }
-    .content__letter .left .heart_4 {
-        top: 140px;
-        right: 15px;
-    }
-    .content__letter .right .love__img.animationOp img{
-        width: 110px;
-    }
-    .text__letter{
+    .content__letter .left .heart_2 { top: 50px; }
+    .content__letter .left .heart_3 { bottom: 60px; left: 75px; }
+    .content__letter .left .heart_4 { top: 140px; right: 15px; }
+    .content__letter .right .love__img.animationOp img { width: 110px; }
+    .text__letter {
         margin-top: 0px !important;
         font-size: 0.9rem !important;
     }
