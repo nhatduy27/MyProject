@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy birthday</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <style>
+       
+        .content .left .btn {
+            display: none !important;
+        }
+
+      
+        .btn-bar {
+            position: fixed !important;
+            bottom: 70px;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            align-items: stretch !important;
+            gap: 70px !important;
+            z-index: 5 !important;
+            width: max-content !important;
+        }
+
+        /* Mỗi .btn trong thanh: scale(0) rồi pop lên giống gốc */
+        .btn-bar .btn {
+            transform: scale(0);
+            animation: scaleCricle 5s 16s forwards ease-in-out;
+            position: static !important;
+            margin-left: 0 !important;
+            bottom: unset !important;
+            left: unset !important;
+        }
+
+        /* Tất cả nút cùng kích thước */
+        .btn-bar #btn__letter {
+            margin-top: 0 !important;
+            width: 300px !important;
+            height: 50px !important;
+            font-size: 1rem !important;
+            padding: 0 20px !important;
+            white-space: nowrap !important;
+            justify-content: center !important;
+        }
+
+        /* Nút điều khiển nhạc */
+        #musicControl {
+            background: #ff6b6b;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            gap: 12px;  /* Tăng khoảng cách giữa icon và chữ */
+            font-size: 1.3rem !important;  /* Chữ to hơn */
+            padding: 14px 20px !important;  /* Đệm trong to hơn */
+            width: auto !important;
+            min-width: 160px;  /* Chiều rộng tối thiểu to hơn */
+        }
+        #musicControl:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
+        }
+
+        /* ── Mobile ── */
+        @media screen and (max-width: 768px) {
+            .btn-bar {
+                flex-direction: column !important;
+                bottom: 16px !important;
+                gap: 10px !important;
+                width: calc(100% - 32px) !important;
+            }
+            .btn-bar #btn__letter {
+                width: 100% !important;
+                height: 52px !important;
+                font-size: 1.1rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" autoplay loop>
+        <source src="./mp3/sinhnhatkim.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ nhạc nền.
+    </audio>
+
+    <div id="wrapper">
+
+        <div class="flag__birthday">
+            <img src="./images/1.png" alt="" width="750" class="flag__left">
+            <img src="./images/1.png" alt="" width="750" class="flag__right">
+        </div>
+
+        <div class="content">
+
+            <!-- CỘT TRÁI: chữ + ngày sinh -->
+            <div class="left">
+                <div class="title">
+                    <h1 class="happy">
+                        <span style="--t: 3s;">H</span>
+                        <span style="--t: 3.2s;">a</span>
+                        <span style="--t: 3.4s;">p</span>
+                        <span style="--t: 3.6s;">p</span>
+                        <span style="--t: 3.8s;">
+                            y
+                            <div class="hat">
+                                <img src="./images/hat.png" alt="" width="130">
+                            </div>
+                        </span>
+                    </h1>
+                    <h1 class="birthday">
+                        <span style="--t: 4s;">B</span>
+                        <span style="--t: 4.2s;">i</span>
+                        <span style="--t: 4.4s;">r</span>
+                        <span style="--t: 4.6s;">t</span>
+                        <span style="--t: 4.8s;">h</span>
+                        <span style="--t: 5s;">d</span>
+                        <span style="--t: 5.2s;">a</span>
+                        <span style="--t: 5.4s;">y</span>
+                    </h1>
+                </div>
+                <div class="date__of__birth">
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: ảnh + tên -->
+            <div class="right">
+                <div class="box__account">
+                    <div class="image">
+                        <img src="./images/kim.jpg" alt="">
+                    </div>
+                    <div class="name">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Trần Ngọc Thiên Kim</span>
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <div class="balloon_one">
+                        <img width="100px" src="./images/balloon1.png" alt="">
+                    </div>
+                    <div class="balloon_two">
+                        <img width="100px" src="./images/balloon2.png" alt="">
+                    </div>
+                </div>
+                <div class="cricle">
+                    <div class="text__cricle">
+                        <span style="--i: 1;">h</span>
+                        <span style="--i: 2;">a</span>
+                        <span style="--i: 3;">p</span>
+                        <span style="--i: 4;">p</span>
+                        <span style="--i: 5;">y</span>
+                        <span style="--i: 6;">-</span>
+                        <span style="--i: 7;">b</span>
+                        <span style="--i: 8;">i</span>
+                        <span style="--i: 9;">r</span>
+                        <span style="--i: 10;">t</span>
+                        <span style="--i: 11;">h</span>
+                        <span style="--i: 12;">d</span>
+                        <span style="--i: 13;">a</span>
+                        <span style="--i: 14;">y</span>
+                        <span style="--i: 15;">-</span>
+                    </div>
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <span class="day"></span>
+                <span class="month"></span>
+            </div>
+
+        </div>
+
+        <div class="btn-bar">
+            <!-- ========================================== -->
+            <!-- THÊM NÚT ĐIỀU KHIỂN NHẠC - BẮT ĐẦU -->
+            <!-- ========================================== -->
+            <div class="btn">
+                <button id="musicControl">
+                    <i class="fa-solid fa-music"></i> Bật nhạc
+                </button>
+            </div>
+            <!-- ========================================== -->
+            <!-- THÊM NÚT ĐIỀU KHIỂN NHẠC - KẾT THÚC -->
+            <!-- ========================================== -->
+
+            <div class="btn">
+                <button id="btn__letter">
+                    Một chút lời nhắn 💌
+                </button>
+            </div>
+
+            <div class="btn">
+                <button onclick="window.open('CuteQuestion/index.html', '_blank')" id="btn__letter">
+                    Một chút thắc mắc ⁉️
+                </button>
+            </div>
+
+            <div class="btn">
+                <button onclick="window.open('album/index.html', '_blank')" id="btn__letter">
+                    Hơi nhiều sự đáng yêu 💞
+                </button>
+            </div>
+        </div>
+
+        <!-- Decorations -->
+        <div class="decorate_star star1" style="--t: 15s;"></div>
+        <div class="decorate_star star2" style="--t: 15.2s;"></div>
+        <div class="decorate_star star3" style="--t: 15.4s;"></div>
+        <div class="decorate_star star4" style="--t: 15.6s;"></div>
+        <div class="decorate_star star5" style="--t: 15.8s;"></div>
+        <div class="decorate_flower--one" style="--t: 15s;">
+            <img width="20" src="./images/decorate_flower.png" alt="">
+        </div>
+        <div class="decorate_flower--two" style="--t: 15.3s;">
+            <img width="20" src="./images/decorate_flower.png" alt="">
+        </div>
+        <div class="decorate_flower--three" style="--t: 15.6s;">
+            <img width="20" src="./images/decorate_flower.png" alt="">
+        </div>
+        <div class="decorate_bottom">
+            <img src="./images/decorate.png" alt="" width="100">
+        </div>
+        <div class="heart_icon">
+            <img src="./images/heart2.png" alt="" width="220">
+        </div>
+        <div class="smile_icon">
+            <img src="./images/smiley_icon.png" alt="" width="100">
+        </div>
+
+        <div class="sixteen_birthday">
+            <img src="./images/16.png" alt="" width="220">
+        </div>
+
+        <!-- Letter modal -->
+        <div class="box__letter">
+            <div class="letter__border">
+                <div class="letter">
+                    <div class="title__letter"></div>
+                    <div class="content__letter">
+                        <div class="left">
+                            <img id="heart__letter" src="./images/heart_letter.png" alt="">
+                            <img class="heart heart_1" style="--t: 0.2s" width="20" src="./images/heart.png" alt="">
+                            <img class="heart heart_2" style="--t: 0.4s" width="20" src="./images/heart.png" alt="">
+                            <img class="heart heart_3" style="--t: 0.6s" width="20" src="./images/heart.png" alt="">
+                            <img class="heart heart_4" style="--t: 0.8s" width="20" src="./images/heart.png" alt="">
+                        </div>
+                        <div class="right">
+                            <div class="love__img">
+                                <img src="./images/love.png" alt="" width="200">
+                            </div>
+                            <div class="text__letter">
+                                <p></p>
+                            </div>
+                            <img id="mewmew" width="200" src="./images/mewmew.gif" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<script>
+    let datetxt = "5 - 5 - 2010";
+    let datatxtletter = `Hôm nay là một ngày đặc biệt. Anh mong có thể mang đến cho em một chút niềm vui trong ngày quan trọng của Kim.
+
+Chúc em luôn xinh đẹp theo cách riêng của mình, không cần phải giống bất kỳ ai, vì chỉ cần là chính em thôi cũng đã đủ đặc biệt rồi. Mong rằng em sẽ luôn giữ được sự vui vẻ, hồn nhiên – những điều rất đáng quý ở tuổi 16, nơi bé Kim có thể thoải mái mơ ước, khám phá và trưởng thành từng chút một.
+
+Hy vọng rằng mỗi ngày của em đều tràn đầy năng lượng tích cực, học ngày càng giỏi, có thêm nhiều kỷ niệm đáng nhớ bên bạn bè và gia đình, và luôn có những điều khiến em mỉm cười. Những ước mơ dù lớn hay nhỏ rồi cũng sẽ dần thành hiện thực, miễn là em luôn tin vào bản thân và không ngừng cố gắng.
+
+Chúc em một sinh nhật thật ấm áp, ý nghĩa và ngập tràn niềm vui nháaaa 💕`;
+    let titleLetter = "Gửi Bé Kim!";
+    let charArrDate = datetxt.split('');
+    let charArrDateLetter = datatxtletter.split('');
+    let charArrTitle = titleLetter.split('');
+    let currentIndex = 0;
+    let currentIndexLetter = 0;
+    let currentIndexTitle = 0;
+    let date__of__birth = document.querySelector(".date__of__birth span");
+    let text__letter = document.querySelector(".text__letter p");
+    setTimeout(function(){
+        timeDatetxt = setInterval(function(){
+            if(currentIndex < charArrDate.length){
+                date__of__birth.textContent += charArrDate[currentIndex];
+                currentIndex++;
+            }
+            else{
+                let i = document.createElement("i");
+                i.className = "fa-solid fa-star"
+                document.querySelector(".date__of__birth").prepend(i)
+                document.querySelector(".date__of__birth").appendChild(i.cloneNode(true))
+                clearInterval(timeDatetxt)
+            }
+        },100)
+    },12000)
+
+    var intervalContent;
+    var intervalTitle;
+    $("#btn__letter").on("click", function(){
+        $(".box__letter").slideDown()
+        setTimeout(function(){
+            $(".letter__border").slideDown();
+        },1000)
+        setTimeout(function(){
+            intervalTitle = setInterval(function(){
+                if(currentIndexTitle < charArrTitle.length){
+                    document.querySelector(".title__letter").textContent += charArrTitle[currentIndexTitle];
+                    let i = document.createElement("i");
+                    i.className = "fa-solid fa-heart"
+                    document.querySelector(".title__letter").appendChild(i)
+                    currentIndexTitle++;
+                }
+                else{
+                    clearInterval(intervalTitle)
+                }
+            },100)
+        },2000)
+        setTimeout(function(){
+            document.querySelector("#heart__letter").classList.add("animationOp");
+            document.querySelector(".love__img").classList.add("animationOp");
+            document.querySelector("#mewmew").classList.add("animationOp");
+        },2800)
+        setTimeout(function(){
+            document.querySelectorAll(".heart").forEach((item)=>{
+                item.classList.add("animation")
+            })
+        },3500)
+        setTimeout(function(){
+            intervalContent = setInterval(function(){
+                if(currentIndexLetter < charArrDateLetter.length){
+                    text__letter.textContent += charArrDateLetter[currentIndexLetter];
+                    currentIndexLetter++;
+                }
+                else{
+                    clearInterval(intervalContent)
+                }
+            },50)
+        },6000)
+    })
+    $(".close").on("click", function(){
+        clearInterval(intervalContent)
+        document.querySelector(".title__letter").textContent = "";
+        text__letter.textContent = "";
+        currentIndexLetter = 0
+        currentIndexTitle = 0
+        document.querySelector("#heart__letter").classList.remove("animationOp");
+        document.querySelector(".love__img").classList.remove("animationOp");
+        document.querySelector("#mewmew").classList.remove("animationOp");
+        document.querySelectorAll(".heart").forEach((item)=>{
+                item.classList.remove("animation")
+            })
+        $(".box__letter").slideUp();
+        $(".letter__border").slideUp();
+    })
+
+    function mobile(){
+        const app = {
+            timeout: function(txt, dom){
+                let currentIndex = 0;
+                let charArr = txt.split('')
+                intervalMobile = setInterval(function(){
+                    if(currentIndex < charArr.length){
+                        dom.textContent += charArr[currentIndex];
+                        currentIndex++;
+                    }
+                    else{
+                        clearInterval(intervalMobile)
+                    }
+                },200)
+            }
+        }
+        return app
+    }
+    const fcMobile = mobile()
+    if(window.innerWidth < 768){
+        setTimeout(()=>{
+            fcMobile.timeout("26", document.querySelector(".day"))
+        },5000)
+        setTimeout(()=>{
+            fcMobile.timeout("10", document.querySelector(".month"))
+        },6000)
+    }
+
+        // ==========================================
+    // THÊM ĐIỀU KHIỂN NHẠC - BẮT ĐẦU (ĐÃ SỬA)
+    // ==========================================
+    var bgAudio = document.getElementById('bgMusic');
+    var musicBtn = document.getElementById('musicControl');
+
+    if (bgAudio) {
+        bgAudio.volume = 0.5;
+        bgAudio.pause();
+    }
+
+    if (musicBtn) {
+        // Trạng thái ban đầu: chưa bật nhạc
+        musicBtn.innerHTML = '<i class="fa-solid fa-music"></i> Bật nhạc';
+        musicBtn.style.background = '#888';
+        musicBtn.style.background = '#ff6b6b'; // Màu xám = đang tắt
+    
+
+        musicBtn.onclick = function(e) {
+            e.stopPropagation();
+            if (bgAudio.paused) {
+                bgAudio.play();
+                musicBtn.innerHTML = '<i class="fa-solid fa-volume-mute"></i> Tắt nhạc';
+                musicBtn.style.background = '#888'; // Màu hồng = đang bật
+            } else {
+                // ĐANG BẬT -> TẮT NHẠC
+                bgAudio.pause();
+                musicBtn.innerHTML = '<i class="fa-solid fa-music"></i> Bật nhạc';
+                musicBtn.style.background = '#ff6b6b'; // Màu xám = đang tắt
+            }
+        };
+    }
+    // ==========================================
+    // THÊM ĐIỀU KHIỂN NHẠC - KẾT THÚC
+    // ==========================================
+</script>
+</html>

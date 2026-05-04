@@ -1,0 +1,982 @@
+@import url('https://fonts.googleapis.com/css2?family=Coiny&family=Titan+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&family=Sriracha&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+:root{
+    --color-pink: #feecea;
+    --color-white: #fff;
+    --color-black: #333;
+    --color-text-pink: #ff7882;
+    --color-heart: #F61F1F;
+    --color-bg-letter: #fff8e4;
+    --color-border: #DACCBF;
+}
+html{
+    height: 100%;
+}
+body {
+    position: relative;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image:linear-gradient(var(--color-pink), var(--color-pink));
+}
+#wrapper{
+    position: relative;
+    background-color: transparent;
+    background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 1) 75%, rgba(255, 255, 255, 1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255,1) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 1) 75%, rgba(255, 255, 255, 1) 76%, transparent 77%, transparent);
+    height:100%;
+    background-size:80px 80px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Dịch toàn bộ nội dung chính lên trên */
+.content {
+    transform: translateY(-30px);
+}
+
+/* Trên mobile, dịch ít hơn để tránh bị cắt */
+@media screen and (max-width: 768px) {
+    .content {
+        transform: translateY(-20px);
+    }
+}
+
+.flag__birthday{
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-400px);
+    animation: translateYFlag 1.5s 2s forwards;
+}
+@keyframes translateYFlag{
+    to{
+        transform: translateY(-100px);
+    }
+}
+.flag__birthday .flag__left{
+    transform: rotate(-10deg) translate(-20px,30px);
+}
+.flag__birthday .flag__right{
+    transform: rotate(10deg) translate(20px,30px) scaleX(-1);
+}
+.content{
+    width: 100%;
+    position: relative;
+    display: flex;
+    padding-top: 2rem;
+}
+.content .left, .content .right{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.content .left{
+    width: 45%;
+}
+.content .right{
+    width: 55%;
+}
+.left .btn{
+    transform: scale(0);
+    animation: scaleCricle 5s 16s forwards ease-in-out;
+}
+#btn__letter{
+    position: relative;
+    margin-top: 30px;
+    background-color: #f0cfd1;
+    outline: none;
+    padding: 8px 25px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    border: 3px solid var(--color-black);
+    font-family: "Sriracha", cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transform: scale(1);
+    transition: all .5s ease-in-out;
+}
+#btn__letter:active{
+    transform: scale(0.7);
+}
+#btn__letter i{
+    margin-left: 8px;
+}
+#btn__letter:hover{
+    border-color: var(--color-heart);
+    background-color: var(--color-heart);
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#btn__letter:hover i{
+    animation: rotateHeart 1s infinite linear;
+}
+@keyframes rotateHeart{
+    0%,50%, 100%{
+        transform: rotate(0deg);
+    }
+    25%{
+        transform: rotate(12deg);
+    }
+    75%{
+        transform: rotate(-12deg);
+    }
+}
+.title{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Titan One", sans-serif;
+    font-size: 3rem;
+    flex-direction: column;
+    perspective: 1000px;
+    margin-left: 90px;  /* Dịch sang phải */
+}
+.title .happy, .title .birthday{
+    position: relative;
+    text-shadow: 4px 4px var(--color-black), 
+                -4px 4px var(--color-black), 
+                4px -4px var(--color-black), 
+                -4px -4px var(--color-black), 
+                4px 8px 0 var(--color-black);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    line-height: 1.2;
+}
+.title .happy{
+    color: var(--color-white);
+}
+.title .happy span, .title .birthday span{
+    transform: translateY(50px);
+    opacity: 0;
+    visibility: hidden;
+    animation: txtTranslateY .5s var(--t) forwards;
+}
+@keyframes txtTranslateY{
+    100%{
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+}
+.title .birthday{
+    color: var(--color-text-pink);
+}
+
+.title .hat{
+    position: absolute;
+    right: -80px;
+    top: -400px;
+    transform: rotate(-40deg);
+    z-index: -1;
+    animation: topHat 4s 7s forwards ease;
+}
+@keyframes topHat{
+    20%, 30%{
+        top: -30px;
+        transform-origin: left;
+        transform: rotate(-40deg);
+    }
+    35%, 100%{
+        top: -30px;
+        transform: rotate(0deg);
+    }
+}
+.date__of__birth, .name{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-text-pink);
+    border-radius: 50px;
+    margin-top: 20px;
+    font-family: "Sriracha", cursive;
+}
+.date__of__birth{
+    border: 3px solid var(--color-black);
+    position: relative;
+    transform: translateY(-100px);
+    z-index: -1;
+    opacity: 0;
+    bottom: -20px;
+    visibility: hidden;
+    width: 0px;
+    animation: dateOfBirth 5s 9s forwards;
+    margin-left: 90px;  /* Dịch sang phải */
+}
+@keyframes dateOfBirth{
+    20%,40%{
+        width: 0px;
+        height: 0;
+        transform: translateY(0px);
+        opacity: 1;
+        visibility: visible;
+    }
+    45%{
+        transform: translateY(0px);
+        opacity: 1;
+        visibility: visible;
+        width: 280px;
+        height: 0px;
+    }
+    50%,100%{
+        transform: translateY(0px);
+        opacity: 1;
+        visibility: visible;
+        width: 280px;
+        height: 50px;
+    }
+}
+.name{
+    position: absolute;
+    padding: 10px 40px;  /* Tăng padding */
+    bottom: -20px;
+    border: 3px solid var(--color-black);
+    width: max-content;     
+    max-width: 90vw;         
+    left: 50%;               
+    transform: translateX(-50%); 
+    white-space: nowrap;   
+    background-color: white; 
+    border-radius: 40px;     
+    box-sizing: border-box;  
+}
+
+.date__of__birth span, .name span{
+    font-weight: bold;
+    margin: 0px 30px;
+}
+.date__of__birth span{
+    font-size: 1.8rem;
+}
+.name span{
+    font-size: 2rem;
+}
+.right .box__account{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(900px);
+    animation: topBoxImage 5s 7s forwards ease-in;
+    margin-left: 100px;
+}
+
+.right .box__account {
+    margin-top: -50px; 
+}
+
+@keyframes topBoxImage{
+    to{
+        transform: translateY(0);
+    }
+}
+.content .right .image{
+    position: relative;
+    width: 350px;    
+    height: 350px;    
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 6px solid var(--color-black);
+    margin-left: 400;
+}
+.content .right .image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.cricle{
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+    animation: scaleCricle 3s 15s forwards ease-in-out;
+}
+@keyframes scaleCricle {
+    0%{
+        transform: scale(0);
+    }
+    10%{
+        transform: scale(1.3);
+    }
+    20%{
+        transform: scale(0.7);
+    }
+    30%,100%{
+        transform: scale(1);
+    }
+
+}
+.text__cricle{
+    width: 100px;
+    height: 100px;
+    background-color: var(--color-text-pink);
+    border-radius: 50%;
+    border: 5px solid var(--color-black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotateCricle 5s linear infinite;
+}
+@keyframes rotateCricle{
+    to{
+        transform: rotate(360deg);
+    }
+}
+.text__cricle span{
+    top: 0%;
+    left: 50%;
+    position: absolute;
+    color: var(--color-black);
+    transform: rotate(calc(var(--i) * 24deg));
+    transform-origin: 0 45px;
+    font-family: "Sriracha", cursive;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+}
+.fa-heart{
+    color: var(--color-heart);
+    filter: drop-shadow(0 0 3px var(--color-heart));
+    animation: scaleHeart 1s infinite linear;
+}
+.cricle .fa-heart{
+    position: absolute;
+    transform: scale(0.85);
+}
+@keyframes scaleHeart{
+    50%{
+        transform: scale(1.2);
+    }
+}
+.right .balloon_one{
+    position: absolute;
+    top: -70px;
+    left: -70px;
+    animation: balloon1 2s infinite linear;
+}
+@keyframes balloon1{
+    0%, 50%,100%{
+        transform-origin: bottom right;
+        transform: rotate(0deg);
+    }
+    25%{
+        transform-origin: bottom right;
+        transform: rotate(3deg);
+    }
+    75%{
+        transform-origin: bottom right;
+        transform: rotate(-3deg);
+    }
+}
+.right .balloon_two{
+    position: absolute;
+    top: -90px;
+    right: -90px;
+    z-index: -1;
+    transform: rotate(10deg);
+    animation: balloon2 2s infinite linear;
+}
+@keyframes balloon2 {
+    0%,50%,100%{
+        transform-origin: bottom left;
+        transform: rotate(10deg);
+    }
+    25%{
+        transform-origin: bottom left;
+        transform: rotate(7deg);
+    }
+    75%{
+        transform-origin: bottom left;
+        transform: rotate(13deg);
+    }
+}
+
+.decorate_star{
+    position: absolute;
+    transform: scale(0);
+    background-color: var(--color-black);
+    clip-path: polygon(0 50%, 35% 35%, 50% 0, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%);
+    animation: scaleCricle 3s var(--t) forwards, 
+            scaleStar 2s 16s infinite ease-in-out;
+}
+.decorate_star.star1{
+    width: 20px;
+    height: 20px;
+    top: 75px;
+    left: 300px;
+}
+.decorate_star.star2{
+    width: 15px;
+    height: 20px;
+    top: 35px;
+    right: 360px;
+}
+.decorate_star.star3{
+    width: 14px;
+    height: 14px;
+    top: 290px;
+    left: 630px;
+}
+.decorate_star.star4{
+    width: 18px;
+    height: 18px;
+    bottom: 60px;
+    left: 35px;
+}
+.decorate_star.star5{
+    width: 16px;
+    height: 18px;
+    bottom: 140px;
+    left: 500px;
+}
+@keyframes scaleStar {
+    25%{
+        transform: scale(0.8);
+    }
+    50%{
+        transform: scale(1.1);
+    }
+}
+.decorate_bottom{
+    position: absolute;
+    right: 0;
+    bottom: -10px;
+}
+.decorate_flower--one{
+    position: absolute;
+    top: 250px;
+    left: 50px;
+    transform: scale(0);
+    animation: scaleCricle 3s var(--t) forwards ease-in-out;
+}
+.decorate_flower--two{
+    position: absolute;
+    top: 225px;
+    left: 540px;
+    transform: scale(0);
+    animation: scaleCricle 3s var(--t) forwards ease-in-out;
+}
+.decorate_flower--three{
+    position: absolute;
+    top: 150px;
+    right: 235px;
+    transform: scale(0);
+    animation: scaleCricle 3s var(--t) forwards ease-in-out;
+}
+
+
+.sixteen_birthday{
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -150%) !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+
+    opacity: 0;
+    visibility: hidden;
+
+    animation: smileShow 1s ease forwards;
+    animation-delay: 15s;
+    
+}
+
+@keyframes smileShow {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-910%, 120%) scale(0.5);
+    }
+    1% {
+        visibility: visible;
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-910%, 120%) scale(1);
+    }
+}
+
+.heart_icon{
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-40%, -60%) !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+
+    opacity: 1;
+    visibility: hidden;
+    animation: heartShow 1s ease forwards;
+    animation-delay: 1s; 
+}
+
+@keyframes heartShow {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-910%, 120%) scale(0.5);
+    }
+    1% {
+        visibility: visible;
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-910%, 120%) scale(1);
+    }
+}
+
+
+.smile_icon{
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-700%, 100%) !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+
+    opacity: 0;
+    visibility: hidden;
+
+    animation: smileShow 1s ease forwards;
+    animation-delay: 15s;
+}
+
+@keyframes smileShow {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-910%, 120%) scale(0.5);
+    }
+    1% {
+        visibility: visible;
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-910%, 120%) scale(1);
+    }
+}
+
+
+.box__letter{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: none;
+}
+.box__letter .letter__border{
+    position: absolute;
+    width: 70vw;
+    height: 600px;
+    background-color: var(--color-white);
+    border-radius: 27px;
+    padding: 17px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
+}
+.letter__border .close{
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    cursor: pointer;
+}
+.letter__border .letter{
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg-letter);
+    border-radius: 10px;
+    padding-top: 15px;
+}
+.letter__border .letter .title__letter{
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    font-size: 2.4rem;
+}
+.title__letter .fa-solid{
+    margin-left: 5px;
+    font-size: 1.3rem;
+}
+.letter__border .letter .content__letter{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding-top: 1.5rem;
+    padding-bottom: 70px;
+}
+.letter__border .letter .content__letter .left{
+    position: relative;
+    width: 50%;
+    height: 100%;
+    padding: 1.7rem;
+    border-right: 3px solid var(--color-border);
+}
+.content__letter .left #heart__letter{
+    opacity: 0;
+    width: 100%;
+}
+#heart__letter.animationOp{
+    animation: opacityHeart 1s 1s forwards;
+}
+@keyframes opacityHeart{
+    to{
+        opacity: 1;
+    }
+}
+.content__letter .left .heart{
+    position: absolute;
+    opacity: 0;
+}
+.content__letter .left .heart.animation{
+    animation: scaleHeartLetter 1s var(--t) infinite ease-in-out;
+}
+@keyframes scaleHeartLetter{
+    0%{
+        opacity: 1;
+        transform: scale(0);
+    }
+    10%{
+        opacity: 1;
+        transform: scale(1.3);
+    }
+    20%{
+        opacity: 1;
+        transform: scale(0.7);
+    }
+    30%,100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+}
+.content__letter .left .heart_1{
+    top: 90px;
+    left: 30px;
+}
+.content__letter .left .heart_2{
+    top: 20px;
+    right: 70px;
+}
+.content__letter .left .heart_3{
+    bottom: 50px;
+    left: 145px;
+}
+.content__letter .left .heart_4{
+    top: 140px;
+    right: 35px;
+}
+.content__letter .right{
+    position: relative;
+    width: 50%;
+}
+.content__letter .right .love__img{
+    opacity: 0;
+    position: absolute;
+    right: 20px;
+    top: -50px;
+}
+.love__img.animationOp{
+    animation: opacityHeart 1s 1s forwards;
+}
+.content__letter .right .text__letter{
+    margin-top: 60px;
+    padding: 20px 15px 10px 15px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3rem;
+}
+.content__letter .right #mewmew{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+}
+#mewmew.animationOp{
+    animation: opacityHeart 1s 1s forwards;
+}
+
+.content .right .day, .content .right .month{
+    font-family: "Titan One", sans-serif;
+    color: var(--color-white);
+    text-shadow: 2px 4px 0 var(--color-black);
+    font-weight: bold;
+    font-size: 2.5rem;
+    position: absolute;
+    -webkit-text-stroke: 0.5px var(--color-black);
+    display: none;
+}
+.content .right .day{
+    left: 30px;
+}
+.content .right .month{
+    right: 30px;
+}
+
+.btn {
+    margin-left: 200px;  
+    font-size: 1.5rem;
+}
+
+@media screen and (max-width:768px) {
+    .flag__birthday{
+        animation-delay: 0.2s;
+    }
+    .flag__birthday .flag__left,
+    .flag__birthday .flag__right{
+        width: 160px;
+    }
+    .flag__left{
+        transform: rotate(-10deg) translate(-20px,20px)!important;
+    }
+    .flag__right{
+        transform: rotate(10deg) translate(20px, 20px) scaleX(-1)!important;
+    }
+    #wrapper .content{
+        flex-direction: column;
+        padding-top: 1rem;
+    }
+    #wrapper .content .left{
+        position: unset;
+        width: 100% !important;
+    }
+    #wrapper .content .right{
+        width: 100% !important;
+        margin-top: 20px;
+    }
+    #wrapper .content .left .title{
+        font-size: 2rem;
+        margin-left: 0;  /* Reset margin trên mobile */
+    }
+    .happy span, .birthday span {
+        font-size: 1.5rem;
+    }
+    .title .happy, .title .birthday{
+        left: 0;
+    }
+    .happy span:nth-child(1){
+        animation-delay: 1s;
+    }
+    .happy span:nth-child(2){
+        animation-delay: 1.2s;
+    }
+    .happy span:nth-child(3){
+        animation-delay: 1.4s;
+    }
+    .happy span:nth-child(4){
+        animation-delay: 1.6s;
+    }
+    .happy span:nth-child(5){
+        animation-delay: 1.8s;
+    }
+    .birthday span:nth-child(1){
+        animation-delay: 2s;
+    }
+    .birthday span:nth-child(2){
+        animation-delay: 2.2s;
+    }
+    .birthday span:nth-child(3){
+        animation-delay: 2.4s;
+    }
+    .birthday span:nth-child(4){
+        animation-delay: 2.6s;
+    }
+    .birthday span:nth-child(5){
+        animation-delay: 2.8s;
+    }
+    .birthday span:nth-child(6){
+        animation-delay: 3s;
+    }
+    .birthday span:nth-child(7){
+        animation-delay: 3.2s;
+    }
+    .birthday span:nth-child(8){
+        animation-delay: 3.4s;
+    }
+    .title .hat{
+        animation-delay: 3.5s;
+        right: -50px;
+    }
+    .title .hat img{
+        width: 85px;
+    }
+    .date__of__birth, .balloon_one, .balloon_two{
+        display: none;
+    }
+    .btn{
+        position: absolute;
+        bottom: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 0;  /* Reset margin trên mobile */
+    }
+    @keyframes scaleCricleMobile {
+        0%{
+            transform: translateX(-50%) scale(0);
+        }
+        10%{
+            transform: translateX(-50%) scale(1.3);
+        }
+        20%{
+            transform: translateX(-50%) scale(0.7);
+        }
+        30%,100%{
+            transform: translateX(-50%) scale(1);
+        }
+    }
+    #btn__letter{
+        padding: 12px 35px;
+        margin-left: 0;
+        font-size: 2rem;   
+    }
+    .right .box__account{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        transform: translateY(0);
+        animation: none !important;
+    }
+    .right .box__account .image{
+        width: 260px;     
+        height: 260px;  
+        transform: scale(0);
+        animation: scaleHeartLetter 2s 4s forwards !important;
+    }
+    .right .box__account .name{
+        padding: 8px 25px;
+        transform: scale(0);
+        animation: scaleHeartLetter 2s 5s forwards !important;
+        bottom: -15px;
+    }
+    .right .box__account .name span{
+        font-size: 1.1rem;  /* Tăng từ 0.9rem lên 1.1rem trên mobile */
+        margin: 0 15px;
+    }
+    .cricle{
+        top: -20px;
+        right: 10px;
+        animation-delay: 6s;
+    }
+    .text__cricle{
+        width: 65px;
+        height: 65px;
+        border-width: 2px;
+    }
+    .text__cricle span{
+        transform-origin: 0 30px;
+        font-size: 0.5rem;
+    }
+    .content .right .day, .content .right .month{
+        display: block;
+    }
+    .decorate_star.star1 {
+        top: 125px;
+        left: 375px;
+        animation-delay: 5.2s;
+    }
+    .decorate_star.star2 {
+        top: 80px;
+        right: 360px;
+        animation-delay: 5.2s;
+    }
+    .decorate_star.star3 {
+        top: 255px;
+        left: 300px;
+        animation-delay: 5.2s;
+    }
+    .decorate_star.star4{
+        animation-delay: 5.2s;
+    }
+    .decorate_star.star5 {
+        bottom: 140px;
+        left: 350px;
+        animation-delay: 5.2s;
+    }
+    .decorate_flower--one{
+        animation-delay: 5.2s;
+    }
+    .decorate_flower--two{
+        display: none;
+    }
+    .decorate_flower--three{
+        top: 45px;
+        animation-delay: 5.2s;
+    }
+    .left .btn{
+        animation-delay: 6s;
+    }
+    .smiley__icon{
+        display: center;
+        position: fixed ;
+        left: 50%;
+        top: 50% ;
+        transform: translate(-50%, -50%) ;
+        z-index: 10 ;
+        pointer-events: none ;
+    }
+    .box__letter .letter__border{
+        width: 95%;
+        height: 500px;
+    }
+    .letter__border .letter .title__letter{
+        font-size: 1.6rem;
+    }
+    .content__letter .left{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .content__letter .left .heart_2{
+        top: 50px;
+    }
+    .content__letter .left .heart_3 {
+        bottom: 60px;
+        left: 75px;
+    }
+    .content__letter .left .heart_4 {
+        top: 140px;
+        right: 15px;
+    }
+    .content__letter .right .love__img.animationOp img{
+        width: 110px;
+    }
+    .text__letter{
+        margin-top: 0px !important;
+        font-size: 0.9rem !important;
+    }
+}
