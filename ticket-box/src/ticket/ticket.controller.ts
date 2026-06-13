@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Req, UseGuards, Param, BadRequestException } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { JwtAuthGuard } from '../common/guards/jwt.strategy';
+import { Public } from 'src/common/guards/jwt.strategy';
 
 @Controller('tickets')
 export class TicketController {
@@ -11,7 +12,8 @@ export class TicketController {
 
 
   @Get('/sync/:concertId')
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  //@Public()
   findTicketsByConcert(@Param('concertId') id: string) {
     return this.ticketService.findTicketByConcertId(id);
   }
@@ -46,7 +48,8 @@ export class TicketController {
    * Dùng queue để xử lý bất đồng bộ, tránh race condition.
    */
   @Post('/sync/checkins')
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  //@Public()
   async syncCheckins(@Body() body: { checkins: Array<{ id: string; timestamp: string }> }, @Req() req: any) {
     if (!body.checkins || body.checkins.length === 0) {
       throw new BadRequestException('Không có dữ liệu check-in');
