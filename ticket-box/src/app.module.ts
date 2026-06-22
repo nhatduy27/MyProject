@@ -25,46 +25,35 @@ import { Guest } from './entities/guest.entity';
 import { PaymentModule } from './payment/payment.module';
 import { TicketModule } from './ticket/ticket.module';
 import { MailModule } from './mail/mail.module';
-import { RolesGuard } from './common/guards/roles.guard';
-
-// ====== TẠO 1 REDIS CLIENT DUY NHẤT ======
-const createRedisClient = (configService: ConfigService) => {
-  const url = configService.get<string>('REDIS_URL');
-  return new Redis(url, {
-    maxRetriesPerRequest: 3,
-    retryStrategy: (times) => {
-      if (times > 5) return null;
-      return Math.min(times * 100, 3000);
-    },
-    lazyConnect: false,
-    enableReadyCheck: true,
-  });
-};
 
 @Module({
   imports: [
+    // Pino logger — pino-pretty ở dev cho dễ đọc, JSON thuần ở production
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => {
         const isDev = config.get<string>('NODE_ENV') !== 'production';
         return {
           pinoHttp: {
+            // Mức log tối thiểu: debug ở dev, info ở production
             level: isDev ? 'debug' : 'info',
             transport: isDev
               ? {
-                  target: 'pino-pretty',
-                  options: {
-                    colorize: true,
-                    singleLine: true,
-                    translateTime: 'HH:MM:ss',
-                    ignore: 'pid,hostname',
-                  },
-                }
-              : undefined,
+                target: 'pino-pretty',
+                options: {
+                  colorize: true,
+                  singleLine: true,        // mỗi log 1 dòng, dễ đọc hơn
+                  translateTime: 'HH:MM:ss', // giờ local thay vì epoch
+                  ignore: 'pid,hostname',  // bỏ bớt trường ít dùng
+                },
+              }
+              : undefined, // production — JSON thuần để đẩy vào Datadog/Loki
+            // Ghi đè serializer mặc định để request log gọn hơn
             serializers: {
               req: (req) => ({ method: req.method, url: req.url }),
               res: (res) => ({ statusCode: res.statusCode }),
             },
+            // Không log route health check để giảm noise
             autoLogging: {
               ignore: (req) => req.url === '/health',
             },
@@ -83,7 +72,7 @@ const createRedisClient = (configService: ConfigService) => {
         type: 'postgres',
         url: configService.get<string>('DATABASE_URL'),
         entities: [User, Otp, Concert, TicketType, Order, Ticket, Guest],
-        synchronize: true,
+        synchronize: true, // Use only for dev/prototype
       }),
       inject: [ConfigService],
     }),
@@ -91,31 +80,32 @@ const createRedisClient = (configService: ConfigService) => {
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        connection: new Redis(configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379', {
-          maxRetriesPerRequest: 3,
-          retryStrategy: (times) => {
-            if (times > 5) return null;
-            return Math.min(times * 100, 3000);
-          },
-        }),
+        connection: {
+          host: configService.get<string>('REDIS_HOST') ?? 'localhost',
+          port: configService.get<number>('REDIS_PORT') ?? 6379,
+          password: configService.get<string>('REDIS_PASSWORD') ?? undefined,
+        },
       }),
       inject: [ConfigService],
     }),
     // ====== REDIS MODULE - DÙNG REDIS_URL ======
     RedisModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'single',
-        url: configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379',
-        options: {
-          lazyConnect: false,
-          maxRetriesPerRequest: 3,
-          enableReadyCheck: true,
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const redisUrl = configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379';
+        return {
+          type: 'single',
+          url: redisUrl,
+          options: {
+            lazyConnect: false,
+            maxRetriesPerRequest: 3,
+            enableReadyCheck: true,
+          },
+        };
+      },
       inject: [ConfigService],
     }),
-    // ====== THROTTLER - DÙNG CHUNG REDIS_URL ======
+    // ====== THROTTLER - DÙNG REDIS_URL ======
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -148,8 +138,7 @@ const createRedisClient = (configService: ConfigService) => {
   controllers: [AppController],
   providers: [
     AppService,
-    { provide: APP_GUARD, useClass: JwtAuthGuard },
-    { provide: APP_GUARD, useClass: RolesGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard }
   ],
 })
 export class AppModule {}
