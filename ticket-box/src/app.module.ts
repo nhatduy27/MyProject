@@ -28,32 +28,28 @@ import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
-    // Pino logger — pino-pretty ở dev cho dễ đọc, JSON thuần ở production
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => {
         const isDev = config.get<string>('NODE_ENV') !== 'production';
         return {
           pinoHttp: {
-            // Mức log tối thiểu: debug ở dev, info ở production
             level: isDev ? 'debug' : 'info',
             transport: isDev
               ? {
-                target: 'pino-pretty',
-                options: {
-                  colorize: true,
-                  singleLine: true,        // mỗi log 1 dòng, dễ đọc hơn
-                  translateTime: 'HH:MM:ss', // giờ local thay vì epoch
-                  ignore: 'pid,hostname',  // bỏ bớt trường ít dùng
-                },
-              }
-              : undefined, // production — JSON thuần để đẩy vào Datadog/Loki
-            // Ghi đè serializer mặc định để request log gọn hơn
+                  target: 'pino-pretty',
+                  options: {
+                    colorize: true,
+                    singleLine: true,
+                    translateTime: 'HH:MM:ss',
+                    ignore: 'pid,hostname',
+                  },
+                }
+              : undefined,
             serializers: {
               req: (req) => ({ method: req.method, url: req.url }),
               res: (res) => ({ statusCode: res.statusCode }),
             },
-            // Không log route health check để giảm noise
             autoLogging: {
               ignore: (req) => req.url === '/health',
             },
@@ -72,20 +68,25 @@ import { MailModule } from './mail/mail.module';
         type: 'postgres',
         url: configService.get<string>('DATABASE_URL'),
         entities: [User, Otp, Concert, TicketType, Order, Ticket, Guest],
-        synchronize: true, // Use only for dev/prototype
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),
     // ====== BULLMQ - DÙNG REDIS_URL ======
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        connection: {
-          host: configService.get<string>('REDIS_HOST') ?? 'localhost',
-          port: configService.get<number>('REDIS_PORT') ?? 6379,
-          password: configService.get<string>('REDIS_PASSWORD') ?? undefined,
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const redisUrl = configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379';
+        return {
+          connection: new Redis(redisUrl, {
+            maxRetriesPerRequest: 3,
+            retryStrategy: (times) => {
+              if (times > 5) return null;
+              return Math.min(times * 100, 3000);
+            },
+          }),
+        };
+      },
       inject: [ConfigService],
     }),
     // ====== REDIS MODULE - DÙNG REDIS_URL ======
@@ -109,23 +110,26 @@ import { MailModule } from './mail/mail.module';
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        throttlers: [
-          {
-            ttl: 1000,
-            limit: 10,
-          },
-        ],
-        storage: new ThrottlerStorageRedisService(
-          new Redis(config.get<string>('REDIS_URL') ?? 'redis://localhost:6379', {
-            maxRetriesPerRequest: 3,
-            retryStrategy: (times) => {
-              if (times > 5) return null;
-              return Math.min(times * 100, 3000);
+      useFactory: (config: ConfigService) => {
+        const redisUrl = config.get<string>('REDIS_URL') ?? 'redis://localhost:6379';
+        return {
+          throttlers: [
+            {
+              ttl: 1000,
+              limit: 10,
             },
-          })
-        ),
-      }),
+          ],
+          storage: new ThrottlerStorageRedisService(
+            new Redis(redisUrl, {
+              maxRetriesPerRequest: 3,
+              retryStrategy: (times) => {
+                if (times > 5) return null;
+                return Math.min(times * 100, 3000);
+              },
+            })
+          ),
+        };
+      },
     }),
     AuthModule,
     ConcertModule,
@@ -138,7 +142,7 @@ import { MailModule } from './mail/mail.module';
   controllers: [AppController],
   providers: [
     AppService,
-    { provide: APP_GUARD, useClass: JwtAuthGuard }
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}
