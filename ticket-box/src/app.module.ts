@@ -76,19 +76,24 @@ import { MailModule } from './mail/mail.module';
       }),
       inject: [ConfigService],
     }),
-    // ====== BULLMQ - DÙNG REDIS_URL ======
+    // ====== BULLMQ - DÙNG REDIS_URL (FIX: dùng object connection) ======
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         const redisUrl = configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379';
+        // Parse URL để lấy host, port, password
+        const url = new URL(redisUrl);
         return {
-          connection: new Redis(redisUrl, {
+          connection: {
+            host: url.hostname,
+            port: parseInt(url.port || '6379'),
+            password: url.password || undefined,
             maxRetriesPerRequest: 3,
-            retryStrategy: (times) => {
+            retryStrategy: (times: number) => {
               if (times > 5) return null;
               return Math.min(times * 100, 3000);
             },
-          }),
+          },
         };
       },
       inject: [ConfigService],
