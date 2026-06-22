@@ -25,35 +25,46 @@ import { Guest } from './entities/guest.entity';
 import { PaymentModule } from './payment/payment.module';
 import { TicketModule } from './ticket/ticket.module';
 import { MailModule } from './mail/mail.module';
+import { RolesGuard } from './common/guards/roles.guard';
+
+// ====== TẠO 1 REDIS CLIENT DUY NHẤT ======
+const createRedisClient = (configService: ConfigService) => {
+  const url = configService.get<string>('REDIS_URL');
+  return new Redis(url, {
+    maxRetriesPerRequest: 3,
+    retryStrategy: (times) => {
+      if (times > 5) return null;
+      return Math.min(times * 100, 3000);
+    },
+    lazyConnect: false,
+    enableReadyCheck: true,
+  });
+};
 
 @Module({
   imports: [
-    // Pino logger — pino-pretty ở dev cho dễ đọc, JSON thuần ở production
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => {
         const isDev = config.get<string>('NODE_ENV') !== 'production';
         return {
           pinoHttp: {
-            // Mức log tối thiểu: debug ở dev, info ở production
             level: isDev ? 'debug' : 'info',
             transport: isDev
               ? {
-                target: 'pino-pretty',
-                options: {
-                  colorize: true,
-                  singleLine: true,        // mỗi log 1 dòng, dễ đọc hơn
-                  translateTime: 'HH:MM:ss', // giờ local thay vì epoch
-                  ignore: 'pid,hostname',  // bỏ bớt trường ít dùng
-                },
-              }
-              : undefined, // production — JSON thuần để đẩy vào Datadog/Loki
-            // Ghi đè serializer mặc định để request log gọn hơn
+                  target: 'pino-pretty',
+                  options: {
+                    colorize: true,
+                    singleLine: true,
+                    translateTime: 'HH:MM:ss',
+                    ignore: 'pid,hostname',
+                  },
+                }
+              : undefined,
             serializers: {
               req: (req) => ({ method: req.method, url: req.url }),
               res: (res) => ({ statusCode: res.statusCode }),
             },
-            // Không log route health check để giảm noise
             autoLogging: {
               ignore: (req) => req.url === '/health',
             },
@@ -72,28 +83,31 @@ import { MailModule } from './mail/mail.module';
         type: 'postgres',
         url: configService.get<string>('DATABASE_URL'),
         entities: [User, Otp, Concert, TicketType, Order, Ticket, Guest],
-        synchronize: true, // Use only for dev/prototype
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),
+    // ====== BULLMQ - DÙNG REDIS_URL ======
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        connection: {
-          host: configService.get<string>('REDIS_HOST'),
-          port: configService.get<number>('REDIS_PORT'),
-          password: configService.get<string>('REDIS_PASSWORD'),
-        },
+        connection: new Redis(configService.get<string>('REDIS_URL'), {
+          maxRetriesPerRequest: 3,
+          retryStrategy: (times) => {
+            if (times > 5) return null;
+            return Math.min(times * 100, 3000);
+          },
+        }),
       }),
       inject: [ConfigService],
     }),
+    // ====== REDIS MODULE - DÙNG REDIS_URL ======
     RedisModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'single',
-        url: `redis://${configService.get<string>('REDIS_HOST')}:${configService.get<number>('REDIS_PORT')}`,
+        url: configService.get<string>('REDIS_URL'),
         options: {
-          password: configService.get<string>('REDIS_PASSWORD'),
           lazyConnect: false,
           maxRetriesPerRequest: 3,
           enableReadyCheck: true,
@@ -101,8 +115,7 @@ import { MailModule } from './mail/mail.module';
       }),
       inject: [ConfigService],
     }),
-    // Rate Limiting toàn cục — mỗi IP/user tối đa 10 req/giây mặc định
-    // Sử dụng Redis để đồng bộ rate limit trên toàn bộ các server
+    // ====== THROTTLER - DÙNG CHUNG REDIS_URL ======
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -114,10 +127,12 @@ import { MailModule } from './mail/mail.module';
           },
         ],
         storage: new ThrottlerStorageRedisService(
-          new Redis({
-            host: config.get<string>('REDIS_HOST'),
-            port: config.get<number>('REDIS_PORT'),
-            password: config.get<string>('REDIS_PASSWORD'),
+          new Redis(config.get<string>('REDIS_URL'), {
+            maxRetriesPerRequest: 3,
+            retryStrategy: (times) => {
+              if (times > 5) return null;
+              return Math.min(times * 100, 3000);
+            },
           })
         ),
       }),
@@ -133,7 +148,8 @@ import { MailModule } from './mail/mail.module';
   controllers: [AppController],
   providers: [
     AppService,
-    { provide: APP_GUARD, useClass: JwtAuthGuard }
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
-export class AppModule { }
+export class AppModule {}
