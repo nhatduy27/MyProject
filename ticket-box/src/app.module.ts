@@ -27,6 +27,20 @@ import { TicketModule } from './ticket/ticket.module';
 import { MailModule } from './mail/mail.module';
 import { RolesGuard } from './common/guards/roles.guard';
 
+// ====== TẠO 1 REDIS CLIENT DUY NHẤT ======
+const createRedisClient = (configService: ConfigService) => {
+  const url = configService.get<string>('REDIS_URL');
+  return new Redis(url, {
+    maxRetriesPerRequest: 3,
+    retryStrategy: (times) => {
+      if (times > 5) return null;
+      return Math.min(times * 100, 3000);
+    },
+    lazyConnect: false,
+    enableReadyCheck: true,
+  });
+};
+
 @Module({
   imports: [
     LoggerModule.forRootAsync({
@@ -77,16 +91,13 @@ import { RolesGuard } from './common/guards/roles.guard';
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        connection: new Redis(
-          configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379',
-          {
-            maxRetriesPerRequest: 3,
-            retryStrategy: (times) => {
-              if (times > 5) return null;
-              return Math.min(times * 100, 3000);
-            },
-          }
-        ),
+        connection: new Redis(configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379', {
+          maxRetriesPerRequest: 3,
+          retryStrategy: (times) => {
+            if (times > 5) return null;
+            return Math.min(times * 100, 3000);
+          },
+        }),
       }),
       inject: [ConfigService],
     }),
@@ -116,16 +127,13 @@ import { RolesGuard } from './common/guards/roles.guard';
           },
         ],
         storage: new ThrottlerStorageRedisService(
-          new Redis(
-            config.get<string>('REDIS_URL') ?? 'redis://localhost:6379',
-            {
-              maxRetriesPerRequest: 3,
-              retryStrategy: (times) => {
-                if (times > 5) return null;
-                return Math.min(times * 100, 3000);
-              },
-            }
-          )
+          new Redis(config.get<string>('REDIS_URL') ?? 'redis://localhost:6379', {
+            maxRetriesPerRequest: 3,
+            retryStrategy: (times) => {
+              if (times > 5) return null;
+              return Math.min(times * 100, 3000);
+            },
+          })
         ),
       }),
     }),
