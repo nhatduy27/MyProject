@@ -1,64 +1,65 @@
-import { Controller, Get, Post, Body, Req, UseGuards, Param, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Param, BadRequestException, Query } from '@nestjs/common';
 import { TicketService } from './ticket.service';
-import { JwtAuthGuard } from '../common/guards/jwt.strategy';
 import { Public } from 'src/common/guards/jwt.strategy';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { UserRole } from 'src/entities/user.entity';
 
 @Controller('tickets')
 export class TicketController {
   constructor(
     private readonly ticketService: TicketService,
-  ) {}
+  ) { }
 
-
-
-  @Get('/sync/:concertId')
-  @UseGuards(JwtAuthGuard)
-  //@Public()
-  findTicketsByConcert(@Param('concertId') id: string) {
-    return this.ticketService.findTicketByConcertId(id);
-  }
-
-  /**
-   * Lấy danh sách vé đã mua thành công của user hiện tại.
-   * Dữ liệu được gom nhóm theo từng Order (đơn hàng).
-   */
   @Get('my-tickets')
-  @UseGuards(JwtAuthGuard)
   async getMyTickets(@Req() req: any) {
-    // ID của user được lấy từ JWT Token đã giải mã
     const userId = req.user.id;
     return this.ticketService.getMyTickets(userId);
   }
 
-  /**
-   * Dành cho nhân viên kiểm duyệt quét QR code
-   */
-  @Post('scan')
-  @UseGuards(JwtAuthGuard)
-  async scanTicket(@Body('qrCode') qrCode: string) {
-    if (!qrCode) {
-      throw new BadRequestException('Mã QR không hợp lệ');
-    }
-    return this.ticketService.scanTicket(qrCode);
+  /// Sync ticket về điện thoại (dùng 1 lần sáng)
+  @Roles(UserRole.ORGANIZER, UserRole.STAFF)
+  @Get('/sync/:concertId')
+  findTicketsByConcert(@Param('concertId') id: string) {
+    return this.ticketService.findTicketByConcertId(id);
   }
 
-  
-    /**
-   * Đồng bộ danh sách vé đã check-in từ local lên server.
-   * Dùng queue để xử lý bất đồng bộ, tránh race condition.
-   */
-  @Post('/sync/checkins')
-  @UseGuards(JwtAuthGuard)
-  //@Public()
-  async syncCheckins(@Body() body: { checkins: Array<{ id: string; timestamp: string }> }, @Req() req: any) {
-    if (!body.checkins || body.checkins.length === 0) {
-      throw new BadRequestException('Không có dữ liệu check-in');
-    }
- 
-    const result = await this.ticketService.syncCheckins(
-      body.checkins
-    );
 
+
+  /// 1. Quét vé (Online-First) - Nhận ticketId thay vì qrCode
+  @Roles(UserRole.ORGANIZER, UserRole.STAFF)
+  @Post('/scan/new')
+  async scanTicketNew(@Body() body: { ticketId: string; concertId: string; scannedAt: string }) {
+    if (!body.ticketId) {
+      throw new BadRequestException('Ticket ID không hợp lệ');
+    }
+    return this.ticketService.scanTicketById(body.ticketId, body.scannedAt);
+  }
+
+  ///Đồng bộ hàng loạt từ sync_queue
+  @Roles(UserRole.ORGANIZER, UserRole.STAFF)
+  @Post('/sync/batch')
+  async batchSync(@Body() body: { queue: any[]; syncedAt: string }) {
+    if (!body.queue || body.queue.length === 0) {
+      throw new BadRequestException('Không có dữ liệu để đồng bộ');
+    }
+
+    const result = await this.ticketService.batchSync(body.queue);
     return result;
+  }
+
+  /// 3. Kéo các thay đổi từ Server (từ lần sync cuối)
+  @Roles(UserRole.ORGANIZER, UserRole.STAFF)
+  @Get('/changes')
+  async getChangesSince(
+    @Query('concertId') concertId: string,
+    @Query('since') since: string,
+  ) {
+    if (!concertId) {
+      throw new BadRequestException('concertId là bắt buộc');
+    }
+
+    const sinceDate = since ? new Date(since) : new Date(0);
+    const changes = await this.ticketService.getChangesSince(concertId, sinceDate);
+    return changes;
   }
 }
