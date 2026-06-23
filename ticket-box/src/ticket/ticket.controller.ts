@@ -27,7 +27,7 @@ export class TicketController {
 
   /// 1. Quét vé (Online-First) - Nhận ticketId thay vì qrCode
   @Roles(UserRole.ORGANIZER, UserRole.STAFF)
-  @Post('/scan/new')
+  @Post('/scan')
   async scanTicketNew(@Body() body: { ticketId: string; concertId: string; scannedAt: string }) {
     if (!body.ticketId) {
       throw new BadRequestException('Ticket ID không hợp lệ');
