@@ -1,3 +1,4 @@
+// backend/src/guest/guest.service.ts
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +11,8 @@ import { Order } from '../entities/order.entity';
 import { Ticket } from '../entities/ticket.entity';
 import { User } from '../entities/user.entity';
 import { Guest } from '../entities/guest.entity';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class GuestService {
@@ -21,8 +24,9 @@ export class GuestService {
     @InjectRepository(Ticket)  private readonly ticketRepo:  Repository<Ticket>,
     @InjectRepository(User)    private readonly userRepo:    Repository<User>,
     @InjectRepository(Guest)   private readonly guestRepo:   Repository<Guest>,
+    @InjectQueue('ticketbox.sync-checkins')
+    private readonly syncQueue: Queue,
   ) {}
-
 
   // ─── Guest Management ────────────────────────────────────────────────────────
 
@@ -140,25 +144,21 @@ export class GuestService {
       let isProcessing = false;
       let isEnded = false;
 
-      // Tạo stream từ buffer
       const stream = Readable.from(fileBuffer.toString());
 
       stream
         .pipe(csv({}))
         .on('data', async (row) => {
-          // Pause stream khi đang xử lý
           stream.pause();
           isProcessing = true;
 
           try {
             totalRows++;
 
-            // Lấy dữ liệu từ các cột (hỗ trợ nhiều format header)
             const fullName = row.fullName || row.name || row['Họ và tên'] || row['Họ tên'];
             const email = row.email || row['Email'];
             const phone = row.phone || row['Số điện thoại'] || row['SĐT'] || row['Phone'];
 
-            // Bỏ qua dòng không có tên
             if (!fullName || !fullName.trim()) {
               errorCount++;
               stream.resume();
@@ -179,7 +179,6 @@ export class GuestService {
 
             batchData.push(guest);
 
-            // Gom đủ batch thì insert
             if (batchData.length >= BATCH_SIZE) {
               const dataToInsert = [...batchData];
               batchData.length = 0;
@@ -196,7 +195,6 @@ export class GuestService {
                 this.logger.debug({ count: dataToInsert.length }, 'Batch inserted');
               } catch (err) {
                 this.logger.error({ err }, 'Batch insert failed, falling back to single insert');
-                // Fallback: insert từng cái
                 for (const g of dataToInsert) {
                   try {
                     await this.guestRepo.save(g);
@@ -222,7 +220,6 @@ export class GuestService {
         .on('end', async () => {
           isEnded = true;
 
-          // Xử lý phần dữ liệu còn sót lại
           if (batchData.length > 0) {
             try {
               await this.guestRepo
@@ -264,6 +261,93 @@ export class GuestService {
           reject(new BadRequestException(`Lỗi đọc CSV: ${error.message}`));
         });
     });
+  }
+
+  // ============ SYNC METHODS (cho Flutter) ============
+
+  /// Lấy danh sách guest theo concertId
+  async findGuestsByConcert(concertId: string) {
+    const concert = await this.concertRepo.findOne({ where: { id: concertId } });
+    if (!concert) throw new NotFoundException('Concert không tồn tại');
+
+    const guests = await this.guestRepo
+      .createQueryBuilder('guest')
+      .where('guest.concertId = :concertId', { concertId })
+      .orderBy('guest.createdAt', 'DESC')
+      .getMany();
+
+    return guests.map(guest => ({
+      id: guest.id,
+      guestCode: guest.guestCode,
+      fullName: guest.fullName,
+      email: guest.email,
+      phone: guest.phone,
+      isCheckedIn: guest.isCheckedIn,
+      createdAt: guest.createdAt,
+    }));
+  }
+
+  /// Scan Guest theo ID
+  async scanGuestById(guestId: string, scannedAt: string) {
+    const guest = await this.guestRepo.findOne({
+      where: { id: guestId },
+      
+    });
+
+    if (!guest) {
+      throw new NotFoundException('Không tìm thấy khách mời hợp lệ.');
+    }
+
+    if (guest.isCheckedIn) {
+      throw new BadRequestException('Khách mời này đã check-in trước đó.');
+    }
+
+    guest.isCheckedIn = true;
+    await this.guestRepo.save(guest);
+
+    return {
+      success: true,
+      message: 'Check-in thành công!',
+      checkedInAt: scannedAt || new Date().toISOString(),
+      guestId: guest.id,
+      guestCode: guest.guestCode,
+      fullName: guest.fullName,
+    };
+  }
+
+  /// Đồng bộ hàng loạt từ sync_queue cho Guest
+  async batchSyncGuests(items: any[]) {
+    const job = await this.syncQueue.add('process-batch-sync-guests', {
+      items,
+      syncedAt: new Date().toISOString(),
+      type: 'GUEST',
+    });
+
+    return {
+      success: true,
+      message: 'Đang đồng bộ danh sách khách mời với hệ thống',
+      jobId: job.id,
+      total: items.length,
+    };
+  }
+
+  /// Kéo các thay đổi của Guest từ Server
+  async getGuestChangesSince(concertId: string, since: Date) {
+    const guests = await this.guestRepo
+      .createQueryBuilder('guest')
+      .where('guest.concertId = :concertId', { concertId })
+      .andWhere('guest.updatedAt > :since', { since })
+      .orderBy('guest.updatedAt', 'DESC')
+      .getMany();
+
+    return guests.map(guest => ({
+      id: guest.id,
+      guestCode: guest.guestCode,
+      fullName: guest.fullName,
+      email: guest.email,
+      phone: guest.phone,
+      isCheckedIn: guest.isCheckedIn,
+    }));
   }
 
   private generateGuestCode(): string {
