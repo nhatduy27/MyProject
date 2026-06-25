@@ -14,8 +14,6 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConcertModule } from './concert/concert.module';
 import { BookingModule } from './booking/booking.module';
-import { AdminModule } from './admin/admin.module';
-import { GuestModule } from './guest/guest.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { User } from './entities/user.entity';
 import { Otp } from './entities/otp.entity';
@@ -27,7 +25,6 @@ import { Guest } from './entities/guest.entity';
 import { PaymentModule } from './payment/payment.module';
 import { TicketModule } from './ticket/ticket.module';
 import { MailModule } from './mail/mail.module';
-import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -79,67 +76,82 @@ import { RolesGuard } from './common/guards/roles.guard';
       }),
       inject: [ConfigService],
     }),
+    // ====== BULLMQ - DÙNG REDIS_URL (FIX: dùng object connection) ======
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        connection: {
-          host: configService.get<string>('REDIS_HOST'),
-          port: configService.get<number>('REDIS_PORT'),
-          password: configService.get<string>('REDIS_PASSWORD'),
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const redisUrl = configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379';
+        // Parse URL để lấy host, port, password
+        const url = new URL(redisUrl);
+        return {
+          connection: {
+            host: url.hostname,
+            port: parseInt(url.port || '6379'),
+            password: url.password || undefined,
+            maxRetriesPerRequest: 3,
+            retryStrategy: (times: number) => {
+              if (times > 5) return null;
+              return Math.min(times * 100, 3000);
+            },
+          },
+        };
+      },
       inject: [ConfigService],
     }),
+    // ====== REDIS MODULE - DÙNG REDIS_URL ======
     RedisModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'single',
-        url: `redis://${configService.get<string>('REDIS_HOST')}:${configService.get<number>('REDIS_PORT')}`,
-        options: {
-          password: configService.get<string>('REDIS_PASSWORD'),
-          lazyConnect: false,
-          maxRetriesPerRequest: 3,
-          enableReadyCheck: true,
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const redisUrl = configService.get<string>('REDIS_URL') ?? 'redis://localhost:6379';
+        return {
+          type: 'single',
+          url: redisUrl,
+          options: {
+            lazyConnect: false,
+            maxRetriesPerRequest: 3,
+            enableReadyCheck: true,
+          },
+        };
+      },
       inject: [ConfigService],
     }),
-    // Rate Limiting toàn cục — mỗi IP/user tối đa 10 req/giây mặc định
-    // Sử dụng Redis để đồng bộ rate limit trên toàn bộ các server
+    // ====== THROTTLER - DÙNG REDIS_URL ======
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        throttlers: [
-          {
-            ttl: 1000,
-            limit: 10,
-          },
-        ],
-        storage: new ThrottlerStorageRedisService(
-          new Redis({
-            host: config.get<string>('REDIS_HOST'),
-            port: config.get<number>('REDIS_PORT'),
-            password: config.get<string>('REDIS_PASSWORD'),
-          })
-        ),
-      }),
+      useFactory: (config: ConfigService) => {
+        const redisUrl = config.get<string>('REDIS_URL') ?? 'redis://localhost:6379';
+        return {
+          throttlers: [
+            {
+              ttl: 1000,
+              limit: 10,
+            },
+          ],
+          storage: new ThrottlerStorageRedisService(
+            new Redis(redisUrl, {
+              maxRetriesPerRequest: 3,
+              retryStrategy: (times) => {
+                if (times > 5) return null;
+                return Math.min(times * 100, 3000);
+              },
+            })
+          ),
+        };
+      },
     }),
     AuthModule,
     ConcertModule,
     BookingModule,
     PaymentModule,
     TicketModule,
-    GuestModule,
     MailModule,
-    AdminModule,
     ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    { provide: APP_GUARD,       useClass: JwtAuthGuard },
-    { provide: APP_GUARD,       useClass: RolesGuard }
+    { provide: APP_GUARD, useClass: JwtAuthGuard }
   ],
 })
-export class AppModule { }
+export class AppModule {}
