@@ -268,7 +268,7 @@ export class GuestService {
   /// Lấy danh sách guest theo concertId
   async findGuestsByConcert(concertId: string) {
     const concert = await this.concertRepo.findOne({ where: { id: concertId } });
-    if (!concert) throw new NotFoundException('Concert không tồn tại');
+    if (!concert) throw new NotFoundException('Concert không tồn tại ');
 
     const guests = await this.guestRepo
       .createQueryBuilder('guest')
