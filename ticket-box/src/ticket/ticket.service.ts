@@ -20,8 +20,6 @@ export class TicketService {
     private readonly syncQueue: Queue,
   ) { }
 
-  // ============ API CŨ (GIỮ NGUYÊN) ============
-
   async findTicketByConcertId(id: string) {
     const concert = await this.concertRepo.findOne({ where: { id } });
     if (!concert) throw new NotFoundException('Concert không tồn tại');
@@ -40,21 +38,6 @@ export class TicketService {
       status: ticket.status,
       updatedAt: ticket.updatedAt,
     }));
-  }
-
-  async syncCheckins(
-    checkins: Array<{ id: string; timestamp: string }>,
-  ) {
-    const job = await this.syncQueue.add('process-checkins', {
-      checkins
-    });
-
-    return {
-      status: 'SUCCESS',
-      message: 'Đang đồng bộ với hệ thống',
-      jobId: job.id,
-      total: checkins.length,
-    };
   }
 
   async getMyTickets(userId: string) {
@@ -135,11 +118,6 @@ export class TicketService {
     };
   }
 
-  // ============ API MỚI CHO HYBRID AUTO-SYNC ============
-
-  /**
-   * 1. Quét vé theo ID (Online-First)
-   */
   async scanTicketById(ticketId: string, scannedAt: string) {
     const ticket = await this.ticketRepo.findOne({
       where: { id: ticketId },
@@ -193,7 +171,7 @@ async batchSync(items: any[]) {
 }
 
   /**
-   * 3. Kéo các thay đổi từ Server (từ lần sync cuối)
+   * Kéo các thay đổi từ Server (từ lần sync cuối)
    */
   async getChangesSince(concertId: string, since: Date) {
     // Lấy tất cả vé của concert đã được update sau thời điểm since
