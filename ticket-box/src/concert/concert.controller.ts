@@ -9,12 +9,22 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { UserRole } from 'src/entities/user.entity';
 
 const MAX_PDF_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
 
 // Multer fileFilter — chặn non-PDF trước khi load vào memory
 const pdfFileFilter = (_req: any, file: Express.Multer.File, cb: any) => {
   const isPdf = file.mimetype === 'application/pdf' && file.originalname.toLowerCase().endsWith('.pdf');
   if (!isPdf) {
     return cb(new BadRequestException('Chỉ chấp nhận file PDF'), false);
+  }
+  cb(null, true);
+};
+
+// Multer fileFilter — chỉ chấp nhận ảnh
+const imageFileFilter = (_req: any, file: Express.Multer.File, cb: any) => {
+  const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  if (!allowedMimes.includes(file.mimetype)) {
+    return cb(new BadRequestException('Chỉ chấp nhận file ảnh (JPEG, PNG, WebP, GIF)'), false);
   }
   cb(null, true);
 };
@@ -76,6 +86,27 @@ export class ConcertController {
   resetBio(@Param('id') id: string, @Req() req: any) {
     return this.concertService.resetBioStatus(id, req.user);
   }
+
+  @Post(':id/upload-image')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file', {
+    storage: memoryStorage(),
+    fileFilter: imageFileFilter,
+    limits: { fileSize: MAX_IMAGE_SIZE },
+  }))
+  uploadImage(
+    @Param('id') id: string,
+    @Query('type') type: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: any,
+  ) {
+    if (!file) throw new BadRequestException('Vui lòng chọn file ảnh');
+    if (type !== 'cover' && type !== 'seatMap') {
+      throw new BadRequestException('type phải là "cover" hoặc "seatMap"');
+    }
+    return this.concertService.uploadImage(id, file, type, req.user);
+  }
+
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

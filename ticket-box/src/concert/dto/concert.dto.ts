@@ -26,9 +26,16 @@ export class CreateConcertDto {
   @IsDateString({}, { message: 'Ngày diễn không hợp lệ' })
   date: string;
 
+  @IsDateString({}, { message: 'Thời điểm mở bán không hợp lệ' })
+  openTime: string;
+
   @IsString()
   @IsOptional()
   coverImageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  seatMapImageUrl?: string;
 }
 
 export class UpdateConcertDto {
@@ -56,9 +63,17 @@ export class UpdateConcertDto {
   @IsOptional()
   date?: string;
 
+  @IsDateString()
+  @IsOptional()
+  openTime?: string;
+
   @IsString()
   @IsOptional()
   coverImageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  seatMapImageUrl?: string;
 
   @IsEnum(ConcertStatus)
   @IsOptional()

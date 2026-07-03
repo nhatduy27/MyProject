@@ -12,6 +12,7 @@ import { InjectQueue } from '@nestjs/bullmq';
 import type { Queue } from 'bullmq';
 import type Redis from 'ioredis';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { ConfigService } from '@nestjs/config';
 import { Concert } from '../entities/concert.entity';
 import { TicketType } from '../entities/ticket-type.entity';
 import { Order, OrderStatus } from '../entities/order.entity';
@@ -19,12 +20,23 @@ import { UserRole } from '../entities/user.entity';
 import { CreateConcertDto, UpdateConcertDto } from './dto/concert.dto';
 import { CreateTicketTypeDto, UpdateTicketTypeDto } from './dto/ticket-type.dto';
 import { InjectRedis } from '@nestjs-modules/ioredis';
+import { StorageService } from '../storage/storage.service';
 
 const AI_BIO_QUEUE = 'ticketbox.concert.ai-bio';
+
 
 // Key pattern cho Redis, dùng chung với Phase 3 (booking)
 // ticket_type:{id}:available — số vé còn lại của loại vé tương ứng
 const redisKey = (ticketTypeId: string) => `ticket_type:${ticketTypeId}:available`;
+
+// Config map: ánh xạ type → bucket Supabase + column DB
+// Tập trung tại 1 chỗ — thêm loại ảnh mới chỉ cần thêm 1 entry
+const IMAGE_CONFIG = {
+  cover:   { bucket: 'cover-images', prefix: 'cover',    dbField: 'coverImageUrl'   as const },
+  seatMap: { bucket: 'seat-maps',    prefix: 'seat-map', dbField: 'seatMapImageUrl' as const },
+} as const;
+
+type ImageType = keyof typeof IMAGE_CONFIG;
 
 @Injectable()
 export class ConcertService implements OnApplicationBootstrap {
@@ -36,7 +48,10 @@ export class ConcertService implements OnApplicationBootstrap {
     @InjectRepository(Order) private readonly orderRepo: Repository<Order>,
     @InjectQueue(AI_BIO_QUEUE) private readonly aiBioQueue: Queue,
     @InjectRedis() private readonly redis: Redis,
+    private readonly configService: ConfigService,
+    private readonly storageService: StorageService,
   ) {}
+
 
   // Hàm tính toán số lượng vé thực tế từ DB bao gồm cả vé đang bị giam (PENDING)
   private async calculateAvailableFromDB(ticketType: TicketType): Promise<number> {
@@ -191,6 +206,49 @@ export class ConcertService implements OnApplicationBootstrap {
     await this.concertRepo.update(id, { aiStatus: 'IDLE' });
     return { message: 'Đã reset AI Bio status' };
   }
+
+  // ─── Image Uploads ────────────────────────────────────────────────────────────
+
+  /**
+   * Hàm upload ảnh duy nhất dùng chung cho cover và seat map.
+   * - Garbage Collection: xóa file cũ trên Supabase trước khi lưu URL mới.
+   * - Ưu tiên delete best-effort: nếu delete thất bại, vẫn tiếp tục upload ảnh mới.
+   */
+  async uploadImage(
+    id: string,
+    file: Express.Multer.File,
+    type: ImageType,
+    user: { id: string; role: UserRole },
+  ): Promise<{ imageUrl: string }> {
+    if (user.role !== UserRole.ORGANIZER) {
+      throw new ForbiddenException('Chỉ ban tổ chức mới có quyền upload ảnh');
+    }
+
+    const concert = await this.findOne(id);
+    const cfg = IMAGE_CONFIG[type];
+
+    // ── Garbage Collection ────────────────────────────────────────────────────
+    // Lấy URL cũ từ DB, nếu có thì xóa file cũ trên Supabase trước khi upload mới
+    const oldUrl = concert[cfg.dbField] as string | null;
+    if (oldUrl) {
+      try {
+        await this.storageService.deleteImage(cfg.bucket, oldUrl);
+      } catch (err) {
+        // Best-effort: log warning nhưng không block upload ảnh mới
+        this.logger.warn({ err, oldUrl, type }, 'GC: failed to delete old image — continuing');
+      }
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
+    const ext = file.originalname.split('.').pop() || 'jpg';
+    const fileName = `${cfg.prefix}_${id}_${Date.now()}.${ext}`;
+    const imageUrl = await this.storageService.uploadImage(cfg.bucket, fileName, file);
+
+    await this.concertRepo.update(id, { [cfg.dbField]: imageUrl });
+    this.logger.info({ concertId: id, type, imageUrl }, 'Image uploaded');
+    return { imageUrl };
+  }
+
 
   async remove(id: string, user: { id: string; role: UserRole }) {
     if (user.role !== UserRole.ORGANIZER) {

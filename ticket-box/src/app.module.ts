@@ -14,6 +14,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConcertModule } from './concert/concert.module';
 import { BookingModule } from './booking/booking.module';
+import { NotificationModule } from './notification/notification.module';
+import { GuestModule } from './guest/guest.module';
+import { AdminModule } from './admin/admin.module';
+import { StorageModule } from './storage/storage.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { User } from './entities/user.entity';
 import { Otp } from './entities/otp.entity';
@@ -24,7 +28,6 @@ import { Ticket } from './entities/ticket.entity';
 import { Guest } from './entities/guest.entity';
 import { PaymentModule } from './payment/payment.module';
 import { TicketModule } from './ticket/ticket.module';
-import { GuestModule } from './guest/guest.module';
 import { MailModule } from './mail/mail.module';
 
 @Module({
@@ -146,8 +149,10 @@ import { MailModule } from './mail/mail.module';
     BookingModule,
     PaymentModule,
     TicketModule,
+    NotificationModule,
     GuestModule,
-    MailModule,
+    AdminModule,
+    StorageModule,
     ScheduleModule.forRoot(),
   ],
   controllers: [AppController],

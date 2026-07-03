@@ -13,27 +13,27 @@ export class GuestController {
 
   // ============ ADMIN ENDPOINTS ============
 
-  @Post('admin/guests')
+  @Post('')
   createGuest(@Body() body: AdminCreateGuestDto) {
     return this.guestService.createGuest(body);
   }
 
-  @Get('admin/guests')
+  @Get('')
   getGuests(@Query() query: GetAdminGuestsQueryDto) {
     return this.guestService.getGuests(query);
   }
 
-  @Patch('admin/guests/:id')
+  @Patch(':id')
   updateGuest(@Param('id') id: string, @Body() body: AdminUpdateGuestDto) {
     return this.guestService.updateGuest(id, body);
   }
 
-  @Delete('admin/guests/:id')
+  @Delete(':id')
   deleteGuest(@Param('id') id: string) {
     return this.guestService.deleteGuest(id);
   }
 
-  @Post('admin/guests/import-csv/:concertId')
+  @Post('import-csv/:concertId')
   @UseInterceptors(FileInterceptor('file'))
   importGuestsCSV(
     @Param('concertId') concertId: string,

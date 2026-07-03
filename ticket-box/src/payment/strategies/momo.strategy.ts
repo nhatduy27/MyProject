@@ -90,9 +90,8 @@ export class MomoStrategy implements PaymentStrategy {
     const redirectUrl = returnUrl;
     const ipnUrl = `${this.configService.get<string>('BACKEND_URL', 'http://localhost:3001')}/payment/momo-ipn`;
     const extraData = '';
-    const requestType = 'payWithMethod';
-
-    // Ghép rawSignature theo đúng thứ tự MoMo yêu cầu (PHẢI CHÍNH XÁC 100%)
+    const requestType = 'payWithATM';
+    // Ghép rawSignature theo đúng thứ tự MoMo yêu cầu 
     const rawSignature =
       `accessKey=${accessKey}` +
       `&amount=${amount}` +
@@ -208,21 +207,27 @@ export class MomoStrategy implements PaymentStrategy {
       extraData,
       message,
       orderId,
+      orderInfo,
+      orderType,
       partnerCode,
+      payType,
       requestId,
       responseTime,
       resultCode,
       transId,
     } = payload;
 
-    // Ghép rawSignature theo đúng thứ tự MoMo quy định cho IPN callback
+    // Ghép rawSignature theo đúng thứ tự Alphabet MoMo quy định cho IPN callback v2
     const rawSignature =
       `accessKey=${accessKey}` +
       `&amount=${amount}` +
       `&extraData=${extraData}` +
       `&message=${message}` +
       `&orderId=${orderId}` +
+      `&orderInfo=${orderInfo}` +
+      `&orderType=${orderType}` +
       `&partnerCode=${partnerCode}` +
+      `&payType=${payType}` +
       `&requestId=${requestId}` +
       `&responseTime=${responseTime}` +
       `&resultCode=${resultCode}` +
