@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ựa Ựa</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #e3f1f9;
+            font-family: 'Arial', sans-serif;
+            padding: 16px;
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .header_text {
+            font-size: 2.6em;
+            color: #1565c0;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .gif_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .gif_container img {
+            width: 45%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .header_text {
+                font-size: 1.7em;
+            }
+
+            .gif_container img {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="header_text">Quá đã luôn</h1>
+
+        <div class="gif_container">
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3c3l5ODh3ZGN6NHhhaDE2Mjg1ZjkwOXczdDFxbWM3dTBtaW9zaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/9XY4f3FgFTT4QlaYqa/giphy.gif" alt="Gif 1">
+            <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGh5a25oc2NzNzQxcHY4eTNoZmE0empwMjdpamN5N2w1MGNwbWR2MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/dWxTnx9Bdlo9RWMJR0/giphy.gif" alt="Gif 2">
+        </div>
+    </div>
+</body>
+</html>
