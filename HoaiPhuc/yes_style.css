@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f9e3e3;
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    text-align: center;
+    width: 90%; /* Đảm bảo container không bị tràn màn hình */
+}
+
+.header_text {
+    font-size: 3em;
+    color: #d32f2f;
+    margin-bottom: 20px;
+}
+
+/* Phần quan trọng: Dàn hàng ngang cho ảnh */
+.gif_container {
+    display: flex;          /* Kích hoạt chế độ dàn hàng */
+    justify-content: center; /* Căn giữa các ảnh theo chiều ngang */
+    align-items: center;     /* Căn giữa theo chiều dọc */
+    gap: 20px;              /* Tạo khoảng cách giữa 2 ảnh */
+    flex-wrap: wrap;        /* Nếu màn hình nhỏ quá, ảnh tự động xuống dòng */
+}
+
+.gif_container img {
+    width: 45%;             /* Mỗi ảnh chiếm gần một nửa chiều rộng */
+    max-width: 500px;       /* Giới hạn kích thước tối đa để không quá to */
+    height: auto; 
+    border-radius: 15px;    /* Bo góc cho đẹp (tùy chọn) */
+}
