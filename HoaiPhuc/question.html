@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Em có thấy bản thân nhạt không?</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #FFFF8F;
+    font-family: 'Arial', sans-serif;
+    flex-direction: column;
+  }
+
+  .container {
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2.3em;
+    color: #f32424;
+  }
+
+  .buttons {
+    margin-top: 20px;
+  }
+
+  .yes-button {
+    font-size: 1.5em;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #29b6f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .no-button {
+    font-size: 1.5em;
+    padding: 10px 20px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .sticker {
+    margin-top: 20px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sticker img {
+    max-height: 180px;
+    border-radius: 10px;
+    display: none;
+  }
+
+  .sticker img.show {
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Em có thấy bản thân em có nhạt hong?</h1>
+    <div class="buttons">
+      <button class="yes-button" onclick="handleYesClick()">Có</button>
+      <button class="no-button" id="khongBtn" onclick="handleNoClick()">Không</button>
+    </div>
+    <div class="sticker">
+      <img id="stickerImg" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExODVhbXZyMXlzcTY4MTNpdWFxMGFraWRzdHFpdWtwcGQzbDQwbXp5OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/aC1PWOXzqgT6hhC0vZ/giphy.gif" alt="sticker">
+    </div>
+  </div>
+
+<script>
+const khongBtn = document.getElementById('khongBtn');
+const stickerImg = document.getElementById('stickerImg');
+
+khongBtn.addEventListener('mouseenter', () => {
+    khongBtn.textContent = "Có chứ =))))))";
+    stickerImg.classList.add('show');
+});
+
+khongBtn.addEventListener('mouseleave', () => {
+    khongBtn.textContent = "Không";
+    stickerImg.classList.remove('show');
+});
+
+function handleYesClick() {
+    window.location.href = "yes_page.html";
+}
+
+function handleNoClick() {
+    window.location.href = "yes_page.html";
+}
+</script>
+</body>
+</html>
