@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chúc Mừng Sinh Nhật 🎂</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFFBEA;
+    --yellow:#FFE380;
+    --pink:#FF6FA5;
+    --blue:#2FB6E0;
+    --orange:#FF9A3C;
+    --purple:#8C6FE0;
+    --red:#F23D5C;
+    --ink:#3A2E1F;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;margin:0;overscroll-behavior:none;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    font-family:'Quicksand',sans-serif;
+    background:linear-gradient(180deg,var(--cream),var(--yellow) 140%);
+    color:var(--ink);
+    overflow:hidden;
+    position:relative;
+    width:100%;
+    touch-action:manipulation;
+  }
+  h1,h2,.display{font-family:'Baloo 2',sans-serif;}
+
+  /* ---------- balloons background ---------- */
+  .balloons{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .balloon{
+    position:absolute;bottom:-140px;width:52px;height:64px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    opacity:.85;animation:rise linear infinite;
+  }
+  .balloon::after{content:'';position:absolute;left:50%;bottom:-22px;width:2px;height:24px;background:rgba(58,46,31,.35);transform:translateX(-50%);}
+  @keyframes rise{
+    0%{transform:translateY(0) translateX(0) rotate(-4deg);}
+    50%{transform:translateY(-55vh) translateX(20px) rotate(4deg);}
+    100%{transform:translateY(-115vh) translateX(-10px) rotate(-4deg);}
+  }
+
+  .screen{
+    position:absolute;inset:0;z-index:1;
+    height:100vh;height:100dvh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:28px 18px calc(28px + env(safe-area-inset-bottom,0px));
+    text-align:center;
+    opacity:0;pointer-events:none;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    transition:opacity .5s ease;
+  }
+  .screen.active{opacity:1;pointer-events:auto;}
+
+  .eyebrow{font-size:.95rem;color:var(--pink);font-weight:600;margin-bottom:6px;}
+  .btn{
+    font-family:'Baloo 2',sans-serif;font-weight:700;font-size:1.05rem;
+    padding:14px 30px;border:none;border-radius:999px;cursor:pointer;
+    background:var(--blue);color:white;box-shadow:0 6px 0 #1c8bb0;
+    transition:transform .12s ease, box-shadow .12s ease;
+    touch-action:manipulation;min-height:48px;
+  }
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 #1c8bb0;}
+  .btn.orange{background:var(--orange);box-shadow:0 6px 0 #c96f1f;}
+  .btn.orange:active{box-shadow:0 2px 0 #c96f1f;}
+  .btn.pink{background:var(--pink);box-shadow:0 6px 0 #c23c72;}
+  .btn.pink:active{box-shadow:0 2px 0 #c23c72;}
+
+  /* ---------- screen 1: welcome ---------- */
+  #welcome h1{font-size:clamp(1.8rem,7vw,3rem);color:var(--red);margin:0 0 4px;line-height:1.15;}
+  #welcome .sub{max-width:360px;color:#6b5a3f;margin:0 0 26px;font-size:1.05rem;}
+  .name-input{
+    display:inline-block;
+    font-family:'Baloo 2',sans-serif;font-size:1.3rem;text-align:center;
+    border:3px dashed var(--pink);background:transparent;border-radius:14px;
+    padding:8px 18px;color:var(--red);margin-bottom:22px;
+  }
+
+  /* ---------- screen 2: memory game ---------- */
+  .info{margin-bottom:16px;font-size:1.05rem;color:#6b5a3f;}
+  .board{display:grid;grid-template-columns:repeat(4,64px);grid-template-rows:repeat(2,64px);gap:8px;}
+  @media(min-width:380px){.board{grid-template-columns:repeat(4,72px);grid-template-rows:repeat(2,72px);gap:10px;}}
+  @media(min-width:460px){.board{grid-template-columns:repeat(4,86px);grid-template-rows:repeat(2,86px);gap:12px;}}
+  .card{
+    background:var(--blue);border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-size:1.7em;cursor:pointer;user-select:none;transition:transform .18s ease, background-color .18s ease;
+    box-shadow:0 4px 0 #1c8bb0;touch-action:manipulation;
+  }
+  @media(min-width:380px){.card{font-size:2em;}}
+  .card.flipped{background:white;border:2px solid var(--blue);transform:scale(1.04);box-shadow:0 2px 0 #1c8bb0;}
+  .card.matched{background:var(--orange);box-shadow:0 4px 0 #c96f1f;cursor:default;}
+
+  /* ---------- screen 3: teaser question ---------- */
+  #question h2{font-size:clamp(1.4rem,5.5vw,2rem);color:var(--red);max-width:380px;margin:0 0 22px;}
+  .q-buttons{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+  .sticker-wrap{margin-top:22px;height:150px;display:flex;align-items:center;justify-content:center;}
+  .sticker-wrap img{max-height:150px;border-radius:14px;display:none;}
+  .sticker-wrap img.show{display:block;}
+
+  /* ---------- screen 4: cake finale ---------- */
+  #finale .cake{position:relative;margin-bottom:18px;}
+  .plate{width:180px;height:14px;background:#e9c9d8;border-radius:50%;margin:0 auto -6px;}
+  .tier{width:150px;height:46px;background:var(--pink);border-radius:8px;margin:0 auto;position:relative;}
+  .tier.bottom{width:190px;background:var(--purple);}
+  .tier::before{content:'';position:absolute;top:-8px;left:0;right:0;height:16px;background:inherit;border-radius:50%;}
+  .icing{position:absolute;top:-10px;left:0;right:0;height:10px;background:#fff6e0;border-radius:0 0 10px 10px;
+    clip-path:polygon(0 0,8% 100%,16% 0,24% 100%,32% 0,40% 100%,48% 0,56% 100%,64% 0,72% 100%,80% 0,88% 100%,96% 0,100% 100%,100% 0);}
+  .candles{position:absolute;top:-46px;left:0;right:0;display:flex;justify-content:center;gap:14px;}
+  .candle{width:8px;height:34px;background:linear-gradient(var(--blue),var(--purple));border-radius:3px;position:relative;cursor:pointer;touch-action:manipulation;}
+  .candle::before{content:'';position:absolute;top:-24px;left:-14px;right:-14px;bottom:-10px;}
+  .flame{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:10px;height:16px;
+    background:radial-gradient(circle at 50% 70%,#FFD86B,var(--orange) 70%,var(--red));
+    border-radius:50% 50% 50% 50%/65% 65% 35% 35%;animation:flicker 1s ease-in-out infinite alternate;}
+  @keyframes flicker{from{transform:translateX(-50%) scale(1);}to{transform:translateX(-50%) scale(.85,1.1);}}
+  .candle.blown .flame{display:none;}
+  .puff{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:.75rem;opacity:0;}
+  .candle.blown .puff{animation:puffup .7s ease forwards;}
+  @keyframes puffup{0%{opacity:.9;transform:translate(-50%,0) scale(.6);}100%{opacity:0;transform:translate(-50%,-24px) scale(1.4);}}
+
+  #finale .hint{font-size:.95rem;color:#6b5a3f;margin-top:22px;min-height:1.3em;}
+  #finale h2{font-size:clamp(1.6rem,6vw,2.3rem);color:var(--red);max-width:380px;margin:26px 0 6px;display:none;}
+  #finale .msg{max-width:380px;color:#6b5a3f;font-size:1.05rem;line-height:1.5;display:none;}
+  #finale.won .hint{display:none;}
+  #finale.won h2, #finale.won .msg{display:block;}
+
+  .confetti-piece{position:fixed;top:-20px;width:9px;height:14px;z-index:5;pointer-events:none;border-radius:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    .balloon,.flame,.candle.blown .puff{animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="balloons" id="balloons"></div>
+
+<!-- SCREEN 1 -->
+<section class="screen active" id="welcome">
+  <div class="eyebrow">một món quà nho nhỏ dành cho</div>
+  <div class="name-input">Nguyễn Ngọc Nhi</div>
+  <h1>Chúc mừng sinh nhật!</h1>
+  <p class="sub">Trước khi nhận quà, phải vượt qua vài thử thách nhỏ đã nha. Sẵn sàng chưa?</p>
+  <button class="btn pink" onclick="goTo('game')">Bắt đầu nè 🎁</button>
+</section>
+
+<!-- SCREEN 2: memory game -->
+<section class="screen" id="game">
+  <div class="eyebrow">Thử thách 1</div>
+  <h2 style="margin:0 0 4px;color:var(--red);">Lật thẻ trí nhớ</h2>
+  <div class="info">Số lượt lật: <span id="moves">0</span></div>
+  <div class="board" id="board"></div>
+</section>
+
+<!-- SCREEN 3: teaser question -->
+<section class="screen" id="question">
+  <div class="eyebrow">Thử thách 2</div>
+  <h2>Bạn có thấy hôm nay là một ngày đặc biệt không?</h2>
+  <div class="q-buttons">
+    <button class="btn" onclick="goTo('finale')">Có</button>
+    <button class="btn orange" id="noBtn">Không</button>
+  </div>
+  <div class="sticker-wrap">
+    <img id="stickerImg" alt="" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExODVhbXZyMXlzcTY4MTNpdWFxMGFraWRzdHFpdWtwcGQzbDQwbXp5OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/aC1PWOXzqgT6hhC0vZ/giphy.gif">
+  </div>
+</section>
+
+<!-- SCREEN 4: finale -->
+<section class="screen" id="finale">
+  <div class="cake">
+    <div class="candles" id="candles"></div>
+    <div class="tier"><div class="icing"></div></div>
+    <div class="tier bottom"><div class="icing"></div></div>
+    <div class="plate"></div>
+  </div>
+  <p class="hint">Thổi nến nào — chạm vào từng cây nến để thổi tắt 🎈</p>
+  <h2>Chúc <span id="nameEcho">Nguyễn Ngọc Nhi</span> sinh nhật thật vui! 🎉</h2>
+  <p class="msg">Chúc một tuổi mới thật nhiều sức khoẻ, thật nhiều niềm vui, và mọi điều ước hôm nay đều thành hiện thực. Cảm ơn vì đã luôn ở đó nha! 💛</p>
+</section>
+
+<script>
+/* ---------- floating balloons ---------- */
+const balloonColors = ['#FF6FA5','#2FB6E0','#FF9A3C','#8C6FE0','#F23D5C'];
+const balloonsWrap = document.getElementById('balloons');
+for(let i=0;i<10;i++){
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.style.left = (Math.random()*94)+'vw';
+  b.style.background = balloonColors[i % balloonColors.length];
+  b.style.animationDuration = (14 + Math.random()*10)+'s';
+  b.style.animationDelay = (Math.random()*12)+'s';
+  balloonsWrap.appendChild(b);
+}
+
+/* ---------- screen navigation ---------- */
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ---------- memory game ---------- */
+const icons = ["🎈","🎂","🎁","⭐"];
+let cardValues = [...icons, ...icons].sort(()=>Math.random()-0.5);
+const board = document.getElementById('board');
+const movesEl = document.getElementById('moves');
+let flipped = [], matched = 0, moves = 0, lock = false;
+
+cardValues.forEach(value=>{
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.value = value;
+  card.addEventListener('click', ()=>flipCard(card));
+  board.appendChild(card);
+});
+
+function flipCard(card){
+  if(lock || card.classList.contains('flipped') || card.classList.contains('matched') || flipped.length===2) return;
+  card.textContent = card.dataset.value;
+  card.classList.add('flipped');
+  flipped.push(card);
+  if(flipped.length===2){
+    moves++; movesEl.textContent = moves; lock = true;
+    const [a,b] = flipped;
+    if(a.dataset.value === b.dataset.value){
+      setTimeout(()=>{
+        a.classList.add('matched'); b.classList.add('matched');
+        matched += 2; flipped = []; lock = false;
+        if(matched === cardValues.length){
+          setTimeout(()=>goTo('question'), 500);
+        }
+      },450);
+    } else {
+      setTimeout(()=>{
+        a.textContent=''; b.textContent='';
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+        flipped = []; lock = false;
+      },750);
+    }
+  }
+}
+
+/* ---------- teaser hover/tap trick on "Không" ---------- */
+const noBtn = document.getElementById('noBtn');
+const stickerImg = document.getElementById('stickerImg');
+function teaseNo(){ noBtn.textContent = 'Có chứ! =))'; stickerImg.classList.add('show'); }
+function untease(){ noBtn.textContent = 'Không'; stickerImg.classList.remove('show'); }
+noBtn.addEventListener('mouseenter', teaseNo);
+noBtn.addEventListener('mouseleave', untease);
+noBtn.addEventListener('click', ()=>{
+  teaseNo();
+  setTimeout(()=>goTo('finale'), 700);
+});
+
+/* ---------- cake candles ---------- */
+const candleColors = ['#FF6FA5','#2FB6E0','#FF9A3C','#8C6FE0','#F23D5C'];
+const candlesWrap = document.getElementById('candles');
+const TOTAL_CANDLES = 5;
+let blownCount = 0;
+for(let i=0;i<TOTAL_CANDLES;i++){
+  const c = document.createElement('div');
+  c.className = 'candle';
+  c.style.background = `linear-gradient(${candleColors[i]}, var(--purple))`;
+  c.innerHTML = '<div class="flame"></div><div class="puff">💨</div>';
+  c.addEventListener('click', ()=>blow(c));
+  candlesWrap.appendChild(c);
+}
+function blow(c){
+  if(c.classList.contains('blown')) return;
+  c.classList.add('blown');
+  blownCount++;
+  if(blownCount === TOTAL_CANDLES){
+    setTimeout(()=>{
+      document.getElementById('finale').classList.add('won');
+      burstConfetti();
+    }, 350);
+  }
+}
+
+/* ---------- confetti burst ---------- */
+function burstConfetti(){
+  const colors = ['#FF6FA5','#2FB6E0','#FF9A3C','#8C6FE0','#F23D5C','#FFD86B'];
+  for(let i=0;i<70;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random()*100+'vw';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.transform = `rotate(${Math.random()*360}deg)`;
+    const duration = 2.2 + Math.random()*1.8;
+    const drift = (Math.random()*160-80);
+    p.animate([
+      {transform:`translate(0,0) rotate(0deg)`, opacity:1},
+      {transform:`translate(${drift}px, 100vh) rotate(${360+Math.random()*360}deg)`, opacity:.9}
+    ], {duration: duration*1000, easing:'ease-in'});
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), duration*1000+100);
+  }
+}
+</script>
+</body>
+</html>
