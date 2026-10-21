@@ -534,27 +534,39 @@ let dark=localStorage.getItem('tts6_theme')!=='light'; function applyTheme(){doc
 function fmt(cmd){document.execCommand(cmd,false,null);document.getElementById('editor').focus();} function fmtHighlight(c){const s=window.getSelection();if(!s.rangeCount||s.isCollapsed)return;const r=s.getRangeAt(0);const m=document.createElement('mark');m.style.background=c;m.style.borderRadius='3px';m.style.padding='1px 2px';try{r.surroundContents(m);}catch(e){document.execCommand('hiliteColor',false,c);}document.getElementById('editor').focus();} function clearEditor(){document.getElementById('editor').innerHTML='';}
 
 function isNeural(v){const n=(v.name+'').toLowerCase();return n.includes('natural')||n.includes('neural')||n.includes('online')||n.includes('enhanced');}
+let bVoiceLoadTimer=null,bVoiceLoadAttempts=0,bVoiceChangeHandler=null;
 function initBVoices(){
   const grid=document.getElementById('bVoiceGrid');
   if(!synth||typeof synth.getVoices!=='function'){
     grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:22px;color:var(--muted)">Trình duyệt không hỗ trợ giọng đọc tích hợp.</div>';
     return;
   }
-  let timer=null;
   function load(){
     const all=synth.getVoices();
     if(!all.length){
-      if(!timer)timer=setTimeout(()=>{timer=null;load();},500);
+      if(!bVoiceLoadTimer&&bVoiceLoadAttempts<40){
+        bVoiceLoadAttempts++;
+        bVoiceLoadTimer=setTimeout(()=>{bVoiceLoadTimer=null;load();},500);
+      }else if(!bVoiceLoadTimer){
+        grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:22px;color:var(--muted)">Điện thoại chưa cung cấp giọng đọc. Nhấn thử lại hoặc chuyển sang tab StreamElements.<br><button class="btn btn-s" style="margin-top:10px" onclick="initBVoices()">🔄 Thử tải lại</button></div>';
+      }
       return;
     }
-    if(timer){clearTimeout(timer);timer=null;}
+    if(bVoiceLoadTimer){clearTimeout(bVoiceLoadTimer);bVoiceLoadTimer=null;}
+    bVoiceLoadAttempts=0;
     bVoices=all;
     const sel=document.getElementById('bLang');
     const codes=[...new Set(all.map(v=>v.lang.split('-')[0].toLowerCase()))].sort();
     codes.forEach(c=>{if(!sel.querySelector(`option[value="${c}"]`)){const o=document.createElement('option');o.value=c;o.textContent='🌐 '+c.toUpperCase();sel.appendChild(o);}});
     filterB();
   }
-  synth.onvoiceschanged=load;
+  if(bVoiceLoadTimer){clearTimeout(bVoiceLoadTimer);bVoiceLoadTimer=null;}
+  bVoiceLoadAttempts=0;
+  if(!bVoiceChangeHandler){
+    bVoiceChangeHandler=load;
+    if(typeof synth.addEventListener==='function')synth.addEventListener('voiceschanged',bVoiceChangeHandler);
+    else synth.onvoiceschanged=bVoiceChangeHandler;
+  }
   load();
 }
 function filterB(){const q=document.getElementById('bSearch').value.toLowerCase(),l=document.getElementById('bLang').value.toLowerCase(),t=document.getElementById('bType').value;let list=bVoices.filter(v=>(!q||v.name.toLowerCase().includes(q))&&(!l||v.lang.toLowerCase().startsWith(l))&&(!t||(t==='neural'?isNeural(v):!isNeural(v))));list.sort((a,b)=>{const fa=DB.favs.includes(a.name),fb=DB.favs.includes(b.name);if(fa!==fb)return fa?-1:1;return isNeural(b)-isNeural(a)||a.name.localeCompare(b.name);});document.getElementById('bCount').textContent=list.length+' giọng';document.getElementById('bVoiceGrid').innerHTML=list.slice(0,100).map(v=>{const n=isNeural(v),i=DB.favs.includes(v.name);return `<div class="vc${selB&&selB.name===v.name?' sel':''}" onclick="selB=bVoices.find(x=>x.name==='${esc(v.name)}');filterB()"><button class="fav-btn${i?' on':''}" onclick="event.stopPropagation();const ix=DB.favs.indexOf('${esc(v.name)}');if(ix>=0)DB.favs.splice(ix,1);else DB.favs.push('${esc(v.name)}');save('favs');filterB();renderFavs();">${i?'⭐':'☆'}</button><div class="vc-name">${esc2(v.name)}</div><div class="vc-tags">${n?'<span class="badge b-neural">Neural ⭐</span>':'<span class="badge b-std">Standard</span>'}<span class="badge b-std">${v.lang}</span></div></div>`;}).join('');}
