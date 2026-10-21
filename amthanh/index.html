@@ -534,11 +534,19 @@ let dark=localStorage.getItem('tts6_theme')!=='light'; function applyTheme(){doc
 function fmt(cmd){document.execCommand(cmd,false,null);document.getElementById('editor').focus();} function fmtHighlight(c){const s=window.getSelection();if(!s.rangeCount||s.isCollapsed)return;const r=s.getRangeAt(0);const m=document.createElement('mark');m.style.background=c;m.style.borderRadius='3px';m.style.padding='1px 2px';try{r.surroundContents(m);}catch(e){document.execCommand('hiliteColor',false,c);}document.getElementById('editor').focus();} function clearEditor(){document.getElementById('editor').innerHTML='';}
 
 function isNeural(v){const n=(v.name+'').toLowerCase();return n.includes('natural')||n.includes('neural')||n.includes('online')||n.includes('enhanced');}
-let bVoiceLoadTimer=null,bVoiceLoadAttempts=0,bVoiceChangeHandler=null;
+let bVoiceLoadTimer=null,bVoiceLoadAttempts=0,bVoiceChangeHandler=null,bVoiceFallbackActive=false;
+function useStreamFallback(message){
+  if(bVoiceFallbackActive)return;
+  bVoiceFallbackActive=true;
+  document.getElementById('bVoiceGrid').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:22px;color:var(--muted)">${message}</div>`;
+  switchSrc('stream');
+  toast('📱 Đã chuyển sang giọng đọc online.');
+}
 function initBVoices(){
+  bVoiceFallbackActive=false;
   const grid=document.getElementById('bVoiceGrid');
   if(!synth||typeof synth.getVoices!=='function'){
-    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:22px;color:var(--muted)">Trình duyệt không hỗ trợ giọng đọc tích hợp.</div>';
+    useStreamFallback('Thiết bị không có giọng đọc tích hợp. Hãy chọn giọng đọc online bên dưới.');
     return;
   }
   function load(){
@@ -548,12 +556,13 @@ function initBVoices(){
         bVoiceLoadAttempts++;
         bVoiceLoadTimer=setTimeout(()=>{bVoiceLoadTimer=null;load();},500);
       }else if(!bVoiceLoadTimer){
-        grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:22px;color:var(--muted)">Điện thoại chưa cung cấp giọng đọc. Nhấn thử lại hoặc chuyển sang tab StreamElements.<br><button class="btn btn-s" style="margin-top:10px" onclick="initBVoices()">🔄 Thử tải lại</button></div>';
+        useStreamFallback('Thiết bị chưa tải được giọng đọc tích hợp. Hãy chọn giọng đọc online bên dưới.');
       }
       return;
     }
     if(bVoiceLoadTimer){clearTimeout(bVoiceLoadTimer);bVoiceLoadTimer=null;}
     bVoiceLoadAttempts=0;
+    bVoiceFallbackActive=false;
     bVoices=all;
     const sel=document.getElementById('bLang');
     const codes=[...new Set(all.map(v=>v.lang.split('-')[0].toLowerCase()))].sort();
@@ -573,7 +582,7 @@ function filterB(){const q=document.getElementById('bSearch').value.toLowerCase(
 const STREAM=[{id:'Brian',name:'Brian',p:'Amazon',l:'English UK',g:'Male'},{id:'Joanna',name:'Joanna',p:'Amazon',l:'English US',g:'Female'},{id:'Google US English',name:'Google US English',p:'Google',l:'English US',g:'Female'}];
 function renderSVoices(l){document.getElementById('sVoiceGrid').innerHTML=l.map(v=>`<div class="vc${selS&&selS.id===v.id?' sel':''}" onclick="selS=STREAM.find(x=>x.id==='${v.id}');renderSVoices(STREAM)"><div class="vc-name">${v.name}</div><div class="vc-tags"><span class="badge b-std">${v.p}</span></div></div>`).join('');}
 function filterS(){renderSVoices(STREAM);}
-function switchSrc(s){voiceSrc=s;document.getElementById('tab-b').classList.toggle('active',s==='browser');document.getElementById('tab-s').classList.toggle('active',s==='stream');document.getElementById('vp-browser').style.display=s==='browser'?'':'none';document.getElementById('vp-stream').style.display=s==='stream'?'':'none';stopAll();}
+function switchSrc(s){voiceSrc=s;document.getElementById('tab-b').classList.toggle('active',s==='browser');document.getElementById('tab-s').classList.toggle('active',s==='stream');document.getElementById('vp-browser').style.display=s==='browser'?'':'none';document.getElementById('vp-stream').style.display=s==='stream'?'':'none';stopAll();if(s==='browser')initBVoices();}
 function addHist(txt,vc,src){DB.history.unshift({text:txt,voice:vc,src,t:Date.now()});if(DB.history.length>50)DB.history.length=50;save('history');renderHist();updateBadges();}
 function renderHist(){const el=document.getElementById('histList');if(!DB.history.length){el.innerHTML=`<div class="empty-s">Trống</div>`;return;}el.innerHTML=DB.history.map((h,i)=>`<div class="hist-item" onclick="document.getElementById('editor').innerText=DB.history[${i}].text;goPanel('tts')"><div style="flex:1;overflow:hidden"><div class="hi-text">${esc2(h.text)}</div><div class="hi-meta">${esc2(h.voice)}</div></div></div>`).join('');}
 function renderFavs(){const el=document.getElementById('favList');if(!DB.favs.length){el.innerHTML=`<div class="empty-s">Trống</div>`;return;}el.innerHTML='<div class="voice-grid">'+DB.favs.map(n=>`<div class="vc"><div class="vc-name">${esc2(n)}</div></div>`).join('')+'</div>';}
