@@ -499,17 +499,63 @@ function playNextStream(){
 }
 
 function playFull(){
-  const text=getEditorText(); if(!text){toast('⚠️ Nhập văn bản!');return;}
-  if(document.getElementById('bgmSelect').value) document.getElementById('bgmAudio').play();
-  if(voiceSrc==='browser'){
-    if(!synth||typeof SpeechSynthesisUtterance==='undefined'){toast('Trình duyệt không hỗ trợ giọng đọc tích hợp.');return;}
-    synth.cancel(); const utt=new SpeechSynthesisUtterance(text); if(selB)utt.voice=selB; utt.rate=parseFloat(document.getElementById('rate').value);
-    utt.onstart=()=>{showSt('Đang phát...',selB?.name);addHist(text,selB?.name||'Mặc định','browser');}; 
-    utt.onend=()=>{hideSt(); document.getElementById('bgmAudio').pause();};
-    synth.speak(utt);
+  const text = getEditorText(); 
+  if(!text){ toast('⚠️ Nhập văn bản!'); return; }
+
+  // Xử lý nhạc nền an toàn
+  const bgm = document.getElementById('bgmAudio');
+  if(document.getElementById('bgmSelect').value) {
+    bgm.play().catch(err => console.log("BGM autoplay blocked:", err));
+  }
+
+  // TỰ ĐỘNG CHUYỂN SANG STREAM NẾU KHÔNG CÓ BROWSER TTS
+  if(voiceSrc === 'browser' && (!synth || typeof SpeechSynthesisUtterance === 'undefined')){
+    toast('📱 Đang chuyển sang giọng Online...');
+    switchSrc('stream');
+  }
+
+  if(voiceSrc === 'browser'){
+    synth.cancel();
+
+    // Cắt câu
+    const sentences = text.replace(/([.!?\n]+)/g, "$1|").split("|").filter(x => x.trim().length > 0);
+    let currentIndex = 0;
+
+    function speakNextSentence() {
+      if(currentIndex >= sentences.length) {
+        hideSt(); 
+        bgm.pause();
+        return;
+      }
+
+      const utt = new SpeechSynthesisUtterance(sentences[currentIndex].trim());
+      if(selB) utt.voice = selB; 
+      utt.rate = parseFloat(document.getElementById('rate').value) || 1;
+      utt.pitch = parseFloat(document.getElementById('pitch').value) || 1;
+      utt.volume = parseFloat(document.getElementById('vol').value) || 1;
+
+      utt.onstart = () => showSt('Đang phát...', selB?.name || 'Mặc định');
+      utt.onend = () => {
+        currentIndex++;
+        speakNextSentence();
+      };
+      utt.onerror = (e) => {
+        console.error("TTS Error:", e);
+        toast('⚠️ Lỗi phát. Chuyển Online...');
+        switchSrc('stream');
+        playFull();
+      };
+
+      synth.speak(utt);
+    }
+
+    addHist(text, selB?.name || 'Mặc định', 'browser');
+    speakNextSentence();
+
   } else {
-    showSt('Đang tải...',selS.name); addHist(text,selS.name,'stream');
-    streamQueue = text.replace(/([.!?\n]+)/g, "$1|").split("|").filter(x=>x.trim().length>0);
+    showSt('Đang tải...', selS ? selS.name : 'StreamElements'); 
+    addHist(text, selS ? selS.name : 'StreamElements', 'stream');
+    streamQueue = text.replace(/([.!?\n]+)/g, "$1|").split("|").filter(x => x.trim().length > 0);
     playNextStream();
   }
 }
